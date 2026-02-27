@@ -166,8 +166,8 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .section-header{margin-bottom:3rem;display:flex;align-items:flex-end;justify-content:space-between}
 .section-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1;text-transform:uppercase;letter-spacing:.04em}
 .section-title em{font-style:normal;font-weight:300}
-.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
-@media(max-width:1000px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
+.cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem}
+@media(max-width:1100px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
 .cat-card{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;cursor:pointer}
 .cat-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
@@ -424,7 +424,33 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 .menu-text::after{content:'→';font-size:.8rem;font-weight:300;opacity:.35;transition:opacity .2s,transform .2s;flex-shrink:0;margin-left:.5rem}
 .menu-item:hover .menu-text::after{opacity:.8;transform:translateX(3px)}
 @media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto!important;min-height:unset;padding:10px 1.5rem 16px;gap:6px;overflow-x:hidden}#sizeWrap{flex-basis:100%;width:100%;padding:0!important;margin-top:6px;padding-bottom:22px!important;box-sizing:border-box;display:flex!important}#sizeMinLabel,#sizeMaxLabel{flex-shrink:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:3.5rem}#sizeTrack{flex:1;min-width:0;margin:0 .5rem}}
-@media(hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:auto!important}}
+/* ── Category Browse Page ── */
+#categoryPage{padding-top:var(--hh)}
+.cat-page-hero{position:relative;height:32vh;min-height:200px;overflow:hidden;background:var(--black)}
+@media(max-width:700px){.cat-page-hero{height:26vh;min-height:160px}}
+.cat-page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.85) 0%,rgba(10,10,10,.3) 60%)}
+#catHeroBg{position:absolute;inset:0;width:100%;height:100%}
+#catHeroBg img,#catHeroBg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cat-page-hero-content{position:absolute;bottom:0;left:0;right:0;padding:0 3.5rem 3.5rem;z-index:2}
+@media(max-width:700px){.cat-page-hero-content{padding:0 1.5rem 2.5rem}}
+.cat-sub-section{padding:3.5rem 3.5rem 5rem}
+@media(max-width:700px){.cat-sub-section{padding:2rem 1.5rem 4rem}}
+.cat-sub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+@media(max-width:1000px){.cat-sub-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.cat-sub-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-sub-card{cursor:pointer;display:flex;flex-direction:column;gap:0}
+.cat-sub-card-img{aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--grey)}
+.cat-sub-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(0.23,1,0.32,1)}
+.cat-sub-card:hover .cat-sub-card-img img{transform:scale(1.06)}
+.cat-sub-card-label{padding:.85rem 0 .4rem;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--black)}
+.cat-sub-card-sub{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);font-weight:300}
+.cat-breadcrumb{display:flex;align-items:center;gap:.6rem;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2rem;flex-wrap:wrap}
+.cat-breadcrumb-item{color:rgba(0,0,0,.35);cursor:pointer;transition:color .15s}
+.cat-breadcrumb-item:hover{color:var(--black)}
+.cat-breadcrumb-item.active{color:var(--black)}
+.cat-breadcrumb-sep{color:rgba(0,0,0,.2);font-size:.5rem}
+.cat-sub-section-title{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2.5rem}
+@media(hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.cat-sub-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:auto!important}}
 </style>
 </head>
 <body>
@@ -441,11 +467,11 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 <li class="dropdown">
 <a href="#" id="productsNavLink">Products</a>
 <div class="dropdown-menu" id="dropdownMenu">
-<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Audio Visual Solutions</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt="Audio Visual"></div>
-<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Shading Solutions</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt="Shading"></div>
-<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Lighting &amp; Data Enclosures</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Lighting"></div>
-<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Furniture &amp; Cabinetry</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt="Furniture"></div>
-<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Architectural Movement</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt="Architecture"></div>
+<div class="menu-item" onclick="catStack=[];showCategory('/Product/AudioVisual','Audio Visual Solutions');closeMenu()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt="Audio Visual"><div class="menu-text">Audio Visual Solutions</div></div>
+<div class="menu-item" onclick="catStack=[];showCategory('/Shades','Shading Solutions');closeMenu()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt="Shading"><div class="menu-text">Shading Solutions</div></div>
+<div class="menu-item" onclick="catStack=[];showCategory('/Enclosure','Lighting & Data Enclosures');closeMenu()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Lighting"><div class="menu-text">Lighting &amp; Data Enclosures</div></div>
+<div class="menu-item" onclick="catStack=[];showCategory('/Furniture','Furniture & Moving Panels');closeMenu()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt="Furniture"><div class="menu-text">Furniture &amp; Moving Panels</div></div>
+<div class="menu-item" onclick="catStack=[];showCategory('/HomeCinema','Home Cinema Solutions');closeMenu()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg" alt="Home Cinema"><div class="menu-text">Home Cinema Solutions</div></div>
 </div>
 </li>
 <li><a href="#" onclick="showAbout();return false">About</a></li>
@@ -460,11 +486,11 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 <button class="mob-nav-btn" id="mobProductsToggle">Products<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l5 5 5-5"/></svg></button>
 <div class="mob-sub" id="mobProductsSub">
 <div class="mob-sub-grid">
-<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt=""><span class="mob-sub-label">Audio Visual Solutions</span></div>
-<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt=""><span class="mob-sub-label">Shading Solutions</span></div>
-<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt=""><span class="mob-sub-label">Lighting &amp; Data Enclosures</span></div>
-<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt=""><span class="mob-sub-label">Furniture &amp; Cabinetry</span></div>
-<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt=""><span class="mob-sub-label">Architectural Movement</span></div>
+<div class="mob-sub-item" onclick="catStack=[];showCategory('/Product/AudioVisual','Audio Visual Solutions');closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt=""><span class="mob-sub-label">Audio Visual Solutions</span></div>
+<div class="mob-sub-item" onclick="catStack=[];showCategory('/Shades','Shading Solutions');closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt=""><span class="mob-sub-label">Shading Solutions</span></div>
+<div class="mob-sub-item" onclick="catStack=[];showCategory('/Enclosure','Lighting & Data Enclosures');closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt=""><span class="mob-sub-label">Lighting &amp; Data Enclosures</span></div>
+<div class="mob-sub-item" onclick="catStack=[];showCategory('/Furniture','Furniture & Moving Panels');closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt=""><span class="mob-sub-label">Furniture &amp; Moving Panels</span></div>
+<div class="mob-sub-item" onclick="catStack=[];showCategory('/HomeCinema','Home Cinema Solutions');closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg" alt=""><span class="mob-sub-label">Home Cinema Solutions</span></div>
 </div>
 </div>
 </div>
@@ -602,11 +628,12 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 <a href="#" class="vert-link" onclick="showProducts();return false">All Products</a>
 </div>
 <div class="cat-grid">
-<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt="Audio Visual"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Audio Visual</span><span class="cat-label-arrow">→</span></div></div>
-<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt="Shading"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Shading</span><span class="cat-label-arrow">→</span></div></div>
-<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Lighting"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Lighting &amp; Data</span><span class="cat-label-arrow">→</span></div></div>
-<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt="Furniture"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Furniture</span><span class="cat-label-arrow">→</span></div></div>
-<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt="Architectural"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Architectural</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="catStack=[];showCategory('/Product/AudioVisual','Audio Visual Solutions')"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt="Audio Visual"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Audio Visual</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="catStack=[];showCategory('/Shades','Shading Solutions')"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt="Shading"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Shading</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="catStack=[];showCategory('/Enclosure','Lighting & Data Enclosures')"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Lighting"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Lighting &amp; Data</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="catStack=[];showCategory('/Furniture','Furniture & Moving Panels')"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt="Furniture"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Furniture</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="catStack=[];showCategory('/ArchitecturalMovement','Architectural Movement')"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt="Architectural"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Architectural</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="catStack=[];showCategory('/HomeCinema','Home Cinema Solutions')"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg" alt="Home Cinema"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Home Cinema</span><span class="cat-label-arrow">→</span></div></div>
 </div>
 </section>
 <section class="cases-section">
@@ -696,6 +723,17 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 </div>
 <div id="detailContent"></div>
 </div>
+</div>
+<div id="categoryPage" style="display:none">
+<div id="catHero" class="cat-page-hero">
+<div id="catHeroBg"></div>
+<div class="cat-page-hero-overlay"></div>
+<div class="cat-page-hero-content">
+<div id="catHeroEyebrow" class="hero-eyebrow"></div>
+<h1 id="catHeroTitle" class="hero-title"></h1>
+</div>
+</div>
+<div id="catSubGrid" class="cat-sub-section"></div>
 </div>
 <div id="contactPage">
 <div class="contact-wrap">
@@ -1001,7 +1039,7 @@ if(minLbl)minLbl.textContent='ALL';
 if(clearSearch){const srch=document.getElementById('siteSearch');if(srch)srch.value='';}
 }
 function hideAll(){
-['homePage','productsPage','contactPage','aboutPage'].forEach(id=>document.getElementById(id).style.display='none');
+['homePage','productsPage','categoryPage','contactPage','aboutPage'].forEach(id=>document.getElementById(id).style.display='none');
 document.getElementById('filterBar').style.display='none';
 }
 let _topPicksRendered=false;
@@ -1029,6 +1067,270 @@ window.scrollTo(0,0);
 if(!productsLoaded){productsLoaded=true;initProducts();}
 else render();
 }
+
+/* ── Category hero config ── */
+const CAT_HEROES={
+'/Product/AudioVisual':{title:'Audio Visual Solutions',eyebrow:'AV Mounts & Motorised Mechanisms',img:'https://d2oo5quzpsdib.cloudfront.net/Website/General/AudioVisual.jpg',vid:'https://d2oo5quzpsdib.cloudfront.net/Website/General/AudioVisual.mp4'},
+'/Shades':{title:'Shading Solutions',eyebrow:'Bespoke Motorised Shading Solutions',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg'},
+'/Enclosure':{title:'Lighting & Data Enclosures',eyebrow:'DIN Rail Enclosures & Power Supplies',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg'},
+'/Furniture':{title:'Furniture & Moving Panels',eyebrow:'AV Furniture, Cabinets & Moving Doors',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg'},
+'/HomeCinema':{title:'Home Cinema Solutions',eyebrow:'Dedicated Private Theatre Solutions',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg'},
+};
+
+/* breadcrumb stack: [{label, path}] */
+let catStack=[];
+let _catProducts=[];
+
+function heroKeyFor(path){
+for(const k of Object.keys(CAT_HEROES)){if(path===k||path.startsWith(k+'/'))return k;}
+return null;
+}
+
+async function showCategory(path,label,fromStack){
+hideAll();
+header.classList.remove('on-dark');header.classList.add('scrolled');
+const page=document.getElementById('categoryPage');
+page.style.display='block';
+window.scrollTo(0,0);
+
+if(!fromStack){catStack.push({label,path});}
+
+/* set config hero immediately as placeholder while page loads */
+const hKey=heroKeyFor(path);
+const heroConf=hKey?CAT_HEROES[hKey]:{};
+setHero(heroConf.vid||'',heroConf.img||'',heroConf.title||label,heroConf.eyebrow||'');
+
+const subEl=document.getElementById('catSubGrid');
+subEl.innerHTML='<div class="statewrap"><div class="spinner"></div></div>';
+
+try{
+const html=await get(BASE+path);
+const doc=new DOMParser().parseFromString(html,'text/html');
+
+/* always try to extract real hero from the fetched page */
+extractAndSetHero(doc,label,heroConf);
+
+renderCategoryContent(doc,path,subEl,label);
+}catch(e){
+subEl.innerHTML='<div class="statewrap"><span>Could not load content.</span></div>';
+}
+}
+
+function extractAndSetHero(doc,fallbackLabel,fallbackConf){
+/* jarallax pattern: data-video-src="mp4:..." data-img-src="..." */
+const jarallax=doc.querySelector('[data-video-src],[data-img-src]');
+if(jarallax){
+const vidSrc=(jarallax.getAttribute('data-video-src')||'').replace(/^mp4:/,'').trim();
+const imgSrc=(jarallax.getAttribute('data-img-src')||'').trim();
+const titleEl=jarallax.querySelector('h1,h2,.display-4,[class*="display"]');
+const title=titleEl?titleEl.textContent.trim():fallbackLabel;
+if(vidSrc||imgSrc){setHero(vidSrc,imgSrc,title,'');return;}
+}
+/* video with poster pattern */
+const vid=doc.querySelector('video[poster]');
+if(vid){
+const src=vid.querySelector('source')?vid.querySelector('source').getAttribute('src'):vid.getAttribute('src')||'';
+const poster=vid.getAttribute('poster')||'';
+if(src||poster){setHero(src,poster,fallbackLabel,'');return;}
+}
+/* prominent img in a hero/banner/parallax container */
+const heroImg=doc.querySelector('[class*="parallax"] img,[class*="hero"] img,[class*="banner"] img,[class*="Header"] img');
+if(heroImg&&heroImg.src){setHero('',heroImg.src,fallbackLabel,'');return;}
+/* fall back to config */
+setHero(fallbackConf.vid||'',fallbackConf.img||'',fallbackConf.title||fallbackLabel,fallbackConf.eyebrow||'');
+}
+
+function setHero(vidSrc,imgSrc,title,eyebrow){
+const heroBg=document.getElementById('catHeroBg');
+heroBg.innerHTML='';
+if(vidSrc){
+const v=document.createElement('video');
+v.src=vidSrc;v.autoplay=true;v.loop=true;v.muted=true;v.playsInline=true;
+v.setAttribute('playsinline','');if(imgSrc)v.poster=imgSrc;
+heroBg.appendChild(v);
+}else if(imgSrc){
+const i=document.createElement('img');i.src=imgSrc;i.alt=title;
+heroBg.appendChild(i);
+}
+document.getElementById('catHeroTitle').textContent=title;
+document.getElementById('catHeroEyebrow').textContent=eyebrow;
+}
+
+function renderCategoryContent(doc,currentPath,container,currentLabel){
+/* ── strip navigation/chrome from parsed doc so we don't pick up header menu links ── */
+doc.querySelectorAll('nav,header,footer,.navbar,.MegaMenu,[class*="menu"],[class*="footer"],[class*="nav-"],[id*="nav"],[id*="header"],[id*="footer"]').forEach(el=>el.remove());
+/* ── breadcrumb ── */
+let crumbHtml='<div class="cat-breadcrumb">';
+crumbHtml+=`<span class="cat-breadcrumb-item" onclick="showHome()">Home</span><span class="cat-breadcrumb-sep">›</span>`;
+if(catStack.length>1){
+for(let i=0;i<catStack.length-1;i++){
+const s=catStack[i];
+crumbHtml+=`<span class="cat-breadcrumb-item" onclick="navToBreadcrumb(${i})">${s.label}</span><span class="cat-breadcrumb-sep">›</span>`;
+}}
+crumbHtml+=`<span class="cat-breadcrumb-item active">${currentLabel}</span></div>`;
+
+/* ── Pattern 1: RangeHeader pattern (e.g. Enclosure, Shading sub-pages) ── */
+const rangeLinks=[...doc.querySelectorAll('a')].filter(a=>a.querySelector('.RangeHeader')&&a.getAttribute('href'));
+
+/* ── Pattern 2: col-xl / col-md-4 / col-lg-4 links with img + heading ── */
+const colLinks=[...doc.querySelectorAll('[class*="col-xl"] a,[class*="col-md-4"] a,[class*="col-lg-4"] a,[class*="col-md-3"] a')].filter(a=>{
+return a.querySelector('img')&&(a.querySelector('h3,h4,.RangeHeader')||a.querySelector('[class*="text-center"]'))&&a.getAttribute('href')&&!a.getAttribute('href').startsWith('#');
+});
+
+/* ── Pattern 3: SearchResult product cards ── */
+const productCards=[...doc.querySelectorAll('.SearchResult')];
+
+/* ── build candidate sub-cards from whichever pattern matched ── */
+let candidates=[];
+if(rangeLinks.length>0){
+candidates=rangeLinks.map(a=>{
+const href=a.getAttribute('href');
+const labelEl=a.querySelector('.RangeHeader span,.RangeHeader');
+const descEl=a.querySelector('.RangeDescription');
+const img=a.querySelector('img');
+return{href,label:(labelEl?labelEl.textContent:href.split('/').pop()).trim(),sub:descEl?descEl.textContent.trim():'',src:img?img.getAttribute('src')||'':''};
+});
+}else if(colLinks.length>0){
+const seen=new Set();
+colLinks.forEach(a=>{
+const href=a.getAttribute('href');
+if(seen.has(href))return;seen.add(href);
+const img=a.querySelector('img');
+const h=a.querySelector('h3,h4');
+const p=a.querySelector('p,.RangeDescription');
+const labelEl=a.querySelector('.RangeHeader span,.RangeHeader');
+const label=h?h.textContent.trim():labelEl?labelEl.textContent.trim():href.split('/').pop();
+candidates.push({href,label,sub:p?p.textContent.trim():'',src:img?img.getAttribute('src')||img.src||'':''});
+});
+}
+
+/* ── split candidates: product detail URLs vs category drill-downs ── */
+const isProductHref=href=>href&&(href.includes('/Product/Details/')||href.match(/\/Product\/[A-Z0-9\-]+$/i));
+const subCats=candidates.filter(c=>!isProductHref(c.href));
+const candidateProducts=candidates.filter(c=>isProductHref(c.href)).map(c=>({
+url:BASE+c.href,
+code:c.href.split('/').pop().toUpperCase(),
+name:c.label,sub:c.sub,image:c.src,tags:[],screen:null
+}));
+
+/* ── decide what to show ── */
+if(subCats.length>0){
+/* sub-category grid */
+let gridHtml=`<div class="cat-sub-section-title">${currentLabel}</div><div class="cat-sub-grid">`;
+subCats.forEach(({href,label,sub,src})=>{
+const safeLabel=label.replace(/'/g,"\\'");
+gridHtml+=`<div class="cat-sub-card" onclick="catDrillDown('${href}','${safeLabel}')">
+<div class="cat-sub-card-img"><img src="${src}" alt="${label}" loading="lazy"></div>
+<div class="cat-sub-card-label">${label}</div>
+${sub?`<div class="cat-sub-card-sub">${sub}</div>`:''}
+</div>`;
+});
+gridHtml+='</div>';
+container.innerHTML=crumbHtml+gridHtml;
+
+}else if(candidateProducts.length>0){
+showCatProducts(candidateProducts,currentLabel,crumbHtml,container);
+
+}else if(productCards.length>0){
+const parsed=productCards.map(card=>{
+const link=card.querySelector('a');if(!link)return null;
+const name=card.querySelector('h4'),sub=card.querySelector('h5');
+const imgs=[...card.querySelectorAll('img')];
+const tagEls=[...card.querySelectorAll('.Tag')];
+const tags=tagEls.map(t=>t.textContent.replace(/\s+/g,' ').trim());
+let screen=null;tagEls.forEach(t=>{const s=parseScreen(t.textContent);if(s)screen=s;});
+const href=link.getAttribute('href')||'',code=href.split('/').pop().toUpperCase();
+return{url:BASE+href,code,name:name?name.textContent.trim():'',sub:sub?sub.textContent.trim():'',image:imgs[0]?imgs[0].src:'',tags,screen};
+}).filter(p=>p&&p.name);
+showCatProducts(parsed,currentLabel,crumbHtml,container);
+
+}else{
+container.innerHTML=crumbHtml+'<div class="statewrap"><span>No content found. <a href="#" onclick="showProducts();return false" style="text-decoration:underline">Browse all products</a></span></div>';
+}
+}
+
+function showCatProducts(products,label,crumbHtml,container){
+_catProducts=products;
+
+/* if called with a container (from renderCategoryContent), render inline on categoryPage */
+if(container){
+const countTxt=`${products.length} product${products.length!==1?'s':''}`;
+let html=crumbHtml||'';
+html+=`<h1 class="products-page-title" style="margin-bottom:.5rem">${label}</h1>`;
+html+=`<div class="count-bar" style="margin-bottom:1.5rem">${countTxt}</div>`;
+container.innerHTML=html;
+const grid=document.createElement('div');
+grid.className='pgrid';
+products.forEach((p,i)=>{
+const card=document.createElement('div');
+card.className='pcard';
+card.style.animationDelay=Math.min(i*10,200)+'ms';
+card.innerHTML=`<div class="pimg"><img loading="lazy" src="${p.image}" alt="${p.name}"></div><div class="pinfo"><div class="pname">${p.name}</div>${p.sub?`<div class="psub">${p.sub}</div>`:''}<div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div></div>`;
+card.onclick=()=>{openCatProductDetail(p);};
+grid.appendChild(card);
+});
+container.appendChild(grid);
+return;
+}
+
+/* called standalone (back-navigation) — switch to productsPage view */
+hideAll();
+document.getElementById('productsPage').style.display='block';
+document.getElementById('productsPage').classList.remove('detail-mode');
+document.getElementById('detailView').style.display='none';
+document.getElementById('gridView').style.display='block';
+document.getElementById('filterBar').style.display='none';
+header.classList.remove('on-dark');header.classList.add('scrolled');
+window.scrollTo(0,0);
+const titleEl=document.querySelector('.products-page-title');
+if(titleEl)titleEl.innerHTML=label;
+const countEl=document.getElementById('countBar');
+if(countEl)countEl.textContent=`${products.length} product${products.length!==1?'s':''}`;
+const inner=document.getElementById('gridInner');
+inner.innerHTML='';
+if(crumbHtml){const bc=document.createElement('div');bc.innerHTML=crumbHtml;if(bc.firstElementChild)inner.appendChild(bc.firstElementChild);}
+const grid=document.createElement('div');
+grid.className='pgrid';
+products.forEach((p,i)=>{
+const card=document.createElement('div');
+card.className='pcard';
+card.style.animationDelay=Math.min(i*10,200)+'ms';
+card.innerHTML=`<div class="pimg"><img loading="lazy" src="${p.image}" alt="${p.name}"></div><div class="pinfo"><div class="pname">${p.name}</div>${p.sub?`<div class="psub">${p.sub}</div>`:''}<div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div></div>`;
+card.onclick=()=>{openCatProductDetail(p);};
+grid.appendChild(card);
+});
+inner.appendChild(grid);
+}
+
+function openCatProductDetail(p){
+detailOpenedFrom='category';
+savedScroll=window.scrollY;
+const match=all.find(x=>x.code===p.code)||p;
+/* hide whichever page is currently showing and open detail in productsPage */
+hideAll();
+document.getElementById('productsPage').style.display='block';
+document.getElementById('productsPage').classList.add('detail-mode');
+document.getElementById('gridView').style.display='none';
+document.getElementById('filterBar').style.display='none';
+document.getElementById('detailView').style.display='block';
+document.getElementById('backBtn').querySelector('span').textContent='Back';
+window.scrollTo(0,0);
+openDetail(match,true);
+}
+
+function catDrillDown(path,label){
+catStack.push({label,path});
+showCategory(path,label,true);
+}
+
+function navToBreadcrumb(idx){
+catStack=catStack.slice(0,idx+1);
+const s=catStack[idx];
+showCategory(s.path,s.label,true);
+}
+
+
+
 function showContact(){
 hideAll();
 resetFilters(true);
@@ -1068,7 +1370,15 @@ document.getElementById('homePage').style.display='block';
 updateHeaderStyle();
 window.scrollTo({top:savedScroll,behavior:'instant'});
 requestAnimationFrame(()=>initScrollReveal());
-} else showGrid();
+}else if(detailOpenedFrom==='category'){
+hideAll();
+const last=catStack[catStack.length-1];
+if(last){
+document.getElementById('categoryPage').style.display='block';
+header.classList.remove('on-dark');header.classList.add('scrolled');
+window.scrollTo({top:savedScroll,behavior:'instant'});
+}else showHome();
+}else showGrid();
 }
 (function(){
 const obs=new IntersectionObserver((entries,obs)=>{entries.forEach((entry,i)=>{if(entry.isIntersecting){setTimeout(()=>{entry.target.classList.add('visible');obs.unobserve(entry.target);},i*200);}});},{threshold:.08});
