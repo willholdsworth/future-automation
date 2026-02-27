@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--hh:88px;--font:'Open Sans',sans-serif;--black:#0a0a0a;--white:#fafafa;--grey:#f0f0ee;--mid:#888}
+html,body{font-family:var(--font);background:var(--white);color:var(--black);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,textarea,select{font-family:var(--font)}
+body{cursor:none}
+#cursor{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:10000;background:var(--white);will-change:transform;top:0;left:0;transform:translate3d(-50%,-50%,0);transition:width .15s,height .15s,opacity .15s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:34px;height:34px;border:1.5px solid var(--white);border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;will-change:transform;transition:width .2s,height .2s,opacity .2s;mix-blend-mode:difference}
+body:has(a:hover) #cursor{width:14px;height:14px}
+body:has(a:hover) #cursor-ring{width:46px;height:46px}
+a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:none!important}
+.header{display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:transparent;position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--hh);transition:background .4s,border-bottom .4s}
+.header.scrolled{background:rgba(250,250,250,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.08)}
+.logo{display:flex;align-items:center;flex-shrink:0}
+.logo img{height:3.24rem;display:block;mix-blend-mode:multiply}
+.header.on-dark .logo img{filter:invert(1);mix-blend-mode:normal}
+.search-container{display:flex;align-items:center;position:relative;margin-left:2.8rem;flex-shrink:0}
+.search-container input[type="text"]{font-family:var(--font);font-size:.65em;font-weight:300;padding:7px 14px 7px 2.2rem;border:1px solid rgba(255,255,255,.35);border-radius:999px;background-color:transparent;background-image:url('https://img.icons8.com/ios-filled/50/ffffff/search.png');background-repeat:no-repeat;background-position:9px center;background-size:13px 13px;text-transform:uppercase;letter-spacing:.1em;color:var(--white);outline:none;width:10.5rem;transition:border-color .25s,color .25s,width .3s ease}
+.search-container input[type="text"]::placeholder{color:transparent}
+.search-container input[type="text"]:focus{width:14rem;border-color:rgba(255,255,255,.7)}
+.header.scrolled .search-container input[type="text"]{border-color:rgba(0,0,0,.2);color:var(--black);background-image:url('https://img.icons8.com/ios-filled/50/000000/search.png')}
+.header.scrolled .search-container input[type="text"]:focus{border-color:rgba(0,0,0,.5)}
+.typing-anim{position:absolute;left:2rem;top:50%;transform:translateY(-50%);font-size:.65em;font-weight:300;color:rgba(255,255,255,.55);pointer-events:none;white-space:nowrap;overflow:hidden;letter-spacing:.1em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.4);animation:blink-caret .75s step-end infinite}
+.header.scrolled .typing-anim{color:rgba(0,0,0,.38);border-right-color:rgba(0,0,0,.22)}
+@keyframes blink-caret{from,to{border-color:transparent}50%{border-color:currentColor}}
+@media(max-width:900px){.search-container{margin-left:0;flex:1;justify-content:center;max-width:190px}.search-container input[type="text"]{width:100%!important;font-size:.72em;padding:8px 14px 8px 2.4rem}.typing-anim{font-size:.72em;left:2.4rem}}
+nav.nav{display:flex;gap:0;align-items:center;flex:1;justify-content:flex-end}
+nav.nav ul{list-style:none;display:flex;gap:0;padding:0;margin:0}
+nav.nav ul li a{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--black);padding:0 1.4rem;display:block;line-height:var(--hh);position:relative;transition:opacity .2s}
+.header.on-dark nav.nav ul li a{color:var(--white)}
+nav.nav ul li a::after{content:'';position:absolute;bottom:20px;left:1.4rem;right:1.4rem;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .3s ease}
+nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
+.dealer-portal{display:flex;align-items:center;gap:.4rem;padding:.55rem 1.4rem;border:1px solid transparent;border-radius:999px;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;background:var(--black);color:var(--white);cursor:pointer;transition:all .2s;flex-shrink:0}
+.header.on-dark .dealer-portal{background:var(--white);color:var(--black);border-color:transparent}
+.dealer-portal:hover{background:transparent;color:var(--black);border-color:var(--black)}
+.header.on-dark .dealer-portal:hover{background:transparent;color:var(--white);border-color:var(--white)}
+.hamburger{display:none;flex-direction:column;gap:5px;width:32px;background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0}
+.hamburger span{display:block;width:100%;height:1.5px;background:var(--black);transition:transform .25s,opacity .25s}
+.header.on-dark .hamburger span{background:var(--white)}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-drawer{display:none;position:fixed;top:var(--hh);left:0;right:0;bottom:0;background:var(--white);z-index:998;padding:2rem 2rem 3rem;flex-direction:column;border-top:1px solid rgba(0,0,0,.08)}
+.mobile-drawer.open{display:flex}
+.mob-nav-item{border-bottom:1px solid rgba(0,0,0,.07)}
+.mob-nav-btn,.mob-nav-link{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--black);background:none;border:none;width:100%;cursor:pointer;padding:1.2rem 0}
+.mob-sub{display:none;flex-direction:column;padding-bottom:1rem}
+.mob-sub.open{display:flex}
+.mob-sub-item{display:flex;align-items:center;gap:1rem;padding:.7rem 0;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.04)}
+.mob-sub-img{width:56px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0}
+.mob-sub-label{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.mob-dealer{display:flex;align-items:center;justify-content:center;margin-top:2rem;padding:1rem;background:var(--black);color:var(--white);border-radius:999px;font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+@media(max-width:900px){nav.nav,.dealer-portal{display:none}.hamburger{display:flex}.header{padding:0 1rem 0 1.5rem}}
+#homePage{display:block}
+#productsPage{display:none;content-visibility:auto}
+#contactPage{display:none;content-visibility:auto}
+#aboutPage{display:none;content-visibility:auto}
+.hero{position:relative;width:100%;height:100vh;overflow:hidden;background:var(--black)}
+.hero-slide{position:absolute;inset:0;width:100%;height:100%;display:flex;align-items:flex-end;opacity:0;transition:opacity 1.2s ease;pointer-events:none}
+.hero-slide.active{opacity:1;pointer-events:auto}
+.hero-slide video,.hero-slide .hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top, rgba(10,10,10,.92) 0%, rgba(10,10,10,.45) 60%)}
+.hero-content{position:relative;z-index:2;padding:0 3.5rem 5.5rem;width:100%}
+.hero-eyebrow{font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem;font-weight:300}
+.hero-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:rgba(255,255,255,.4)}
+.hero-title{font-size:clamp(3rem,6.5vw,6.5rem);font-weight:300;color:var(--white);line-height:1;letter-spacing:.04em;text-transform:uppercase;max-width:900px}
+.hero-sub{margin-top:1.5rem;font-size:clamp(.8rem,1.1vw,.95rem);color:rgba(255,255,255,.6);font-weight:300;max-width:440px;line-height:1.8;letter-spacing:.02em}
+.hero-cta{margin-top:2.5rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.hero-dots{position:absolute;bottom:1.8rem;left:3.5rem;z-index:10;display:flex;gap:.3rem;align-items:center}
+.hero-dot{height:36px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:0 6px;flex-shrink:0}
+.hero-dot-bar{width:2rem;height:2px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden;pointer-events:none;position:relative}
+.hero-dot-fill{position:absolute;top:0;left:0;height:100%;width:0%;background:rgba(255,255,255,.9);border-radius:2px}
+.hero-dot.active .hero-dot-fill{animation:dotProgress 7s linear forwards}
+.hero-dot.done .hero-dot-fill{width:100%}
+@keyframes dotProgress{from{width:0%}to{width:100%}}
+.hero-scroll{position:absolute;bottom:3rem;right:3.5rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;z-index:2}
+.hero-scroll-text{font-size:.52rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.35);font-weight:300}
+.hero-scroll-line{width:1px;height:3rem;background:rgba(255,255,255,.25);position:relative;overflow:hidden}
+.hero-scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:rgba(255,255,255,.7);animation:scrollLine 2s ease-in-out infinite}
+@keyframes scrollLine{from{top:-100%}to{top:100%}}
+@media(max-width:700px){.hero-content{padding:0 1.5rem 4.5rem}.hero-dots{bottom:1rem;left:1.5rem}.hero-scroll{display:none}}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:.75rem 2rem;border-radius:999px;cursor:pointer;transition:all .2s}
+.btn-white{background:var(--white);color:var(--black);border:1px solid var(--white)}
+.btn-white:hover{background:transparent;color:var(--white)}
+.btn-outline-white{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.4)}
+.btn-outline-white:hover{background:rgba(255,255,255,.1)}
+.btn-black{background:var(--black);color:var(--white);border:1px solid var(--black)}
+.btn-black:hover{background:transparent;color:var(--black)}
+.btn-outline-black{background:transparent;color:var(--black);border:1px solid rgba(0,0,0,.25)}
+.btn-outline-black:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+.marquee-strip{overflow:hidden;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1);padding:.6rem 0;background:var(--black)}
+.marquee-inner{display:flex;gap:3rem;align-items:center;white-space:nowrap;animation:marquee 22s linear infinite}
+.marquee-inner span{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);flex-shrink:0;font-weight:300}
+.marquee-inner span.dot{color:rgba(255,255,255,.15);font-size:.4rem}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.vert-reveal{padding:6rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:700px){.vert-reveal{grid-template-columns:1fr;padding:3rem 1.5rem}}
+.vert-title{font-size:clamp(4rem,8vw,8rem);font-weight:300;line-height:.9;letter-spacing:.04em;text-transform:uppercase;min-height:1.1em}
+.vert-title .char{display:inline-block;opacity:0;transform:translateY(60px);transition:opacity .6s ease,transform .6s ease}
+.vert-title .char.revealed{opacity:1;transform:translateY(0)}
+.vert-body{max-width:480px}
+.vert-eyebrow{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);margin-bottom:1.5rem;display:flex;align-items:center;gap:.7rem;font-weight:600}
+.vert-eyebrow::before{content:'';display:block;width:1.5rem;height:1px;background:var(--mid)}
+.vert-text{font-size:.95rem;font-weight:300;line-height:1.85;color:rgba(0,0,0,.65);margin-bottom:2rem}
+.vert-link{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;display:inline-flex;align-items:center;gap:.6rem;border-bottom:1px solid rgba(0,0,0,.3);padding-bottom:.2rem;transition:gap .2s}
+.vert-link:hover{gap:1rem}
+.vert-link::after{content:'→'}
+.carousel-section{padding:5rem 0 5rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08);overflow:hidden}
+@media(max-width:700px){.carousel-section{padding:3rem 0 3rem 1.5rem}}
+.carousel-header{display:flex;align-items:flex-end;justify-content:space-between;padding-right:3.5rem;margin-bottom:3rem}
+@media(max-width:700px){.carousel-header{padding-right:1.5rem;margin-bottom:2rem;flex-direction:column;align-items:flex-start;gap:1rem}}
+.carousel-heading{font-size:clamp(2rem,4vw,3.5rem);font-weight:300;line-height:1;text-transform:uppercase;letter-spacing:.04em}
+.carousel-heading em{font-style:normal;font-weight:300}
+.carousel-nav{display:flex;gap:.75rem}
+.carousel-btn{width:44px;height:44px;border-radius:50%;border:1px solid rgba(0,0,0,.2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1rem}
+.carousel-btn:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+.carousel-track-wrap{overflow:hidden}
+.carousel-track{display:flex;gap:1.5rem;transition:transform .55s cubic-bezier(.16,1,.3,1);will-change:transform;transform:translateZ(0)}
+.carousel-card{flex:0 0 300px;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--grey);transition:transform .3s ease;position:relative}
+@media(max-width:700px){.carousel-card{flex:0 0 220px}}
+.carousel-card:hover{transform:translateY(-4px)}
+.carousel-card-img{width:100%;aspect-ratio:4/5;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#e8e8e6;padding:1.5rem}
+.carousel-card-img img{width:100%;height:100%;object-fit:contain;transition:transform .4s ease}
+.carousel-card:hover .carousel-card-img img{transform:scale(1.06)}
+.carousel-card-img--video{padding:0;position:relative}
+.carousel-card-img--video video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.carousel-card:hover .carousel-card-img--video video{transform:scale(1.04)}
+.carousel-card-video-overlay{position:absolute;inset:0;background:rgba(10,10,10,.25)}
+.carousel-card-info{padding:1.2rem 1.5rem 1.5rem}
+.carousel-card-code{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:.3rem;font-weight:600}
+.carousel-card-name{font-size:.88rem;font-weight:300;line-height:1.3;text-transform:uppercase;letter-spacing:.02em}
+.carousel-card-sub{font-size:.72rem;color:var(--mid);margin-top:.25rem;line-height:1.4;font-weight:300}
+.carousel-card-new{position:absolute;top:.8rem;left:.8rem;background:var(--white);color:var(--black);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;padding:.25rem .65rem;border-radius:999px}
+.split-panel{display:grid;grid-template-columns:1fr 1fr;min-height:70vh;border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:700px){.split-panel{grid-template-columns:1fr}}
+.split-media{position:relative;overflow:hidden;min-height:50vh}
+.split-media video,.split-media img{width:100%;height:100%;object-fit:cover;display:block}
+.split-media-overlay{position:absolute;inset:0;background:rgba(0,0,0,.18)}
+.split-content{display:flex;flex-direction:column;justify-content:flex-end;padding:4rem;background:var(--black);color:var(--white)}
+@media(max-width:700px){.split-content{padding:2.5rem 1.5rem}}
+.split-eyebrow{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:1.5rem;display:flex;align-items:center;gap:.7rem;font-weight:600}
+.split-eyebrow::before{content:'';display:block;width:1.5rem;height:1px;background:rgba(255,255,255,.3)}
+.split-title{font-size:clamp(2.2rem,4.5vw,4rem);font-weight:300;line-height:.95;letter-spacing:.04em;margin-bottom:2rem;text-transform:uppercase}
+.split-title em{font-style:normal;font-weight:300}
+.split-body{font-size:.88rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,.6);max-width:380px;margin-bottom:2.5rem}
+.split-stat-row{display:flex;gap:2.5rem;border-top:1px solid rgba(255,255,255,.1);padding-top:2rem}
+.split-stat-num{font-size:2.8rem;font-weight:300;line-height:1;color:var(--white);display:block}
+.split-stat-label{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.3rem;display:block;font-weight:600}
+.cat-grid-section{padding:5rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:700px){.cat-grid-section{padding:3rem 1.5rem}}
+.section-header{margin-bottom:3rem;display:flex;align-items:flex-end;justify-content:space-between}
+.section-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1;text-transform:uppercase;letter-spacing:.04em}
+.section-title em{font-style:normal;font-weight:300}
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}
+@media(max-width:1000px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-card{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;cursor:pointer}
+.cat-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.cat-card:hover img{transform:scale(1.06)}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,0) 50%)}
+.cat-label{position:absolute;bottom:1.2rem;left:1.2rem;color:var(--white)}
+.cat-label-text{font-weight:700;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;display:block}
+.cat-label-arrow{font-size:.7rem;opacity:.7;margin-top:.15rem;display:block}
+.cases-section{padding:5rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:700px){.cases-section{padding:3rem 1.5rem}}
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+@media(max-width:900px){.cases-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.cases-grid{grid-template-columns:1fr}}
+.case-card{position:relative;cursor:pointer;overflow:hidden;border-radius:10px}
+.case-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;transition:transform .5s ease}
+.case-card:hover img{transform:scale(1.04)}
+.case-card-info{padding:1rem 0 .5rem}
+.case-card-title{font-size:.88rem;font-weight:700;margin-bottom:.25rem;letter-spacing:.04em;text-transform:uppercase}
+.case-card-sub{font-size:.68rem;color:var(--mid);letter-spacing:.1em;text-transform:uppercase;font-weight:300}
+#filterBar{position:fixed;top:var(--hh);left:0;right:0;z-index:700;background:rgba(250,250,250,.96);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08);display:none;align-items:center;gap:8px;padding:0 2.5rem;height:60px;overflow-x:auto}
+#filterBar::-webkit-scrollbar{display:none}
+.chip{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.4rem 1.1rem;border-radius:999px;border:1px solid rgba(0,0,0,.2);background:transparent;color:var(--black);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.chip.on{background:var(--black);color:var(--white);border-color:var(--black)}
+.chip-sep{width:1px;height:16px;background:rgba(0,0,0,.12);flex-shrink:0}
+#sizeWrap{display:flex;align-items:center;gap:8px;flex-shrink:0;padding-left:8px}
+#sizeTrack{position:relative;height:2px;background:rgba(0,0,0,.12);border-radius:2px;flex:none;width:260px}
+@media(min-width:1100px){#sizeTrack{width:380px}}
+#sizeFill{position:absolute;left:0;top:0;height:100%;background:var(--black);border-radius:2px;pointer-events:none}
+#sizeSlider{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:24px;opacity:0;cursor:pointer;margin:0;-webkit-appearance:none;z-index:2}
+#sizeHandle{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--black);pointer-events:none;z-index:1}
+#sizeTicks{position:absolute;top:8px;left:0;width:100%;pointer-events:none}
+.size-tick{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px}
+.size-tick-line{width:1px;height:4px;background:#000;opacity:.15}
+.size-tick-label{font-size:.52rem;font-weight:600;color:#000;opacity:.5;white-space:nowrap}
+#sizeMinLabel,#sizeMaxLabel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);opacity:.5}
+#productsPage{padding-top:calc(var(--hh) + 60px + 24px)}
+@media(max-width:760px){#productsPage{padding-top:calc(var(--hh) + 60px + 16px)}}
+#productsPage.detail-mode{padding-top:var(--hh)}
+#gridView{padding:24px 2.5rem 80px}
+@media(max-width:700px){#gridView{padding:16px 1.5rem 60px}}
+.products-page-title{font-size:clamp(2rem,4vw,3.5rem);font-weight:300;letter-spacing:.04em;margin-bottom:.5rem;text-transform:uppercase}
+.products-page-title em{font-style:normal;font-weight:300}
+.count-bar{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.4;margin-bottom:2.5rem}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 1rem}
+@media(min-width:700px){.pgrid{grid-template-columns:repeat(3,1fr);gap:2rem 1.5rem}}
+@media(min-width:1000px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+.pcard{display:flex;flex-direction:column;cursor:pointer;opacity:0;transform:translateY(14px);animation:fadeUp .4s ease forwards}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.pimg{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden;background:var(--grey);border-radius:10px}
+.pimg img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .25s}
+.pcard:hover .pimg img{transform:scale(1.06)}
+.pinfo{padding:.75rem 0 0;display:flex;flex-direction:column;gap:3px}
+.pname{font-size:.82rem;font-weight:300;color:var(--black);text-transform:uppercase;letter-spacing:.04em}
+.psub{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);font-weight:300}
+.ptags{display:flex;flex-wrap:wrap;gap:4px;margin-top:.4rem}
+.ptag{font-size:.56rem;padding:.2rem .7rem;border-radius:999px;background:transparent;color:var(--black);border:1px solid rgba(0,0,0,.15);font-weight:600;letter-spacing:.06em}
+.statewrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;gap:12px;color:var(--black);font-size:.8rem}
+.spinner{width:20px;height:20px;border:1.5px solid rgba(0,0,0,.12);border-top-color:var(--black);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#detailView{display:none;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.backbar{position:sticky;top:var(--hh);z-index:600;background:rgba(250,250,250,.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08);height:44px;display:flex;align-items:center;gap:7px;padding:0 2.5rem;font-size:.58rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--black);cursor:pointer;opacity:.5;transition:opacity .15s}
+.backbar:hover{opacity:1}
+.backbar svg{width:12px;height:12px;flex-shrink:0}
+.d-layout{display:block}
+@media(min-width:760px){.d-layout{display:grid;grid-template-columns:50% 1fr;height:calc(100vh - var(--hh) - 44px);overflow:hidden}}
+.d-gal{display:flex;flex-direction:column;border-bottom:1px solid rgba(0,0,0,.08);overflow:hidden;background:var(--grey)}
+@media(min-width:760px){.d-gal{height:100%;border-bottom:none;border-right:1px solid rgba(0,0,0,.08)}}
+.d-main{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;aspect-ratio:1/1;padding:2rem;position:relative}
+@media(min-width:760px){.d-main{aspect-ratio:unset;padding:3rem}}
+.d-main img{position:absolute;width:calc(100% - 4rem);height:calc(100% - 4rem);object-fit:contain;transition:opacity .4s ease}
+@media(min-width:760px){.d-main img{width:calc(100% - 6rem);height:calc(100% - 6rem)}}
+.d-thumbs{display:flex;flex-wrap:wrap;border-top:1px solid rgba(0,0,0,.08);overflow-x:hidden;flex-shrink:0}
+.d-thumb{width:68px;height:68px;flex-shrink:0;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(0,0,0,.08);background:var(--grey);transition:background .15s}
+.d-thumb:hover{background:#e0e0de}
+.d-thumb img{width:100%;height:100%;object-fit:contain;opacity:.3;transition:opacity .12s}
+.d-thumb.on img{opacity:1}
+.d-right{display:block}
+@media(min-width:760px){.d-right{height:100%;overflow-y:auto}}
+.d-info{padding:2rem 2.5rem 2.5rem;display:flex;flex-direction:column;gap:1.2rem}
+@media(min-width:760px){.d-info{padding:3rem 3.5rem;gap:1.4rem}}
+.d-crumb{font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--mid)}
+.d-name{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;line-height:1.05;text-transform:uppercase;letter-spacing:.04em}
+.d-sub{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);margin-top:-.5rem;font-weight:300}
+.d-rule{width:100%;height:1px;background:rgba(0,0,0,.08)}
+.d-tags{display:flex;flex-wrap:wrap;gap:5px}
+.d-tag{font-size:.58rem;padding:.3rem 1rem;border-radius:999px;background:transparent;color:var(--black);border:1px solid rgba(0,0,0,.18);font-weight:600;letter-spacing:.06em}
+.d-body{border-top:1px solid rgba(0,0,0,.08)}
+.d-sec{padding:2rem 2.5rem;border-bottom:1px solid rgba(0,0,0,.08)}
+@media(min-width:760px){.d-sec{padding:2.5rem 3.5rem}}
+.d-sec-inner{max-width:640px}
+.d-seclbl{font-size:.56rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;opacity:.4;margin-bottom:1.2rem}
+.deschtml,.deschtml *{font-family:var(--font)!important;font-size:.85rem!important;line-height:1.85!important;color:var(--black)!important;background:transparent!important;font-weight:300!important}
+.deschtml p{margin-bottom:.75rem}
+.deschtml strong,.deschtml b{font-weight:700!important}
+.deschtml img{max-width:100%!important;height:auto!important;display:block;margin:1rem 0;border-radius:8px}
+#specTable{width:100%;overflow-x:auto}
+.desktop-table{display:table;width:100%;border-collapse:collapse;margin-bottom:24px}
+.mobile-table{display:none;width:100%;border-collapse:collapse;margin-bottom:20px}
+@media(max-width:1200px){.desktop-table,.shipping-mobile-fix,.downloads-mobile-fix{display:none!important}.mobile-table{display:table!important}}
+.desktop-table th,.desktop-table td{font-family:var(--font);font-size:.78rem;line-height:1.7;color:var(--black);background:transparent;padding:.7rem 1rem;border-bottom:1px solid rgba(0,0,0,.07);text-align:left;vertical-align:top;font-weight:300}
+.desktop-table th{font-weight:700;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.2)}
+.desktop-table tr:last-child td{border-bottom:none}
+.mobile-table th,.mobile-table td{font-size:.78rem;line-height:1.7;color:var(--black);background:transparent;padding:.5rem 0;border-bottom:1px solid rgba(0,0,0,.07);text-align:left;vertical-align:top;font-weight:300}
+.mobile-main-header th{font-weight:700;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.2);padding-bottom:.75rem}
+.mobile-spec-header th{font-weight:700;font-size:.78rem;padding-top:1rem;border-bottom:none}
+.mobile-row td{font-size:.72rem}
+.mobile-row td:first-child{width:45%;font-weight:600;opacity:.45;padding-right:.75rem}
+.mobile-table tr:last-child td{border-bottom:none}
+#specTable button,.d-btn{font-family:var(--font);font-size:.58rem;font-weight:700;letter-spacing:.12em;padding:.4rem 1rem;border-radius:999px;background:var(--black);color:var(--white);border:none;cursor:pointer;text-transform:uppercase}
+.contact-wrap{padding-top:var(--hh);min-height:100vh;background:var(--white)}
+.contact-hero{padding:5rem 3.5rem 4rem;border-bottom:1px solid rgba(0,0,0,.08);display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end}
+@media(max-width:800px){.contact-hero{grid-template-columns:1fr;padding:3rem 1.5rem 2.5rem}}
+.contact-eyebrow{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mid);margin-bottom:1.5rem;display:flex;align-items:center;gap:.7rem;font-weight:600}
+.contact-eyebrow::before{content:'';display:block;width:1.5rem;height:1px;background:var(--mid)}
+.contact-title{font-size:clamp(3rem,6vw,5.5rem);font-weight:300;line-height:.9;letter-spacing:.04em;text-transform:uppercase}
+.contact-title em{font-style:normal;font-weight:300}
+.contact-intro{font-size:.9rem;font-weight:300;line-height:1.8;color:rgba(0,0,0,.6);max-width:440px}
+.contact-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:800px){.contact-body{grid-template-columns:1fr}}
+.contact-offices{padding:3.5rem;border-right:1px solid rgba(0,0,0,.08)}
+@media(max-width:800px){.contact-offices{border-right:none;border-bottom:1px solid rgba(0,0,0,.08);padding:2.5rem 1.5rem}}
+.contact-office-region{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--mid);margin-bottom:2rem;font-weight:700}
+.contact-office-details{display:flex;flex-direction:column;gap:1rem}
+.contact-office-row{display:grid;grid-template-columns:110px 1fr;gap:.5rem;font-size:.85rem;line-height:1.55;font-weight:300}
+.co-label{font-weight:700;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;opacity:.4;padding-top:.2rem}
+.contact-office-row a{color:var(--black);border-bottom:1px solid rgba(0,0,0,.18);transition:border-color .15s}
+.contact-office-row a:hover{border-color:var(--black)}
+.contact-divider{width:100%;height:1px;background:rgba(0,0,0,.08);margin:2.5rem 0}
+.contact-form-wrap{padding:3.5rem}
+@media(max-width:800px){.contact-form-wrap{padding:2.5rem 1.5rem}}
+.contact-form-heading{font-size:.58rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--mid);margin-bottom:2.5rem}
+.contact-form{display:flex;flex-direction:column;gap:1.5rem}
+.cf-row{display:flex;flex-direction:column;gap:1.5rem}
+.cf-two{flex-direction:row;gap:1.5rem}
+@media(max-width:600px){.cf-two{flex-direction:column}}
+.cf-group{display:flex;flex-direction:column;gap:.45rem;flex:1}
+.cf-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--black);opacity:.45}
+.cf-label span{opacity:.5}
+.cf-input{font-family:var(--font);font-size:.88rem;border:none;border-bottom:1px solid rgba(0,0,0,.15);background:transparent;color:var(--black);padding:.5rem 0;outline:none;transition:border-color .2s;width:100%;border-radius:0;font-weight:300}
+.cf-input:focus{border-bottom-color:var(--black)}
+.cf-input::placeholder{color:rgba(0,0,0,.25)}
+.cf-select{cursor:pointer;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(0,0,0,.3)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center}
+.cf-textarea{resize:vertical;min-height:110px;border:1px solid rgba(0,0,0,.15);padding:.6rem .75rem;border-radius:6px;margin-top:.1rem}
+.cf-textarea:focus{border-color:var(--black)}
+.cf-submit-row{align-items:flex-start;flex-direction:row!important}
+.cf-submit{font-family:var(--font);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--black);color:var(--white);border:none;padding:.8rem 2.5rem;border-radius:999px;cursor:pointer;transition:background .2s}
+.cf-submit:hover{background:#333}
+#aboutPage{padding-top:var(--hh)}
+.ab-hero{position:relative;width:100%;height:clamp(300px,60vw,680px);overflow:hidden}
+.ab-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.ab-hero-overlay{position:absolute;inset:0;background:linear-gradient(130deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.25) 60%,transparent 100%)}
+.ab-hero-text{position:absolute;bottom:0;left:0;right:0;padding:2.5rem 3.5rem 3.5rem;display:flex;flex-direction:column;gap:.75rem;max-width:800px}
+@media(max-width:600px){.ab-hero-text{padding:1.5rem 1.5rem 2.5rem}}
+.ab-tag{font-size:.56rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.ab-hero-title{font-size:clamp(2.5rem,6vw,5rem);font-weight:300;text-transform:uppercase;letter-spacing:.04em;line-height:.95;color:var(--white)}
+.ab-hero-sub{font-size:clamp(.82rem,1.4vw,.95rem);font-weight:300;line-height:1.75;color:rgba(255,255,255,.7);max-width:520px}
+.ab-lead{padding:4rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08);background:var(--black);color:var(--white)}
+@media(max-width:600px){.ab-lead{padding:2.5rem 1.5rem}}
+.ab-lead p{font-size:clamp(1rem,2vw,1.35rem);font-weight:300;line-height:1.8;color:rgba(255,255,255,.8);max-width:860px}
+.ab-stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:600px){.ab-stats{grid-template-columns:1fr 1fr}}
+.ab-stat{padding:2.5rem 3.5rem;border-right:1px solid rgba(0,0,0,.08)}
+.ab-stat:last-child{border-right:none}
+@media(max-width:600px){.ab-stat{padding:2rem 1.5rem}}
+.ab-stat-num{font-size:clamp(2.5rem,5vw,4rem);font-weight:300;line-height:1;margin-bottom:.35rem}
+.ab-stat-label{font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.4}
+.ab-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(0,0,0,.08);min-height:420px}
+.ab-row--flip{direction:rtl}
+.ab-row--flip>*{direction:ltr}
+@media(max-width:700px){.ab-row,.ab-row--flip{grid-template-columns:1fr;direction:ltr;min-height:auto}}
+.ab-row-img{overflow:hidden}
+.ab-row-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:300px;transition:transform .7s ease}
+.ab-row:hover .ab-row-img img{transform:scale(1.04)}
+@media(max-width:700px){.ab-row-img img{min-height:55vw}}
+.ab-row-content{padding:4rem 3.5rem;display:flex;flex-direction:column;justify-content:center;gap:1.25rem}
+.ab-row--alt .ab-row-content{background:var(--grey)}
+@media(max-width:600px){.ab-row-content{padding:2.5rem 1.5rem}}
+.ab-row-eyebrow{font-size:.58rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--mid)}
+.ab-row-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:300;letter-spacing:.04em;line-height:1;text-transform:uppercase}
+.ab-row-title em{font-style:normal;font-weight:300}
+.ab-row-body{display:flex;flex-direction:column;gap:.9rem}
+.ab-row-body p{font-size:.88rem;font-weight:300;line-height:1.85;opacity:.7;margin:0}
+.ab-values{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:700px){.ab-values{grid-template-columns:1fr}}
+.ab-value{padding:3.5rem;border-right:1px solid rgba(0,0,0,.08)}
+.ab-value:last-child{border-right:none}
+@media(max-width:700px){.ab-value{border-right:none;border-bottom:1px solid rgba(0,0,0,.08);padding:2.5rem 1.5rem}}
+.ab-value-num{font-size:3rem;font-weight:300;color:rgba(0,0,0,.1);line-height:1;margin-bottom:1rem}
+.ab-value-title{font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem}
+.ab-value-body{font-size:.85rem;font-weight:300;line-height:1.8;opacity:.6}
+.ab-timeline{background:var(--black);color:var(--white);padding:5rem 3.5rem;border-bottom:1px solid rgba(0,0,0,.08)}
+@media(max-width:600px){.ab-timeline{padding:3rem 1.5rem}}
+.ab-timeline-heading{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3rem;color:var(--white)}
+.ab-timeline-heading em{font-weight:300;font-style:normal}
+.ab-timeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+@media(max-width:800px){.ab-timeline-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:500px){.ab-timeline-grid{grid-template-columns:1fr}}
+.ab-tl-item{border-top:1px solid rgba(255,255,255,.12);padding-top:1.5rem}
+.ab-tl-year{font-size:.58rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.75rem}
+.ab-tl-text{font-size:.85rem;font-weight:300;line-height:1.7;color:rgba(255,255,255,.65)}
+.ab-cta{display:grid;grid-template-columns:1fr 1fr;min-height:360px}
+@media(max-width:700px){.ab-cta{grid-template-columns:1fr}}
+.ab-cta-img{overflow:hidden}
+.ab-cta-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:280px}
+@media(max-width:700px){.ab-cta-img{display:none}}
+.ab-cta-content{background:var(--black);color:var(--white);padding:4rem 3.5rem;display:flex;flex-direction:column;justify-content:center;gap:1.5rem}
+@media(max-width:600px){.ab-cta-content{padding:2.5rem 1.5rem}}
+.ab-cta-tag{font-size:.56rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;opacity:.35;color:var(--white)}
+.ab-cta-title{font-size:clamp(2.2rem,5vw,4rem);font-weight:300;letter-spacing:.04em;line-height:.95;color:var(--white);text-transform:uppercase}
+.ab-cta-title em{font-style:normal;font-weight:300}
+.ab-cta-body{font-size:.88rem;font-weight:300;line-height:1.75;color:rgba(255,255,255,.6);max-width:400px}
+.ab-cta-btn{align-self:flex-start;font-family:var(--font);font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--white);color:var(--black);border:none;padding:.8rem 2rem;border-radius:999px;cursor:pointer;transition:all .2s}
+.ab-cta-btn:hover{background:rgba(255,255,255,.85)}
+footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;border-top:1px solid rgba(255,255,255,.05)}
+@media(max-width:700px){footer{padding:3rem 1.5rem 2.5rem}}
+.footer-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:2.5rem;margin-bottom:4rem}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem}}
+@media(max-width:500px){.footer-grid{grid-template-columns:1fr;gap:1.5rem;margin-bottom:2.5rem}}
+.footer-brand img{height:2rem;filter:invert(1);opacity:.8;margin-bottom:1.2rem}
+.footer-brand p{font-size:.78rem;font-weight:300;line-height:1.7;color:rgba(255,255,255,.4);max-width:240px}
+.footer-col-title{font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.2rem;font-weight:700}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.6rem}
+.footer-col ul li a{font-size:.8rem;font-weight:300;color:rgba(255,255,255,.55);transition:color .15s}
+.footer-col ul li a:hover{color:rgba(255,255,255,.9)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.07);padding-top:2rem;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-size:.62rem;color:rgba(255,255,255,.25);letter-spacing:.08em;font-weight:300}
+.footer-socials{display:flex;gap:1.5rem}
+.footer-socials a{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);transition:color .15s;font-weight:600}
+.footer-socials a:hover{color:rgba(255,255,255,.75)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+@keyframes pageIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pageInUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+.page-anim-child{opacity:0}
+.page-anim-child.in{animation:pageInUp .55s cubic-bezier(.22,1,.36,1) forwards}
+.dropdown{position:relative}
+.dropdown-menu{display:grid;position:fixed;top:var(--hh);left:0;width:100vw;background:var(--white);border-top:1px solid rgba(0,0,0,.08);box-shadow:0 20px 60px rgba(0,0,0,.1);z-index:999;padding:2rem 2.5rem 2.5rem;grid-template-columns:repeat(5,1fr);gap:1.5rem;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
+.dropdown-menu.open{opacity:1;transform:translateY(0);pointer-events:auto}
+.dropdown-menu.closing .menu-item{animation:menuItemOut .25s cubic-bezier(.36,0,.22,1) forwards}
+@keyframes menuItemOut{to{opacity:0;transform:translateY(20px)}}
+.header.dropdown-open{background:rgba(250,250,250,.98)!important;backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.08)}
+.header.dropdown-open nav.nav ul li a{color:var(--black)!important}
+.header.dropdown-open .dealer-portal{background:var(--black)!important;color:var(--white)!important;border-color:transparent!important}
+.header.dropdown-open .logo img{filter:none!important;mix-blend-mode:multiply!important}
+.header.dropdown-open .search-container input[type="text"]{border-color:rgba(0,0,0,.2)!important;color:var(--black)!important;background-image:url('https://img.icons8.com/ios-filled/50/000000/search.png')!important}
+.header.dropdown-open .typing-anim{color:rgba(0,0,0,.38)!important;border-right-color:rgba(0,0,0,.22)!important}
+@keyframes menuItemIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.menu-item{cursor:pointer;border-radius:8px;overflow:hidden;background:var(--grey);transition:transform .2s;opacity:0}
+.dropdown-menu.open .menu-item{animation:menuItemIn .3s cubic-bezier(.22,1,.36,1) forwards}
+.dropdown-menu.open .menu-item:nth-child(1){animation-delay:.04s}
+.dropdown-menu.open .menu-item:nth-child(2){animation-delay:.09s}
+.dropdown-menu.open .menu-item:nth-child(3){animation-delay:.14s}
+.dropdown-menu.open .menu-item:nth-child(4){animation-delay:.19s}
+.dropdown-menu.open .menu-item:nth-child(5){animation-delay:.24s}
+.menu-item:hover{transform:translateY(-3px)}
+.menu-item img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;transition:transform .4s cubic-bezier(0.23,1,0.32,1)}
+.menu-item:hover img{transform:scale(1.06)}
+.menu-text{background:var(--black);color:var(--white);padding:1rem 1.2rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:normal;line-height:1.4}
+@media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto;min-height:60px;padding:10px 1.5rem;gap:6px}#sizeWrap{flex-basis:100%;padding-left:0!important;margin-top:6px;justify-content:center}#sizeTrack{width:100%!important}}
+@media(max-width:900px){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<header class="header on-dark" id="siteHeader">
+<a href="#" class="logo" onclick="showHome();return false"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/Future-Automation-Logo.png" alt="Future Automation"></a>
+<div class="search-container" id="searchContainer">
+<input type="text" id="siteSearch" autocomplete="off">
+<div class="typing-anim" id="typingAnim"></div>
+</div>
+<nav class="nav">
+<ul>
+<li class="dropdown">
+<a href="#" id="productsNavLink">Products</a>
+<div class="dropdown-menu" id="dropdownMenu">
+<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Audio Visual Solutions</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt="Audio Visual"></div>
+<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Shading Solutions</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt="Shading"></div>
+<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Lighting &amp; Data Enclosures</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Lighting"></div>
+<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Furniture &amp; Cabinetry</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt="Furniture"></div>
+<div class="menu-item" onclick="showProducts();menu.classList.remove('open');header.classList.remove('dropdown-open')"><div class="menu-text">Architectural Movement</div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt="Architecture"></div>
+</div>
+</li>
+<li><a href="#" onclick="showAbout();return false">About</a></li>
+<li><a href="#" onclick="showContact();return false">Contact</a></li>
+</ul>
+<a href="#" class="dealer-portal">Dealer Portal</a>
+</nav>
+<button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+<div class="mobile-drawer" id="mobileDrawer">
+<div class="mob-nav-item">
+<button class="mob-nav-btn" id="mobProductsToggle">Products<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l5 5 5-5"/></svg></button>
+<div class="mob-sub" id="mobProductsSub">
+<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt=""><span class="mob-sub-label">Audio Visual Solutions</span></div>
+<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt=""><span class="mob-sub-label">Shading Solutions</span></div>
+<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt=""><span class="mob-sub-label">Lighting &amp; Data Enclosures</span></div>
+<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt=""><span class="mob-sub-label">Furniture &amp; Cabinetry</span></div>
+<div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt=""><span class="mob-sub-label">Architectural Movement</span></div>
+</div>
+</div>
+<div class="mob-nav-item"><a class="mob-nav-btn" href="#" onclick="showAbout();closeMobileDrawer();return false">About</a></div>
+<div class="mob-nav-item"><a class="mob-nav-btn" href="#" onclick="showContact();closeMobileDrawer();return false">Contact</a></div>
+<a href="#" class="mob-dealer">Dealer Portal</a>
+</div>
+<div id="homePage">
+<section class="hero" id="heroSection">
+<div class="hero-slide active" id="slide-0">
+<video class="hero-bg-img" src="https://d2oo5quzpsdib.cloudfront.net/Website/General/Home-Video-1.mp4" autoplay loop muted playsinline preload="auto"></video>
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<div class="hero-eyebrow">Designed and Manufactured in the USA and UK</div>
+<h1 class="hero-title">Browse All<br>Products</h1>
+<p class="hero-sub">Over 300 precision-engineered AV concealment and architectural automation mechanisms for residential, commercial and marine projects.</p>
+<div class="hero-cta">
+<a href="#" class="btn btn-white" onclick="showProducts();return false">Explore All Products</a>
+<a href="#" class="btn btn-outline-white" onclick="showAbout();return false">About Us</a>
+</div>
+</div>
+</div>
+<div class="hero-slide" id="slide-1">
+<video class="hero-bg-img" src="https://d2oo5quzpsdib.cloudfront.net/Website/General/ArchitecturalMovement-Main.mp4" autoplay loop muted playsinline preload="auto"></video>
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<div class="hero-eyebrow">Precision Engineering Since 1998</div>
+<h1 class="hero-title">MOVING PANEL<br>MECHANISMS</h1>
+<p class="hero-sub">Motorised and manual panel movement systems engineered to the highest tolerances for seamless integration into any architectural space.</p>
+<div class="hero-cta">
+<a href="#" class="btn btn-white" onclick="showProducts();return false">Explore Panel Mechanisms</a>
+<a href="#" class="btn btn-outline-white" onclick="showAbout();return false">About Us</a>
+</div>
+</div>
+</div>
+<div class="hero-slide" id="slide-2">
+<img class="hero-bg-img" src="https://d2oo5quzpsdib.cloudfront.net/Website/General/Under-Bed.jpg" alt="Under Bed Display Lifts">
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<div class="hero-eyebrow">Craftsmanship on Two Continents</div>
+<h1 class="hero-title">Under Bed<br>Display Lifts</h1>
+<p class="hero-sub">Concealed lifting mechanisms that rise silently from beneath the bed, transforming the bedroom experience with hidden precision engineering.</p>
+<div class="hero-cta">
+<a href="#" class="btn btn-white" onclick="showProducts();return false">Explore Under Bed Display Lifts</a>
+<a href="#" class="btn btn-outline-white" onclick="showAbout();return false">About Us</a>
+</div>
+</div>
+</div>
+<div class="hero-slide" id="slide-3">
+<video class="hero-bg-img" src="https://d2oo5quzpsdib.cloudfront.net/Website/General/Shading-Home-1.mp4" autoplay loop muted playsinline preload="auto"></video>
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<div class="hero-eyebrow">New for 2025</div>
+<h1 class="hero-title">SHADING<br>SOLUTIONS</h1>
+<p class="hero-sub">Versatile, precision-adjustable hardware for motorised shading systems, designed to fit any window or glazed facade with minimal fuss.</p>
+<div class="hero-cta">
+<a href="#" class="btn btn-white" onclick="showProducts();return false">Explore Shade Brackets</a>
+<a href="#" class="btn btn-outline-white" onclick="showAbout();return false">About Us</a>
+</div>
+</div>
+</div>
+<div class="hero-dots" id="heroDots">
+<button class="hero-dot active" onclick="goToSlide(0)"><div class="hero-dot-bar"><div class="hero-dot-fill"></div></div></button>
+<button class="hero-dot" onclick="goToSlide(1)"><div class="hero-dot-bar"><div class="hero-dot-fill"></div></div></button>
+<button class="hero-dot" onclick="goToSlide(2)"><div class="hero-dot-bar"><div class="hero-dot-fill"></div></div></button>
+<button class="hero-dot" onclick="goToSlide(3)"><div class="hero-dot-bar"><div class="hero-dot-fill"></div></div></button>
+</div>
+<div class="hero-scroll">
+<span class="hero-scroll-text">Scroll</span>
+<div class="hero-scroll-line"></div>
+</div>
+</section>
+<div class="marquee-strip">
+<div class="marquee-inner">
+<span>Audio Visual Solutions</span><span class="dot">◆</span>
+<span>Shading Systems</span><span class="dot">◆</span>
+<span>Architectural Movement</span><span class="dot">◆</span>
+<span>Furniture &amp; Cabinetry</span><span class="dot">◆</span>
+<span>Lighting Enclosures</span><span class="dot">◆</span>
+<span>Marine Grade</span><span class="dot">◆</span>
+<span>Bespoke Engineering</span><span class="dot">◆</span>
+<span>USA &amp; UK Manufacturing</span><span class="dot">◆</span>
+<span>Audio Visual Solutions</span><span class="dot">◆</span>
+<span>Shading Systems</span><span class="dot">◆</span>
+<span>Architectural Movement</span><span class="dot">◆</span>
+<span>Furniture &amp; Cabinetry</span><span class="dot">◆</span>
+<span>Lighting Enclosures</span><span class="dot">◆</span>
+<span>Marine Grade</span><span class="dot">◆</span>
+<span>Bespoke Engineering</span><span class="dot">◆</span>
+<span>USA &amp; UK Manufacturing</span><span class="dot">◆</span>
+</div>
+</div>
+<section class="vert-reveal reveal" id="introSection">
+<div>
+<div class="vert-title" id="vertTitle"></div>
+</div>
+<div class="vert-body">
+<div class="vert-eyebrow">Since 1998</div>
+<p class="vert-text">Designers and manufacturers of the largest range of industry-leading AV concealment and architectural mechanisms, crafted to enhance the smart home, commercial and marine industries.</p>
+<p class="vert-text" style="margin-top:-.5rem">State-of-the-art tools, components and knowledge work in cohesion to create an advanced collection of automated and manual mechanisms, designed and assembled by our teams in the UK and USA.</p>
+<a href="#" class="vert-link" onclick="showAbout();return false">Our Story</a>
+</div>
+</section>
+<section class="carousel-section">
+<div class="carousel-header">
+<h2 class="carousel-heading">Top <em>Picks</em></h2>
+<div class="carousel-nav">
+<button class="carousel-btn" id="carouselPrev" aria-label="Previous">←</button>
+<button class="carousel-btn" id="carouselNext" aria-label="Next">→</button>
+</div>
+</div>
+<div class="carousel-track-wrap">
+<div class="carousel-track" id="carouselTrack"></div>
+</div>
+</section>
+<section class="split-panel reveal">
+<div class="split-media">
+<video src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/MediaPack/MANUFACTURING-1.mp4" autoplay loop muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;transform:translateZ(0);will-change:transform"></video>
+<div class="split-media-overlay"></div>
+</div>
+<div class="split-content">
+<div class="split-eyebrow">Engineering Excellence</div>
+<h2 class="split-title">Over 200,000 ft² of <em>Expertise</em></h2>
+<p class="split-body">Every mechanism is individually assembled and tested by hand. All motorised products are made to order, you always receive the latest revision, never ageing warehouse stock.</p>
+<div class="split-stat-row">
+<div><span class="split-stat-num">300+</span><span class="split-stat-label">Products</span></div>
+<div><span class="split-stat-num">25+</span><span class="split-stat-label">Years</span></div>
+<div><span class="split-stat-num">200k</span><span class="split-stat-label">Sq ft</span></div>
+</div>
+</div>
+</section>
+<section class="cat-grid-section reveal">
+<div class="section-header">
+<h2 class="section-title">Browse by <em>Category</em></h2>
+<a href="#" class="vert-link" onclick="showProducts();return false">All Products</a>
+</div>
+<div class="cat-grid">
+<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt="Audio Visual"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Audio Visual</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt="Shading"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Shading</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Lighting"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Lighting &amp; Data</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt="Furniture"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Furniture</span><span class="cat-label-arrow">→</span></div></div>
+<div class="cat-card" onclick="showProducts()"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt="Architectural"><div class="cat-overlay"></div><div class="cat-label"><span class="cat-label-text">Architectural</span><span class="cat-label-arrow">→</span></div></div>
+</div>
+</section>
+<section class="cases-section">
+<div class="section-header reveal">
+<h2 class="section-title"><em>Rapid</em> Updates</h2>
+<a href="#" class="vert-link">View all</a>
+</div>
+<p class="reveal" style="font-size:.88rem;font-weight:300;color:rgba(0,0,0,.55);margin-top:-2rem;margin-bottom:0">We're constantly innovating, don't miss our latest news, featured projects, and awards.</p>
+<div class="cases-grid">
+<div class="case-card reveal"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/General/CASE+STUDY-NV-INTEGRATION-BATMANS-PENTHOUSE-HOMEPAGE-BANNER.jpg" alt="Batman's Penthouse"><div class="case-card-info"><div class="case-card-title">Batman's Penthouse</div><div class="case-card-sub">Case Study · NV Integration</div></div></div>
+<div class="case-card reveal" style="transition-delay:.1s"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/General/PDR+2024+-+HOMEPAGE+BANNER.jpg" alt="PDR 2024"><div class="case-card-info"><div class="case-card-title">PDR Award 2024</div><div class="case-card-sub">Award · Product Design</div></div></div>
+<div class="case-card reveal" style="transition-delay:.2s"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/General/Haas-Revolving-Vanity-Mirror-Display-Wall-Case-Study.jpg" alt="Haas Mirror"><div class="case-card-info"><div class="case-card-title">Haas Revolving Vanity Mirror</div><div class="case-card-sub">Case Study · Bespoke Project</div></div></div>
+</div>
+</section>
+<footer>
+<div class="footer-grid">
+<div class="footer-brand">
+<img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/Future-Automation-Logo.png" alt="Future Automation">
+<p>Designers and manufacturers of the world's finest AV concealment and moving architectural mechanisms. Precision engineering since 1998.</p>
+</div>
+<div class="footer-col">
+<div class="footer-col-title">Products</div>
+<ul>
+<li><a href="#" onclick="showProducts();return false">Audio Visual</a></li>
+<li><a href="#" onclick="showProducts();return false">Shading</a></li>
+<li><a href="#" onclick="showProducts();return false">Lighting &amp; Data</a></li>
+<li><a href="#" onclick="showProducts();return false">Furniture</a></li>
+<li><a href="#" onclick="showProducts();return false">Architectural</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<div class="footer-col-title">Company</div>
+<ul>
+<li><a href="#" onclick="showAbout();return false">About Us</a></li>
+<li><a href="#" onclick="showContact();return false">Contact</a></li>
+<li><a href="#">Dealer Portal</a></li>
+<li><a href="#">Sustainability</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<div class="footer-col-title">Offices</div>
+<ul>
+<li><a href="tel:+441438833577">UK: +44 (0) 1438 833577</a></li>
+<li><a href="tel:+16037429181">US: +1 (603) 742 9181</a></li>
+<li><a href="#">Bedford, United Kingdom</a></li>
+<li><a href="#">Dover, NH, United States</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span class="footer-copy">© 2025 Future Automation. All rights reserved.</span>
+<div class="footer-socials">
+<a href="#">LinkedIn</a>
+<a href="#">Instagram</a>
+<a href="#">YouTube</a>
+</div>
+</div>
+</footer>
+</div>
+<div id="filterBar">
+<button class="chip" data-type="INDOOR">Indoor</button>
+<button class="chip" data-type="OUTDOOR">Outdoor</button>
+<button class="chip" data-type="MARINE">Marine</button>
+<button class="chip" data-type="NOT MARINE">Not Marine</button>
+<div class="chip-sep"></div>
+<div id="sizeWrap" style="display:none">
+<span id="sizeMinLabel">ALL</span>
+<div id="sizeTrack">
+<div id="sizeFill"></div>
+<div id="sizeHandle"></div>
+<input type="range" id="sizeSlider" min="0" max="100" value="0" step="1">
+<div id="sizeTicks"></div>
+</div>
+<span id="sizeMaxLabel">—</span>
+</div>
+</div>
+<div id="productsPage">
+<div id="gridView">
+<h1 class="products-page-title">Our <em>Products</em></h1>
+<div class="count-bar" id="countBar"></div>
+<div id="gridInner"><div class="statewrap"><div class="spinner"></div></div></div>
+</div>
+<div id="detailView">
+<div class="backbar" id="backBtn" onclick="goBack()">
+<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-7 6 7 6"/></svg>
+<span>Back to Products</span>
+</div>
+<div id="detailContent"></div>
+</div>
+</div>
+<div id="contactPage">
+<div class="contact-wrap">
+<div class="contact-hero page-anim-child">
+<div class="contact-title-wrap">
+<div class="contact-eyebrow">Get in touch</div>
+<h1 class="contact-title">Contact <em>Us</em></h1>
+</div>
+<p class="contact-intro">Future Automation products are available from a select group of dealers handpicked for their professionalism, skill, and customer service. To find a dealer in your area or to ask us anything, reach out below.</p>
+</div>
+<div class="contact-body page-anim-child">
+<div class="contact-offices">
+<div class="contact-office">
+<div class="contact-office-region">European Office</div>
+<div class="contact-office-details">
+<div class="contact-office-row"><span class="co-label">Phone</span><a href="tel:+441438833577">+44 (0) 1438 833577</a></div>
+<div class="contact-office-row"><span class="co-label">Email</span><a href="#"><span class="__cf_email__" data-cfemail="552634393026153320212027303420213a3834213c3a3b7b363a7b203e">[email&#160;protected]</span></a></div>
+<div class="contact-office-row"><span class="co-label">Hours</span><span>Mon to Fri, 08:00 to 17:30 GMT</span></div>
+<div class="contact-office-row"><span class="co-label">After hours</span><span>Mon to Fri, 17:00 to 22:00 GMT<br>+44 (0) 1438 831809</span></div>
+<div class="contact-office-row"><span class="co-label">Address</span><span>Unit 6 to 8 Brunel Road<br>Bedford, Bedfordshire<br>MK41 9TG, United Kingdom</span></div>
+</div>
+</div>
+<div class="contact-divider"></div>
+<div class="contact-office">
+<div class="contact-office-region">North American Office</div>
+<div class="contact-office-details">
+<div class="contact-office-row"><span class="co-label">Phone</span><a href="tel:+16037429181">+1 (603) 742 9181</a></div>
+<div class="contact-office-row"><span class="co-label">Email</span><a href="#"><span class="__cf_email__" data-cfemail="87f4e6ebe2f4c7e1f2f3f2f5e2e6f2f3e8eae6f3eee8e9a9e4e8ea">[email&#160;protected]</span></a></div>
+<div class="contact-office-row"><span class="co-label">Hours</span><span>Mon to Fri, 07:00 to 17:00 EST</span></div>
+<div class="contact-office-row"><span class="co-label">Tech support</span><span>Mon to Fri, 03:00 to 17:00 EST<br>+1 (603) 742 9181</span></div>
+<div class="contact-office-row"><span class="co-label">Address</span><span>Enterprise Park<br>127 Venture Drive<br>Dover, NH 03820, United States</span></div>
+</div>
+</div>
+</div>
+<div class="contact-form-wrap">
+<div class="contact-form-heading">Send a message</div>
+<div class="contact-form">
+<div class="cf-row cf-two">
+<div class="cf-group"><label class="cf-label">Name <span>*</span></label><input class="cf-input" type="text" placeholder="Your full name"></div>
+<div class="cf-group"><label class="cf-label">Phone <span>*</span></label><input class="cf-input" type="tel" placeholder="+44 …"></div>
+</div>
+<div class="cf-row cf-two">
+<div class="cf-group"><label class="cf-label">Email <span>*</span></label><input class="cf-input" type="email" placeholder="you@company.com"></div>
+<div class="cf-group">
+<label class="cf-label">Country <span>*</span></label>
+<select class="cf-input cf-select">
+<option value="">Select country</option>
+<option>United Kingdom</option><option>United States</option><option>Australia</option>
+<option>Canada</option><option>France</option><option>Germany</option>
+<option>Italy</option><option>Netherlands</option><option>Spain</option>
+<option>Sweden</option><option>Switzerland</option><option>UAE</option><option>Other</option>
+</select>
+</div>
+</div>
+<div class="cf-row cf-two">
+<div class="cf-group"><label class="cf-label">Company</label><input class="cf-input" type="text" placeholder="Company name"></div>
+<div class="cf-group"><label class="cf-label">Postcode <span>*</span></label><input class="cf-input" type="text" placeholder="Postcode"></div>
+</div>
+<div class="cf-row"><div class="cf-group"><label class="cf-label">Subject <span>*</span></label><input class="cf-input" type="text" placeholder="How can we help?"></div></div>
+<div class="cf-row"><div class="cf-group"><label class="cf-label">Message <span>*</span></label><textarea class="cf-input cf-textarea" placeholder="Tell us more…"></textarea></div></div>
+<div class="cf-row cf-submit-row"><button class="cf-submit" onclick="this.textContent='Sent ✓';this.disabled=true;this.style.background='#444'">Send Message</button></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="aboutPage">
+<div class="ab-hero page-anim-child">
+<img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/Header-About.jpg" alt="Future Automation manufacturing">
+<div class="ab-hero-overlay"></div>
+<div class="ab-hero-text">
+<span class="ab-tag">Since 1998</span>
+<h1 class="ab-hero-title">Future<br>Automation</h1>
+<p class="ab-hero-sub">Design-led manufacturing of the world's finest AV concealment and moving architectural mechanisms.</p>
+</div>
+</div>
+<div class="ab-lead page-anim-child">
+<p>Designers and manufacturers of the largest range of industry-leading AV concealment and moving architectural mechanisms to enhance the smart home, commercial and marine industries since 1998.</p>
+</div>
+<div class="ab-stats page-anim-child">
+<div class="ab-stat"><div class="ab-stat-num">300+</div><div class="ab-stat-label">Individual products</div></div>
+<div class="ab-stat"><div class="ab-stat-num">25+</div><div class="ab-stat-label">Years of innovation</div></div>
+<div class="ab-stat"><div class="ab-stat-num">200k</div><div class="ab-stat-label">Sq ft of engineering</div></div>
+</div>
+<div class="ab-row">
+<div class="ab-row-img"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/future-automation-brunel-road-factory.jpg" alt="Factory floor"></div>
+<div class="ab-row-content">
+<div class="ab-row-eyebrow">How We Achieve</div>
+<h2 class="ab-row-title">Our Creative <em>Vision</em></h2>
+<div class="ab-row-body">
+<p>Our mission is to lead the luxury automation industry, while never compromising on quality or customer service.</p>
+<p>State-of-the-art tools, components and knowledge work in cohesion to create an advanced collection of automated and manual mechanisms, designed and manufactured by our teams across the UK and USA.</p>
+<p>Every mechanism is individually assembled and tested by hand, and we offer a robust manufacturer warranty on all Future Automation products.</p>
+</div>
+</div>
+</div>
+<div class="ab-row ab-row--flip ab-row--alt">
+<div class="ab-row-img"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/metal-folding-future-automation-manufacturing.jpg" alt="Brake press"></div>
+<div class="ab-row-content">
+<div class="ab-row-eyebrow">Home</div>
+<h2 class="ab-row-title">Made-to-order <em>Advantage</em></h2>
+<div class="ab-row-body">
+<p>All our motorised mechanisms are made to order, you always receive the latest revision, never ageing warehouse stock.</p>
+<p>This lean manufacturing ethos frees capacity for more engineers and machinery, enabling us to tackle increasingly complex and elaborate mechanisms.</p>
+<p>Every member of our team is trained to an exceptional standard, applied consistently through rigorous quality control at every stage of production.</p>
+</div>
+</div>
+</div>
+<div class="ab-row">
+<div class="ab-row-img"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/future-automation-head-billet-qa2-manufacturing.jpg" alt="CNC machining"></div>
+<div class="ab-row-content">
+<div class="ab-row-eyebrow">Truly</div>
+<h2 class="ab-row-title"><em>Bespoke</em></h2>
+<div class="ab-row-body">
+<p>We've been creating unforgettable experiences for clients across the world for over two decades, designing, manufacturing and assembling incredible mechanisms for residential, commercial and marine projects.</p>
+<p>With infinite creative possibilities available through our bespoke design service, no brief is too complex or ambitious.</p>
+</div>
+</div>
+</div>
+<div class="ab-values">
+<div class="ab-value">
+<div class="ab-value-num">01</div>
+<div class="ab-value-title">Precision Engineering</div>
+<div class="ab-value-body">Every mechanism is hand-assembled and tested to exacting tolerances. Our engineering team brings decades of expertise to every product we produce.</div>
+</div>
+<div class="ab-value">
+<div class="ab-value-num">02</div>
+<div class="ab-value-title">USA &amp; UK Manufacturing</div>
+<div class="ab-value-body">Designed and built across our facilities in the UK and USA, every product carries the hallmark of precision craftsmanship, built to last and engineered to perform.</div>
+</div>
+<div class="ab-value">
+<div class="ab-value-num">03</div>
+<div class="ab-value-title">Innovation &amp; Service</div>
+<div class="ab-value-body">Made-to-order means you receive the latest revision of every product, backed by our industry-leading manufacturer warranty and dedicated support teams.</div>
+</div>
+</div>
+<div class="ab-timeline">
+<h2 class="ab-timeline-heading">A History of <em>Innovation</em></h2>
+<div class="ab-timeline-grid">
+<div class="ab-tl-item">
+<div class="ab-tl-year">1998</div>
+<div class="ab-tl-text">Future Automation founded in Bedford, UK. First product range launches to the residential AV market.</div>
+<div class="ab-tl-text">Expansion into commercial and marine sectors. Launch of the first marine-grade motorised TV lift range.</div>
+</div>
+<div class="ab-tl-item">
+<div class="ab-tl-year">2014</div>
+<div class="ab-tl-text">North American office opens in Dover, NH. Product range surpasses 200 individual mechanisms.</div>
+</div>
+<div class="ab-tl-item">
+<div class="ab-tl-year">Today</div>
+<div class="ab-tl-text">Over 300 products, 200,000 sq ft of manufacturing, and 25+ years at the forefront of luxury automation.</div>
+</div>
+</div>
+</div>
+<div class="ab-cta">
+<div class="ab-cta-img"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/General/future-automation-bespoke-sofa-lift-newland-solutions-3.jpg" alt="Bespoke mechanism"></div>
+<div class="ab-cta-content">
+<div class="ab-cta-tag">Everything &amp; Anything</div>
+<h2 class="ab-cta-title"><em>Luxury</em><br>Redefined</h2>
+<p class="ab-cta-body">Over 300 individual products and infinite creative possibilities. See how our mechanisms can transform your next project.</p>
+<button class="ab-cta-btn" onclick="showProducts()">Browse All Products</button>
+</div>
+</div>
+</div>
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+if(cursor&&ring){
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my,ticking=false;
+function moveCursor(e){mx=e.clientX;my=e.clientY;if(!ticking){ticking=true;requestAnimationFrame(()=>{cursor.style.transform=`translate3d(calc(${mx}px - 50%), calc(${my}px - 50%), 0)`;ticking=false;});}}
+document.addEventListener('mousemove',moveCursor,{passive:true});
+function animRing(){rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.transform=`translate3d(calc(${rx}px - 50%), calc(${ry}px - 50%), 0)`;requestAnimationFrame(animRing);}
+animRing();
+document.addEventListener('mouseleave',()=>{cursor.style.opacity='0';ring.style.opacity='0';},{passive:true});
+document.addEventListener('mouseenter',()=>{cursor.style.opacity='1';ring.style.opacity='1';},{passive:true});
+}
+const header=document.getElementById('siteHeader');
+function updateHeaderStyle(){
+const onHome=document.getElementById('homePage').style.display!=='none';
+if(onHome&&window.scrollY<80){header.classList.add('on-dark');header.classList.remove('scrolled');}
+else{header.classList.remove('on-dark');header.classList.add('scrolled');}
+}
+let _scrollTicking=false;
+window.addEventListener('scroll',()=>{if(_scrollTicking)return;_scrollTicking=true;requestAnimationFrame(()=>{updateHeaderStyle();_scrollTicking=false;});},{passive:true});
+function initScrollReveal(){
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+let _vertTitleInterval=null;
+function initVertTitle(){
+const el=document.getElementById('vertTitle');if(!el)return;
+if(_vertTitleInterval){clearInterval(_vertTitleInterval);_vertTitleInterval=null;}
+const words=['Precision.','Motion.','Luxury.'];let wi=0;
+function setWord(word){
+el.innerHTML=word.split('').map((c,i)=>`<span class="char" style="transition-delay:${i*0.04}s">${c===' '?'&nbsp;':c}</span>`).join('');
+requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelectorAll('.char').forEach(c=>c.classList.add('revealed'))));
+}
+setWord(words[0]);
+_vertTitleInterval=setInterval(()=>{const chars=el.querySelectorAll('.char');chars.forEach((c,i)=>{c.style.transitionDelay=(chars.length-1-i)*0.03+'s';c.classList.remove('revealed');});setTimeout(()=>{wi=(wi+1)%words.length;setWord(words[wi]);},500);},2800);
+}
+(function(){
+const texts=['SEARCH PRODUCTS','TV LIFTS','LUTRON ENCLOSURES','MARINE SOLUTIONS','SHADING SYSTEMS'];
+let count=0,index=0,interval;
+const el=document.getElementById('typingAnim');
+const inp=document.getElementById('siteSearch');
+if(!el||!inp)return;
+function type(){
+const txt=texts[count%texts.length];
+el.textContent=txt.slice(0,++index);
+if(index>=txt.length){count++;index=0;interval=setTimeout(type,2200);}
+else interval=setTimeout(type,90);
+}
+type();
+inp.addEventListener('focus',()=>{clearTimeout(interval);el.style.display='none';});
+inp.addEventListener('blur',()=>{if(!inp.value){el.style.display='';index=0;type();}});
+inp.addEventListener('input',()=>{clearTimeout(interval);if(document.getElementById('productsPage').style.display!=='none'&&document.getElementById('gridView').style.display!=='none')render();});
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&inp.value.trim()&&document.getElementById('homePage').style.display!=='none')showProducts();});
+})();
+const PROXY='https://api.codetabs.com/v1/proxy?quest=';
+const BASE='https://www.futureautomation.co.uk';
+let all=[],filtered=[],typeFilter=new Set(),sizeFilter=null,savedScroll=0,minScreen=Infinity,maxScreen=0;
+const cache=new Map();
+const productCache=new Map();
+let productsLoaded=false;
+let detailOpenedFrom='products';
+let selectedThumbSrc=null;
+const hamburger=document.getElementById('hamburger');
+const mobileDrawer=document.getElementById('mobileDrawer');
+hamburger.addEventListener('click',()=>{const open=mobileDrawer.classList.toggle('open');hamburger.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';});
+function closeMobileDrawer(){mobileDrawer.classList.remove('open');hamburger.classList.remove('open');document.body.style.overflow='';}
+document.getElementById('mobProductsToggle').addEventListener('click',function(){const sub=document.getElementById('mobProductsSub');const open=sub.classList.toggle('open');this.classList.toggle('expanded',open);});
+(function(){
+const link=document.querySelector('.dropdown>a');
+const menu=document.getElementById('dropdownMenu');
+const others=document.querySelectorAll('.nav-links>li:not(.dropdown)>a,.dealer-portal');
+let t;
+function openMenu(){clearTimeout(t);menu.querySelectorAll('.menu-item').forEach(m=>{m.style.animation='none';void m.offsetWidth;m.style.animation='';});menu.classList.add('open');header.classList.add('dropdown-open');}
+function closeMenu(){
+if(!menu.classList.contains('open'))return;
+menu.classList.add('closing');
+const items=menu.querySelectorAll('.menu-item');
+items.forEach((item,i)=>{item.style.animationDelay=(items.length-1-i)*0.04+'s';});
+setTimeout(()=>{menu.classList.remove('open','closing');items.forEach(item=>item.style.animationDelay='');updateHeaderStyle();},300);
+}
+link.addEventListener('mouseenter',()=>{clearTimeout(t);openMenu();});
+link.addEventListener('mouseleave',()=>{t=setTimeout(closeMenu,280);});
+menu.addEventListener('mouseenter',()=>clearTimeout(t));
+menu.addEventListener('mouseleave',()=>{t=setTimeout(closeMenu,280);});
+others.forEach(l=>l.addEventListener('mouseenter',()=>closeMenu()));
+})();
+let currentSlide=0;
+const totalSlides=4;
+let heroTimer=null;
+function goToSlide(idx){
+const slides=document.querySelectorAll('.hero-slide');
+const dots=document.querySelectorAll('.hero-dot');
+slides[currentSlide].style.opacity='0';
+slides[currentSlide].style.pointerEvents='none';
+slides[currentSlide].classList.remove('active');
+dots.forEach((d,i)=>{d.classList.remove('active','done');const fill=d.querySelector('.hero-dot-fill');if(fill){fill.style.animation='none';fill.style.width=i<idx?'100%':'0%';}if(i<idx)d.classList.add('done');});
+currentSlide=idx;
+slides[currentSlide].style.opacity='1';
+slides[currentSlide].style.pointerEvents='auto';
+slides[currentSlide].classList.add('active');
+dots[currentSlide].classList.add('active');
+const activeFill=dots[currentSlide].querySelector('.hero-dot-fill');
+if(activeFill){void activeFill.offsetWidth;activeFill.style.animation='';}
+resetHeroTimer();
+}
+function nextSlide(){goToSlide((currentSlide+1)%totalSlides);}
+function resetHeroTimer(){if(heroTimer)clearInterval(heroTimer);heroTimer=setInterval(nextSlide,7000);}
+(function initSlides(){
+const slides=document.querySelectorAll('.hero-slide');
+slides.forEach((s,i)=>{s.style.transition='opacity 1.2s ease';s.style.opacity=i===0?'1':'0';s.style.pointerEvents=i===0?'auto':'none';});
+const firstFill=document.querySelector('.hero-dot.active .hero-dot-fill');
+if(firstFill){void firstFill.offsetWidth;firstFill.style.animation='';}
+resetHeroTimer();
+})();
+const CARD_W=316;
+let carouselOffset=0;
+function updateCarousel(){
+const track=document.getElementById('carouselTrack');if(!track)return;
+const maxOff=Math.max(0,(track.querySelectorAll('.carousel-card').length-4)*CARD_W);
+carouselOffset=Math.min(Math.max(0,carouselOffset),maxOff);
+track.style.transform=`translateX(-${carouselOffset}px)`;
+}
+document.getElementById('carouselNext').addEventListener('click',()=>{carouselOffset+=CARD_W*2;updateCarousel();});
+document.getElementById('carouselPrev').addEventListener('click',()=>{carouselOffset-=CARD_W*2;updateCarousel();});
+function resetFilters(clearSearch=true){
+typeFilter=new Set();
+sizeFilter=null;
+document.querySelectorAll('[data-type]').forEach(b=>b.classList.remove('on'));
+const slider=document.getElementById('sizeSlider');
+if(slider)slider.value=0;
+const fill=document.getElementById('sizeFill');
+const handle=document.getElementById('sizeHandle');
+const minLbl=document.getElementById('sizeMinLabel');
+if(fill)fill.style.width='0%';
+if(handle)handle.style.left='0%';
+if(minLbl)minLbl.textContent='ALL';
+if(clearSearch){const srch=document.getElementById('siteSearch');if(srch)srch.value='';}
+}
+function hideAll(){
+['homePage','productsPage','contactPage','aboutPage'].forEach(id=>document.getElementById(id).style.display='none');
+document.getElementById('filterBar').style.display='none';
+}
+function showHome(){
+hideAll();
+resetFilters(true);
+document.getElementById('homePage').style.display='block';
+window.scrollTo(0,0);
+updateHeaderStyle();
+initScrollReveal();
+initVertTitle();
+if(all.length)renderTopPicks();
+}
+function showProducts(){
+hideAll();
+resetFilters(false);
+document.getElementById('productsPage').style.display='block';
+document.getElementById('productsPage').classList.remove('detail-mode');
+document.getElementById('detailView').style.display='none';
+document.getElementById('gridView').style.display='block';
+document.getElementById('filterBar').style.display='flex';
+header.classList.remove('on-dark');header.classList.add('scrolled');
+window.scrollTo(0,0);
+if(!productsLoaded){productsLoaded=true;initProducts();}
+else render();
+}
+function showContact(){
+hideAll();
+resetFilters(true);
+header.classList.remove('on-dark');header.classList.add('scrolled');
+document.getElementById('contactPage').style.display='block';
+animatePage('contactPage');
+window.scrollTo(0,0);
+}
+function showAbout(){
+hideAll();
+resetFilters(true);
+header.classList.remove('on-dark');header.classList.add('scrolled');
+document.getElementById('aboutPage').style.display='block';
+animatePage('aboutPage');
+window.scrollTo(0,0);
+}
+function animatePage(id){
+const page=document.getElementById(id);if(!page)return;
+const children=page.querySelectorAll('.page-anim-child');
+children.forEach(el=>{el.classList.remove('in');el.style.animationDelay='';});
+requestAnimationFrame(()=>requestAnimationFrame(()=>{
+children.forEach((el,i)=>{el.style.animationDelay=(i*90)+'ms';el.classList.add('in');});
+}));
+}
+function showGrid(){
+document.getElementById('productsPage').classList.remove('detail-mode');
+document.getElementById('detailView').style.display='none';
+document.getElementById('gridView').style.display='block';
+document.getElementById('filterBar').style.display='flex';
+header.classList.remove('on-dark');header.classList.add('scrolled');
+window.scrollTo(0,savedScroll);
+}
+function backFromDetail(){
+if(detailOpenedFrom==='home'){
+hideAll();
+document.getElementById('homePage').style.display='block';
+document.querySelectorAll('#homePage .fade-in').forEach(el=>el.classList.add('visible'));
+updateHeaderStyle();
+window.scrollTo(0,savedScroll);
+} else showGrid();
+}
+(function(){
+const obs=new IntersectionObserver((entries,obs)=>{entries.forEach((entry,i)=>{if(entry.isIntersecting){setTimeout(()=>{entry.target.classList.add('visible');obs.unobserve(entry.target);},i*200);}});},{threshold:.08});
+document.querySelectorAll('#homePage .fade-in').forEach(el=>obs.observe(el));
+})();
+async function get(url){
+if(cache.has(url))return cache.get(url);
+const r=await fetch(PROXY+encodeURIComponent(url));
+const t=await r.text();
+let html;try{html=JSON.parse(t).contents}catch{html=t}
+cache.set(url,html);return html;
+}
+function parseScreen(txt){const m=txt.replace(/\n/g,' ').match(/(\d+)\s*"\s*-\s*(\d+)/);return m?{min:+m[1],max:+m[2]}:null;}
+function isVid(src){return /\/[Vv]ideo\//i.test(src);}
+function buildSizeSlider(){
+if(minScreen===Infinity||maxScreen===0)return;
+const slider=document.getElementById('sizeSlider'),fill=document.getElementById('sizeFill'),handle=document.getElementById('sizeHandle'),ticks=document.getElementById('sizeTicks'),minLbl=document.getElementById('sizeMinLabel'),maxLbl=document.getElementById('sizeMaxLabel');
+const lo=Math.floor(minScreen/10)*10,hi=Math.ceil(maxScreen/10)*10,steps=Math.round((hi-lo)/10);
+slider.min=0;slider.max=steps+1;slider.value=0;sizeFilter=null;
+minLbl.textContent='ALL';maxLbl.textContent=hi+'"';
+ticks.innerHTML='';
+const at=document.createElement('div');at.className='size-tick';at.style.left='0%';
+at.innerHTML='<div class="size-tick-line"></div><div class="size-tick-label">ALL</div>';ticks.appendChild(at);
+for(let i=1;i<=steps;i++){
+const pct=i/(steps+1)*100,sv=lo+i*10,tk=document.createElement('div');
+tk.className='size-tick';tk.style.left=pct+'%';
+tk.innerHTML=`<div class="size-tick-line"></div><div class="size-tick-label">${sv}"</div>`;ticks.appendChild(tk);
+}
+const xt=document.createElement('div');xt.className='size-tick';xt.style.left='100%';
+xt.innerHTML=`<div class="size-tick-line"></div><div class="size-tick-label">${lo+steps*10}"+ </div>`;ticks.appendChild(xt);
+function upd(){
+const v=+slider.value,pct=v/(steps+1)*100;
+fill.style.width=pct+'%';handle.style.left=pct+'%';
+sizeFilter=v===0?null:{min:lo+(v-1)*10,max:lo+v*10};render();
+}
+slider.addEventListener('input',upd);upd();
+document.getElementById('sizeWrap').style.display='flex';
+}
+document.querySelectorAll('[data-type]').forEach(btn=>{
+btn.onclick=()=>{
+const type=btn.dataset.type,isOn=btn.classList.contains('on');
+if(type==='MARINE'&&!isOn){document.querySelector('[data-type="NOT MARINE"]')?.classList.remove('on');typeFilter.delete('NOT MARINE');}
+if(type==='NOT MARINE'&&!isOn){document.querySelector('[data-type="MARINE"]')?.classList.remove('on');typeFilter.delete('MARINE');}
+btn.classList.toggle('on');isOn?typeFilter.delete(type):typeFilter.add(type);render();
+};
+});
+function tagMatch(tag,type){
+const tu=tag.toUpperCase().trim();
+if(type==='MARINE')return tu==='MARINE'||tu==='MARINE SUITABLE';
+if(type==='NOT MARINE')return tu==='NOT MARINE'||tu==='NOT MARINE SUITABLE';
+if(type==='INDOOR')return tu==='INDOOR'||tu==='INDOOR SUITABLE'||tu==='INDOOR/OUTDOOR SUITABLE'||tu==='INDOOR / OUTDOOR SUITABLE';
+if(type==='OUTDOOR')return tu==='OUTDOOR'||tu==='OUTDOOR SUITABLE'||tu==='INDOOR/OUTDOOR SUITABLE'||tu==='INDOOR / OUTDOOR SUITABLE';
+return false;
+}
+function matchAll(p){if(!typeFilter.size)return true;for(const type of typeFilter){if(!p.tags.some(tag=>tagMatch(tag,type)))return false;}return true;}
+function getFiltered(){
+const q=document.getElementById('siteSearch').value.toLowerCase().trim();
+return all.filter(p=>{
+if(q&&!p.name.toLowerCase().includes(q)&&!p.code.toLowerCase().includes(q)&&!(p.sub||'').toLowerCase().includes(q))return false;
+if(!matchAll(p))return false;
+if(sizeFilter){if(!p.screen)return false;if(p.screen.min>sizeFilter.max||p.screen.max<sizeFilter.min)return false;}
+return true;
+});
+}
+function render(){
+filtered=getFiltered();
+const c=document.getElementById('gridInner');
+const cb=document.getElementById('countBar');
+c.innerHTML='';
+if(cb)cb.textContent=filtered.length?`${filtered.length} product${filtered.length!==1?'s':''}`:' ';
+if(!filtered.length){c.innerHTML='<div class="statewrap"><span>No products match.</span></div>';return;}
+const grid=document.createElement('div');grid.className='pgrid';
+filtered.forEach((p,i)=>{
+const card=document.createElement('div');card.className='pcard';card.style.animationDelay=Math.min(i*10,200)+'ms';
+card.innerHTML=`<div class="pimg"><img loading="lazy" src="${p.image}" alt="${p.name}"></div><div class="pinfo"><div class="pname">${p.name}</div>${p.sub?`<div class="psub">${p.sub}</div>`:''}<div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div></div>`;
+card.onclick=()=>{detailOpenedFrom='products';openDetail(p);};grid.appendChild(card);
+});
+c.appendChild(grid);
+}
+async function initProducts(){
+try{
+const html=await get(BASE+'/Search');
+const doc=new DOMParser().parseFromString(html,'text/html');
+all=[...doc.querySelectorAll('.SearchResult')].map(card=>{
+const link=card.querySelector('a');if(!link)return null;
+const name=card.querySelector('h4'),sub=card.querySelector('h5'),
+imgs=[...card.querySelectorAll('img')],tagEls=[...card.querySelectorAll('.Tag')];
+const tags=tagEls.map(t=>t.textContent.replace(/\s+/g,' ').trim());
+let screen=null;tagEls.forEach(t=>{const s=parseScreen(t.textContent);if(s)screen=s;});
+if(screen){if(screen.min<minScreen)minScreen=screen.min;if(screen.max>maxScreen)maxScreen=screen.max;}
+const href=link.getAttribute('href')||'',code=href.split('/').pop().toUpperCase();
+return{url:BASE+href,code,name:name?name.textContent.trim():'',sub:sub?sub.textContent.trim():'',image:imgs[0]?imgs[0].src:'',tags,screen};
+}).filter(Boolean);
+buildSizeSlider();render();renderTopPicks();
+}catch(e){
+document.getElementById('gridInner').innerHTML='<div class="statewrap"><span>Could not load products. Please check your connection.</span></div>';
+}
+}
+function renderTopPicks(){
+const track=document.getElementById('carouselTrack');if(!track||!all.length)return;
+const picks=[];
+const step=Math.max(1,Math.floor(all.length/8));
+for(let i=0;i<8&&i*step<all.length;i++)picks.push(all[i*step]);
+track.innerHTML=picks.map((p,i)=>`
+<div class="carousel-card" onclick="openProductByCode('${p.code}')">
+${i===1||i===3?'<div class="carousel-card-new">New</div>':''}
+<div class="carousel-card-img"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
+<div class="carousel-card-info">
+<div class="carousel-card-code">${p.code}</div>
+<div class="carousel-card-name">${p.name}</div>
+${p.sub?`<div class="carousel-card-sub">${p.sub}</div>`:''}
+</div>
+</div>`).join('');
+updateCarousel();
+}
+async function openProductByCode(code){
+detailOpenedFrom='home';
+savedScroll=window.scrollY;
+hideAll();
+document.getElementById('productsPage').style.display='block';
+document.getElementById('productsPage').classList.add('detail-mode');
+document.getElementById('gridView').style.display='none';
+document.getElementById('detailView').style.display='block';
+document.getElementById('backBtn').querySelector('span').textContent='Back to Home';
+window.scrollTo(0,0);
+document.getElementById('detailContent').innerHTML=`<div class="d-layout"><div class="d-gal" style="background:rgba(0,0,0,.04)"></div><div class="d-right"><div class="d-info"><div style="height:9px;width:40%;background:rgba(0,0,0,.06);border-radius:4px"></div><div style="height:22px;width:75%;background:rgba(0,0,0,.06);border-radius:4px;margin-top:12px"></div></div></div></div>`;
+const wait=()=>new Promise(r=>setTimeout(r,300));
+let attempts=0;
+while(!all.length&&attempts<20){await wait();attempts++;}
+const p=all.find(x=>x.code===code.toUpperCase());
+if(p)openDetail(p,true);
+}
+async function openDetail(p,fromHome){
+selectedThumbSrc=null;
+_mainImgActive='A';
+if(!fromHome){
+detailOpenedFrom='products';
+savedScroll=window.scrollY;
+document.getElementById('gridView').style.display='none';
+document.getElementById('filterBar').style.display='none';
+document.getElementById('productsPage').classList.add('detail-mode');
+document.getElementById('detailView').style.display='block';
+document.getElementById('backBtn').querySelector('span').textContent='Back to Products';
+window.scrollTo(0,0);
+}
+document.getElementById('detailContent').innerHTML=`<div class="d-layout"><div class="d-gal" style="background:rgba(0,0,0,.04)"></div><div class="d-right"><div class="d-info"><div style="height:9px;width:40%;background:rgba(0,0,0,.06);border-radius:4px"></div><div style="height:22px;width:75%;background:rgba(0,0,0,.06);border-radius:4px;margin-top:12px"></div></div></div></div>`;
+let html;
+if(productCache.has(p.url)){
+html=productCache.get(p.url);
+}else{
+html=await get(p.url);
+productCache.set(p.url,html);
+}
+const doc=new DOMParser().parseFromString(html,'text/html');
+const imgSet=new Set();
+doc.querySelectorAll('.owl-carousel img').forEach(img=>{
+const src=img.getAttribute('src')||img.getAttribute('data-src')||'';
+if(src.startsWith('http')&&!src.toLowerCase().includes('logo')&&!isVid(src)&&/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(src))imgSet.add(src);
+});
+doc.querySelectorAll('img').forEach(img=>{
+const src=img.getAttribute('src')||'';
+if(src.startsWith('http')&&src.toLowerCase().includes(p.code.toLowerCase())&&!src.toLowerCase().includes('logo')&&!isVid(src))imgSet.add(src);
+});
+if(!imgSet.size&&p.image&&!isVid(p.image))imgSet.add(p.image);
+const imgs=[...imgSet];
+const descEl=doc.querySelector('.mt-1.mb-5.pb-5');let descHTML='';
+if(descEl){
+const clone=descEl.cloneNode(true);
+clone.querySelectorAll('script,noscript,style,iframe,video,object,embed,select,input,[class*="finish"],[class*="colour"],[class*="swatch"],[class*="variant"]').forEach(el=>el.remove());
+clone.querySelectorAll('*').forEach(el=>{[...el.attributes].forEach(a=>{if(a.name.startsWith('on'))el.removeAttribute(a.name);});});
+clone.querySelectorAll('img').forEach(img=>{img.removeAttribute('width');img.removeAttribute('height');img.style.cssText='max-width:100%;height:auto;display:block;margin:16px 0';});
+descHTML=clone.innerHTML;
+}
+selectedThumbSrc=imgs[0]||p.image;
+document.getElementById('detailContent').innerHTML=`
+<div class="d-layout">
+<div class="d-gal">
+<div class="d-main">
+<img id="mainImgA" src="${imgs[0]||p.image}" alt="${p.name}" style="opacity:1">
+<img id="mainImgB" src="${imgs[0]||p.image}" alt="${p.name}" style="opacity:0">
+</div>
+<div class="d-thumbs" id="dThumbs" style="${imgs.length<=1?'display:none':''}">
+${imgs.map((s,i)=>`<div class="d-thumb${i===0?' on':''}" data-src="${s}" onmouseenter="hoverThumb('${s}')" onmouseleave="leaveThumb()" onclick="selectThumb('${s}',this)"><img src="${s}" loading="lazy" alt=""></div>`).join('')}
+</div>
+</div>
+<div class="d-right">
+<div class="d-info">
+<div class="d-crumb">${p.code}</div>
+<div class="d-name">${p.name}</div>
+${p.sub?`<div class="d-sub">${p.sub}</div>`:''}
+<div class="d-rule"></div>
+<div class="d-tags">${p.tags.map(t=>`<span class="d-tag">${t}</span>`).join('')}</div>
+</div>
+<div class="d-body">
+${descHTML?`<div class="d-sec"><div class="d-seclbl">Overview</div><div class="d-sec-inner"><div class="deschtml">${descHTML}</div></div></div>`:''}
+<div class="d-sec"><div class="d-seclbl">Technical Specification</div><div id="specTable"><div class="spinner" style="margin:16px 0"></div></div></div>
+</div>
+</div>
+</div>`;
+loadSpecs(p.code);
+}
+let _mainImgActive='A';
+function fadeToImg(src){
+const a=document.getElementById('mainImgA');
+const b=document.getElementById('mainImgB');
+if(!a||!b)return;
+const top=_mainImgActive==='A'?a:b;
+if(top.src===src||top.src.endsWith(src))return;
+const next=_mainImgActive==='A'?b:a;
+next.src=src;
+next.style.opacity='1';
+top.style.opacity='0';
+_mainImgActive=_mainImgActive==='A'?'B':'A';
+}
+function hoverThumb(src){fadeToImg(src);}
+function leaveThumb(){if(selectedThumbSrc)fadeToImg(selectedThumbSrc);}
+function selectThumb(src,el){
+selectedThumbSrc=src;
+document.querySelectorAll('.d-thumb').forEach(t=>t.classList.remove('on'));
+if(el)el.classList.add('on');
+fadeToImg(src);
+}
+function loadSpecs(code){
+fetch(PROXY+encodeURIComponent(`${BASE}/API/ProductSpecTable/${code}`)).then(r=>r.text()).then(t=>{
+let html;try{html=JSON.parse(t).contents}catch{html=t}
+const el=document.getElementById('specTable');if(!el)return;
+if(!html||html.trim().length<10){el.innerHTML='<p style="font-size:12px;opacity:.5">No data available.</p>';return;}
+const tmp=document.createElement('div');tmp.innerHTML=html;
+tmp.querySelectorAll('nav,header,footer,.navbar,.MegaMenu,[class*="menu"],[class*="footer"],script,style,iframe').forEach(n=>n.remove());
+const src=tmp.querySelector('table');
+if(!src){const tx=tmp.textContent.trim();el.innerHTML=tx.length>20?`<div style="font-size:12px">${tmp.innerHTML}</div>`:'<p style="font-size:12px;opacity:.5">No data available.</p>';return;}
+const data=Array.from(src.querySelectorAll('tr')).map(r=>Array.from(r.querySelectorAll('th,td')).map(c=>({content:c.innerHTML.trim(),isHeader:c.tagName==='TH'||c.classList.contains('header')||parseInt(c.getAttribute('colspan'))>1,colspan:c.getAttribute('colspan')||1})));
+const pCodes=data[0]?data[0].slice(1).map(c=>c.content):[];
+let sIdx=data.findIndex(r=>r.some(c=>c.content.toUpperCase().includes('SHIPPING')));
+let dIdx=data.findIndex(r=>r.some(c=>c.content.toUpperCase().includes('DOWNLOADS')));
+let end=Math.min(...[sIdx,dIdx].filter(i=>i>-1));if(end===Infinity)end=data.length;
+const bD=(d,cls='')=>{if(!d.length)return'';let h=`<table class="desktop-table ${cls}">`;d.forEach(r=>{h+='<tr>';r.forEach(cl=>{h+=`<${cl.isHeader?'th':'td'} colspan="${cl.colspan}">${cl.content}</${cl.isHeader?'th':'td'}>`;});h+='</tr>';});return h+'</table>';};
+const bM=(d,title)=>{if(d.length<1)return'';let h=`<table class="mobile-table"><tr class="mobile-main-header"><th colspan="2">${title}</th></tr>`;for(let i=1;i<d.length;i++){const r=d[i];h+=`<tr class="mobile-spec-header"><th colspan="2">${r[0].content}</th></tr>`;if(r.length>1){for(let j=1;j<r.length;j++){if(r[j]&&r[j].content!==''){h+=`<tr class="mobile-row"><td>${pCodes[j-1]||'Value'}</td><td>${r[j].content}</td></tr>`;}}}}return h+'</table>';};
+const bL=(d)=>{if(!d.length)return'';let h='<table class="mobile-table">';d.forEach((r,i)=>{if(i===0)h+=`<tr class="mobile-main-header"><th colspan="1">${r[0].content}</th></tr>`;else if(r[0].isHeader)h+=`<tr class="mobile-spec-header"><th colspan="1">${r[0].content}</th></tr>`;else r.forEach(cl=>{if(cl.content!=='')h+=`<tr><td>${cl.content}</td></tr>`;});});return h+'</table>';};
+let out=bM(data.slice(0,end),'Technical Specifications')+bD(data.slice(0,end));
+if(sIdx>-1){const sd=dIdx>sIdx?data.slice(sIdx,dIdx):data.slice(sIdx);out+=bM(sd,'Shipping Information')+bD(sd,'shipping-mobile-fix');}
+if(dIdx>-1){const dd=sIdx>dIdx?data.slice(dIdx,sIdx):data.slice(dIdx);out+=bL(dd)+bD(dd,'downloads-mobile-fix');}
+el.innerHTML=out;
+}).catch(()=>{const el=document.getElementById('specTable');if(el)el.innerHTML='<p style="font-size:12px;opacity:.5">Unavailable.</p>';});
+}
+document.getElementById('backBtn').onclick=backFromDetail;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('detailView').style.display!=='none')backFromDetail();});
+document.getElementById('productsNavLink').addEventListener('click',e=>{e.preventDefault();showProducts();});
+updateHeaderStyle();
+initScrollReveal();
+initVertTitle();
+showHome();
+productsLoaded=false;
+initProducts();
+</script>
+</body>
+</html>
