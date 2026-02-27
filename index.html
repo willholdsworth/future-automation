@@ -126,9 +126,9 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .carousel-nav{display:flex;gap:.75rem}
 .carousel-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--black);background:var(--black);color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1rem}
 .carousel-btn:hover{background:transparent;color:var(--black);border-color:var(--black)}
-.carousel-track-wrap{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}.carousel-track-wrap::-webkit-scrollbar{display:none}
+.carousel-track-wrap{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;scroll-snap-type:x mandatory}.carousel-track-wrap::-webkit-scrollbar{display:none}
 .carousel-track{display:flex;gap:1.5rem;will-change:scroll-position;transform:translateZ(0)}
-.carousel-card{flex:0 0 300px;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--grey);transition:transform .3s ease;position:relative}
+.carousel-card{flex:0 0 300px;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--grey);transition:transform .3s ease;position:relative;scroll-snap-align:start}
 @media(max-width:700px){.carousel-card{flex:0 0 220px}}
 .carousel-card:hover{transform:translateY(-4px)}
 .carousel-card-img{width:100%;aspect-ratio:4/5;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#e8e8e6;padding:1.5rem}
@@ -426,7 +426,7 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 .menu-item img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;transition:transform .4s cubic-bezier(0.23,1,0.32,1)}
 .menu-item:hover img{transform:scale(1.06)}
 .menu-text{background:var(--black);color:var(--white);padding:1rem 1.2rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:normal;line-height:1.4}
-@media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto!important;min-height:unset;padding:10px 1.5rem 16px;gap:6px}#sizeWrap{flex-basis:100%;padding-left:0!important;margin-top:6px;justify-content:center;padding-bottom:22px;padding-right:0;box-sizing:border-box}#sizeTrack{width:calc(100% - 2rem)!important;margin:0 1rem}}
+@media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto!important;min-height:unset;padding:10px 1.5rem 16px;gap:6px;overflow-x:hidden}#sizeWrap{flex-basis:100%;width:100%;padding:0!important;margin-top:6px;padding-bottom:22px!important;box-sizing:border-box;display:flex!important}#sizeMinLabel,#sizeMaxLabel{flex-shrink:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:3.5rem}#sizeTrack{flex:1;min-width:0;margin:0 .5rem}}
 @media(hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:auto!important}}
 </style>
 </head>
