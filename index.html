@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
 <title>Future Automation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
@@ -87,7 +90,7 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .hero-scroll-line{width:1px;height:3rem;background:rgba(255,255,255,.25);position:relative;overflow:hidden}
 .hero-scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:rgba(255,255,255,.7);animation:scrollLine 2s ease-in-out infinite}
 @keyframes scrollLine{from{top:-100%}to{top:100%}}
-@media(max-width:700px){.hero-content{padding:0 1.5rem 4.5rem}.hero-dots{bottom:1rem;left:1.5rem}.hero-scroll{display:none}}
+@media(max-width:700px){.hero{height:100svh;min-height:560px}.hero-content{padding:0 1.5rem 4.5rem}.hero-dots{bottom:1rem;left:1.5rem}.hero-scroll{display:none}}
 .btn{display:inline-flex;align-items:center;gap:.5rem;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:.75rem 2rem;border-radius:999px;cursor:pointer;transition:all .2s}
 .btn-white{background:var(--white);color:var(--black);border:1px solid var(--white)}
 .btn-white:hover{background:transparent;color:var(--white)}
@@ -121,10 +124,10 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .carousel-heading{font-size:clamp(2rem,4vw,3.5rem);font-weight:300;line-height:1;text-transform:uppercase;letter-spacing:.04em}
 .carousel-heading em{font-style:normal;font-weight:300}
 .carousel-nav{display:flex;gap:.75rem}
-.carousel-btn{width:44px;height:44px;border-radius:50%;border:1px solid rgba(0,0,0,.2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1rem}
-.carousel-btn:hover{background:var(--black);color:var(--white);border-color:var(--black)}
-.carousel-track-wrap{overflow:hidden}
-.carousel-track{display:flex;gap:1.5rem;transition:transform .55s cubic-bezier(.16,1,.3,1);will-change:transform;transform:translateZ(0)}
+.carousel-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--black);background:var(--black);color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1rem}
+.carousel-btn:hover{background:transparent;color:var(--black);border-color:var(--black)}
+.carousel-track-wrap{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}.carousel-track-wrap::-webkit-scrollbar{display:none}
+.carousel-track{display:flex;gap:1.5rem;will-change:scroll-position;transform:translateZ(0)}
 .carousel-card{flex:0 0 300px;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--grey);transition:transform .3s ease;position:relative}
 @media(max-width:700px){.carousel-card{flex:0 0 220px}}
 .carousel-card:hover{transform:translateY(-4px)}
@@ -205,8 +208,9 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .products-page-title{font-size:clamp(2rem,4vw,3.5rem);font-weight:300;letter-spacing:.04em;margin-bottom:.5rem;text-transform:uppercase}
 .products-page-title em{font-style:normal;font-weight:300}
 .count-bar{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.4;margin-bottom:2.5rem}
-.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 1rem}
-@media(min-width:700px){.pgrid{grid-template-columns:repeat(3,1fr);gap:2rem 1.5rem}}
+.pgrid{display:grid;grid-template-columns:1fr;gap:1.5rem 1rem}
+@media(min-width:650px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.pgrid{grid-template-columns:repeat(3,1fr);gap:2rem 1.5rem}}
 @media(min-width:1000px){.pgrid{grid-template-columns:repeat(4,1fr)}}
 .pcard{display:flex;flex-direction:column;cursor:pointer;opacity:0;transform:translateY(14px);animation:fadeUp .4s ease forwards}
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
@@ -422,8 +426,8 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 .menu-item img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;transition:transform .4s cubic-bezier(0.23,1,0.32,1)}
 .menu-item:hover img{transform:scale(1.06)}
 .menu-text{background:var(--black);color:var(--white);padding:1rem 1.2rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:normal;line-height:1.4}
-@media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto;min-height:60px;padding:10px 1.5rem;gap:6px}#sizeWrap{flex-basis:100%;padding-left:0!important;margin-top:6px;justify-content:center}#sizeTrack{width:100%!important}}
-@media(max-width:900px){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}}
+@media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto!important;min-height:unset;padding:10px 1.5rem 16px;gap:6px}#sizeWrap{flex-basis:100%;padding-left:0!important;margin-top:6px;justify-content:center;padding-bottom:22px;padding-right:0;box-sizing:border-box}#sizeTrack{width:calc(100% - 2rem)!important;margin:0 1rem}}
+@media(hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:auto!important}}
 </style>
 </head>
 <body>
@@ -920,8 +924,8 @@ let detailOpenedFrom='products';
 let selectedThumbSrc=null;
 const hamburger=document.getElementById('hamburger');
 const mobileDrawer=document.getElementById('mobileDrawer');
-hamburger.addEventListener('click',()=>{const open=mobileDrawer.classList.toggle('open');hamburger.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';});
-function closeMobileDrawer(){mobileDrawer.classList.remove('open');hamburger.classList.remove('open');document.body.style.overflow='';}
+hamburger.addEventListener('click',()=>{const open=mobileDrawer.classList.toggle('open');hamburger.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';if(open){header.classList.add('scrolled');header.classList.remove('on-dark');}else{updateHeaderStyle();}});
+function closeMobileDrawer(){mobileDrawer.classList.remove('open');hamburger.classList.remove('open');document.body.style.overflow='';updateHeaderStyle();}
 document.getElementById('mobProductsToggle').addEventListener('click',function(){const sub=document.getElementById('mobProductsSub');const open=sub.classList.toggle('open');this.classList.toggle('expanded',open);});
 (function(){
 const link=document.querySelector('.dropdown>a');
@@ -934,7 +938,7 @@ if(!menu.classList.contains('open'))return;
 menu.classList.add('closing');
 const items=menu.querySelectorAll('.menu-item');
 items.forEach((item,i)=>{item.style.animationDelay=(items.length-1-i)*0.04+'s';});
-setTimeout(()=>{menu.classList.remove('open','closing');items.forEach(item=>item.style.animationDelay='');updateHeaderStyle();},300);
+setTimeout(()=>{menu.classList.remove('open','closing');header.classList.remove('dropdown-open');items.forEach(item=>item.style.animationDelay='');updateHeaderStyle();},300);
 }
 link.addEventListener('mouseenter',()=>{clearTimeout(t);openMenu();});
 link.addEventListener('mouseleave',()=>{t=setTimeout(closeMenu,280);});
@@ -973,11 +977,13 @@ resetHeroTimer();
 const CARD_W=316;
 let carouselOffset=0;
 function updateCarousel(){
-const track=document.getElementById('carouselTrack');if(!track)return;
+const wrap=document.querySelector('.carousel-track-wrap');
+const track=document.getElementById('carouselTrack');if(!track||!wrap)return;
 const maxOff=Math.max(0,(track.querySelectorAll('.carousel-card').length-4)*CARD_W);
 carouselOffset=Math.min(Math.max(0,carouselOffset),maxOff);
-track.style.transform=`translateX(-${carouselOffset}px)`;
+wrap.scrollTo({left:carouselOffset,behavior:'smooth'});
 }
+document.querySelector('.carousel-track-wrap').addEventListener('scroll',function(){carouselOffset=this.scrollLeft;},{passive:true});
 document.getElementById('carouselNext').addEventListener('click',()=>{carouselOffset+=CARD_W*2;updateCarousel();});
 document.getElementById('carouselPrev').addEventListener('click',()=>{carouselOffset-=CARD_W*2;updateCarousel();});
 function resetFilters(clearSearch=true){
