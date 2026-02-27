@@ -51,15 +51,18 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-.mobile-drawer{display:none;position:fixed;top:var(--hh);left:0;right:0;bottom:0;background:#ffffff;z-index:998;padding:2rem 2rem 3rem;flex-direction:column;border-top:1px solid rgba(0,0,0,.08)}
+.mobile-drawer{display:none;position:fixed;top:var(--hh);left:0;right:0;bottom:0;background:#fff;z-index:998;padding:1.5rem 1.5rem 3rem;flex-direction:column;border-top:1px solid rgba(0,0,0,.08);overflow-y:auto}
 .mobile-drawer.open{display:flex}
 .mob-nav-item{border-bottom:1px solid rgba(0,0,0,.07)}
 .mob-nav-btn,.mob-nav-link{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--black);background:none;border:none;width:100%;cursor:pointer;padding:1.2rem 0}
-.mob-sub{display:none;flex-direction:column;padding-bottom:1rem}
+.mob-sub{display:none;flex-direction:column;padding-bottom:.75rem}
 .mob-sub.open{display:flex}
-.mob-sub-item{display:flex;align-items:center;gap:1rem;padding:.7rem 0;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.04)}
-.mob-sub-img{width:56px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0}
-.mob-sub-label{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.mob-sub-grid{display:flex;flex-direction:column;gap:0}
+.mob-sub-item{display:flex;align-items:center;gap:1rem;padding:.65rem 0;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.05)}
+.mob-sub-item:last-child{border-bottom:none}
+.mob-sub-img{width:52px;height:36px;object-fit:cover;border-radius:4px;flex-shrink:0}
+.mob-sub-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--black);flex:1}
+.mob-sub-item::after{content:'→';font-size:.75rem;opacity:.25;flex-shrink:0}
 .mob-dealer{display:flex;align-items:center;justify-content:center;margin-top:2rem;padding:1rem;background:var(--black);color:var(--white);border-radius:999px;font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
 @media(max-width:900px){nav.nav,.dealer-portal{display:none}.hamburger{display:flex}.header{padding:0 1rem 0 1.5rem}}
 #homePage{display:block}
@@ -404,28 +407,22 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 .page-anim-child{opacity:0}
 .page-anim-child.in{animation:pageInUp .55s cubic-bezier(.22,1,.36,1) forwards}
 .dropdown{position:relative}
-.dropdown-menu{display:grid;position:fixed;top:var(--hh);left:0;width:100vw;background:var(--white);border-top:1px solid rgba(0,0,0,.08);box-shadow:0 20px 60px rgba(0,0,0,.1);z-index:999;padding:2rem 2.5rem 2.5rem;grid-template-columns:repeat(5,1fr);gap:1.5rem;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .3s ease,transform .3s ease}
+.dropdown-menu{position:fixed;top:var(--hh);left:0;width:100vw;background:#fff;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1);z-index:999;padding:0;display:flex;opacity:0;transform:translateY(-4px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
 .dropdown-menu.open{opacity:1;transform:translateY(0);pointer-events:auto}
-.dropdown-menu.closing .menu-item{animation:menuItemOut .25s cubic-bezier(.36,0,.22,1) forwards}
-@keyframes menuItemOut{to{opacity:0;transform:translateY(20px)}}
-.header.dropdown-open{background:rgba(250,250,250,.98)!important;backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.08)}
+.header.dropdown-open{background:rgba(255,255,255,.98)!important;backdrop-filter:blur(12px);border-bottom:none}
 .header.dropdown-open nav.nav ul li a{color:var(--black)!important}
 .header.dropdown-open .dealer-portal{background:var(--black)!important;color:var(--white)!important;border-color:transparent!important}
 .header.dropdown-open .logo img{filter:none!important;mix-blend-mode:multiply!important}
 .header.dropdown-open .search-container input[type="text"]{border-color:rgba(0,0,0,.2)!important;color:var(--black)!important;background-image:url('https://img.icons8.com/ios-filled/50/000000/search.png')!important}
 .header.dropdown-open .typing-anim{color:rgba(0,0,0,.38)!important;border-right-color:rgba(0,0,0,.22)!important}
-@keyframes menuItemIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.menu-item{cursor:pointer;border-radius:8px;overflow:hidden;background:var(--grey);transition:transform .2s;opacity:0}
-.dropdown-menu.open .menu-item{animation:menuItemIn .3s cubic-bezier(.22,1,.36,1) forwards}
-.dropdown-menu.open .menu-item:nth-child(1){animation-delay:.04s}
-.dropdown-menu.open .menu-item:nth-child(2){animation-delay:.09s}
-.dropdown-menu.open .menu-item:nth-child(3){animation-delay:.14s}
-.dropdown-menu.open .menu-item:nth-child(4){animation-delay:.19s}
-.dropdown-menu.open .menu-item:nth-child(5){animation-delay:.24s}
-.menu-item:hover{transform:translateY(-3px)}
-.menu-item img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;transition:transform .4s cubic-bezier(0.23,1,0.32,1)}
-.menu-item:hover img{transform:scale(1.06)}
-.menu-text{background:var(--black);color:var(--white);padding:1rem 1.2rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;white-space:normal;line-height:1.4}
+.menu-item{cursor:pointer;flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:1.8rem 1.6rem 1.6rem;border-right:1px solid rgba(0,0,0,.08);transition:background .18s ease;background:#fff;gap:1.2rem}
+.menu-item:last-child{border-right:none}
+.menu-item:hover{background:#f7f7f5}
+.menu-item img{width:100%;aspect-ratio:5/4;object-fit:cover;display:block;border-radius:4px;transition:transform .4s cubic-bezier(0.23,1,0.32,1)}
+.menu-item:hover img{transform:scale(1.03)}
+.menu-text{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--black);line-height:1.45;display:flex;align-items:center;justify-content:space-between}
+.menu-text::after{content:'→';font-size:.8rem;font-weight:300;opacity:.35;transition:opacity .2s,transform .2s;flex-shrink:0;margin-left:.5rem}
+.menu-item:hover .menu-text::after{opacity:.8;transform:translateX(3px)}
 @media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto!important;min-height:unset;padding:10px 1.5rem 16px;gap:6px;overflow-x:hidden}#sizeWrap{flex-basis:100%;width:100%;padding:0!important;margin-top:6px;padding-bottom:22px!important;box-sizing:border-box;display:flex!important}#sizeMinLabel,#sizeMaxLabel{flex-shrink:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:3.5rem}#sizeTrack{flex:1;min-width:0;margin:0 .5rem}}
 @media(hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:auto!important}}
 </style>
@@ -462,11 +459,13 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 <div class="mob-nav-item">
 <button class="mob-nav-btn" id="mobProductsToggle">Products<svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l5 5 5-5"/></svg></button>
 <div class="mob-sub" id="mobProductsSub">
+<div class="mob-sub-grid">
 <div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Audio-Visual.jpg" alt=""><span class="mob-sub-label">Audio Visual Solutions</span></div>
 <div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg" alt=""><span class="mob-sub-label">Shading Solutions</span></div>
 <div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt=""><span class="mob-sub-label">Lighting &amp; Data Enclosures</span></div>
 <div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg" alt=""><span class="mob-sub-label">Furniture &amp; Cabinetry</span></div>
 <div class="mob-sub-item" onclick="showProducts();closeMobileDrawer()"><img class="mob-sub-img" src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Architectural-Movement.jpg" alt=""><span class="mob-sub-label">Architectural Movement</span></div>
+</div>
 </div>
 </div>
 <div class="mob-nav-item"><a class="mob-nav-btn" href="#" onclick="showAbout();closeMobileDrawer();return false">About</a></div>
@@ -480,7 +479,7 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 <div class="hero-overlay"></div>
 <div class="hero-content">
 <div class="hero-eyebrow">Designed and Manufactured in the USA and UK</div>
-<h1 class="hero-title">Browse All<br>Products</h1>
+<h1 class="hero-title">Intelligent<br>Environments</h1>
 <p class="hero-sub">Over 300 precision-engineered AV concealment and architectural automation mechanisms for residential, commercial and marine projects.</p>
 <div class="hero-cta">
 <a href="#" class="btn btn-white" onclick="showProducts();return false">Explore All Products</a>
@@ -880,9 +879,11 @@ else{header.classList.remove('on-dark');header.classList.add('scrolled');}
 }
 let _scrollTicking=false;
 window.addEventListener('scroll',()=>{if(_scrollTicking)return;_scrollTicking=true;requestAnimationFrame(()=>{updateHeaderStyle();_scrollTicking=false;});},{passive:true});
+let _revealObs=null;
 function initScrollReveal(){
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+if(_revealObs)_revealObs.disconnect();
+_revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');_revealObs.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>{if(!el.classList.contains('visible'))_revealObs.observe(el);});
 }
 let _vertTitleInterval=null;
 function initVertTitle(){
@@ -932,13 +933,12 @@ const link=document.querySelector('.dropdown>a');
 const menu=document.getElementById('dropdownMenu');
 const others=document.querySelectorAll('.nav-links>li:not(.dropdown)>a,.dealer-portal');
 let t;
-function openMenu(){clearTimeout(t);menu.querySelectorAll('.menu-item').forEach(m=>{m.style.animation='none';void m.offsetWidth;m.style.animation='';});menu.classList.add('open');header.classList.add('dropdown-open');}
+function openMenu(){clearTimeout(t);menu.classList.add('open');header.classList.add('dropdown-open');}
 function closeMenu(){
 if(!menu.classList.contains('open'))return;
-menu.classList.add('closing');
-const items=menu.querySelectorAll('.menu-item');
-items.forEach((item,i)=>{item.style.animationDelay=(items.length-1-i)*0.04+'s';});
-setTimeout(()=>{menu.classList.remove('open','closing');header.classList.remove('dropdown-open');items.forEach(item=>item.style.animationDelay='');updateHeaderStyle();},300);
+menu.classList.remove('open');
+header.classList.remove('dropdown-open');
+setTimeout(()=>updateHeaderStyle(),220);
 }
 link.addEventListener('mouseenter',()=>{clearTimeout(t);openMenu();});
 link.addEventListener('mouseleave',()=>{t=setTimeout(closeMenu,280);});
@@ -1004,15 +1004,17 @@ function hideAll(){
 ['homePage','productsPage','contactPage','aboutPage'].forEach(id=>document.getElementById(id).style.display='none');
 document.getElementById('filterBar').style.display='none';
 }
+let _topPicksRendered=false;
 function showHome(){
 hideAll();
 resetFilters(true);
-document.getElementById('homePage').style.display='block';
-window.scrollTo(0,0);
+const hp=document.getElementById('homePage');
+hp.style.display='block';
+window.scrollTo({top:0,behavior:'instant'});
 updateHeaderStyle();
 initScrollReveal();
 initVertTitle();
-if(all.length)renderTopPicks();
+if(all.length&&!_topPicksRendered){_topPicksRendered=true;renderTopPicks();}
 }
 function showProducts(){
 hideAll();
@@ -1063,9 +1065,9 @@ function backFromDetail(){
 if(detailOpenedFrom==='home'){
 hideAll();
 document.getElementById('homePage').style.display='block';
-document.querySelectorAll('#homePage .fade-in').forEach(el=>el.classList.add('visible'));
 updateHeaderStyle();
-window.scrollTo(0,savedScroll);
+window.scrollTo({top:savedScroll,behavior:'instant'});
+requestAnimationFrame(()=>initScrollReveal());
 } else showGrid();
 }
 (function(){
@@ -1167,6 +1169,8 @@ document.getElementById('gridInner').innerHTML='<div class="statewrap"><span>Cou
 }
 function renderTopPicks(){
 const track=document.getElementById('carouselTrack');if(!track||!all.length)return;
+if(_topPicksRendered&&track.children.length>0)return;
+_topPicksRendered=true;
 const picks=[];
 const step=Math.max(1,Math.floor(all.length/8));
 for(let i=0;i<8&&i*step<all.length;i++)picks.push(all[i*step]);
