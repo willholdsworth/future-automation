@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="transparent">
 <title>Future Automation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
@@ -52,7 +51,7 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-.mobile-drawer{display:none;position:fixed;top:var(--hh);left:0;right:0;bottom:0;background:var(--white);z-index:998;padding:2rem 2rem 3rem;flex-direction:column;border-top:1px solid rgba(0,0,0,.08)}
+.mobile-drawer{display:none;position:fixed;top:var(--hh);left:0;right:0;bottom:0;background:#ffffff;z-index:998;padding:2rem 2rem 3rem;flex-direction:column;border-top:1px solid rgba(0,0,0,.08)}
 .mobile-drawer.open{display:flex}
 .mob-nav-item{border-bottom:1px solid rgba(0,0,0,.07)}
 .mob-nav-btn,.mob-nav-link{display:flex;align-items:center;justify-content:space-between;font-size:.85rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--black);background:none;border:none;width:100%;cursor:pointer;padding:1.2rem 0}
@@ -78,6 +77,7 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .hero-title{font-size:clamp(3rem,6.5vw,6.5rem);font-weight:300;color:var(--white);line-height:1;letter-spacing:.04em;text-transform:uppercase;max-width:900px}
 .hero-sub{margin-top:1.5rem;font-size:clamp(.8rem,1.1vw,.95rem);color:rgba(255,255,255,.6);font-weight:300;max-width:440px;line-height:1.8;letter-spacing:.02em}
 .hero-cta{margin-top:2.5rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+@media(max-width:700px){.hero-cta{flex-direction:column;align-items:flex-start}}
 .hero-dots{position:absolute;bottom:1.8rem;left:3.5rem;z-index:10;display:flex;gap:.3rem;align-items:center}
 .hero-dot{height:36px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:0 6px;flex-shrink:0}
 .hero-dot-bar{width:2rem;height:2px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden;pointer-events:none;position:relative}
