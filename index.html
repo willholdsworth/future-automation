@@ -989,17 +989,43 @@ let productsLoaded=false;
 let detailOpenedFrom='products';
 let selectedThumbSrc=null;
 
+const SESSION_PREFIX='fa_cache_v1_';
+(function _hydrateCache(){
+  try{
+    for(let i=0;i<sessionStorage.length;i++){
+      const k=sessionStorage.key(i);
+      if(k&&k.startsWith(SESSION_PREFIX)){
+        const url=k.slice(SESSION_PREFIX.length);
+        const val=sessionStorage.getItem(k);
+        if(val)cache.set(url,val);
+      }
+    }
+  }catch(e){}
+})();
+
+function _cacheSet(url,html){
+  cache.set(url,html);
+  try{sessionStorage.setItem(SESSION_PREFIX+url,html);}catch(e){}
+}
+
 const _queue=[];
 let _running=0;
 const MAX_RPS=4;
 const INTERVAL=1000/MAX_RPS;
 
-function get(url){
+function get(url,priority){
   if(cache.has(url))return Promise.resolve(cache.get(url));
   return new Promise((resolve,reject)=>{
-    _queue.push({url,resolve,reject});
+    const job={url,resolve,reject};
+    if(priority==='high'){_queue.unshift(job);}
+    else{_queue.push(job);}
     _processQueue();
   });
+}
+
+function prefetch(url){
+  if(cache.has(url))return;
+  get(url,'low').catch(()=>{});
 }
 
 function _processQueue(){
@@ -1011,7 +1037,7 @@ function _processQueue(){
     .then(t=>{
       let html;
       try{html=JSON.parse(t).contents;}catch{html=t;}
-      cache.set(url,html);
+      _cacheSet(url,html);
       resolve(html);
     })
     .catch(reject)
@@ -1023,10 +1049,40 @@ function _processQueue(){
     });
 }
 
+const PREFETCH_URLS=[
+  BASE+'/Search',
+  BASE+'/Product/AudioVisual',
+  BASE+'/Shades',
+  BASE+'/Enclosure',
+  BASE+'/Furniture',
+  BASE+'/HomeCinema',
+];
+function _backgroundPrefetch(){
+  let i=0;
+  function next(){
+    if(i>=PREFETCH_URLS.length)return;
+    const url=PREFETCH_URLS[i++];
+    if(!cache.has(url)){
+      get(url,'low').then(next).catch(next);
+    }else{
+      next();
+    }
+  }
+  setTimeout(next,2000);
+}
+_backgroundPrefetch();
+
 const hamburger=document.getElementById('hamburger');
 const mobileDrawer=document.getElementById('mobileDrawer');
 hamburger.addEventListener('click',()=>{const open=mobileDrawer.classList.toggle('open');hamburger.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';if(open){header.classList.add('scrolled');header.classList.remove('on-dark');}else{updateHeaderStyle();}});
 function closeMobileDrawer(){mobileDrawer.classList.remove('open');hamburger.classList.remove('open');document.body.style.overflow='';updateHeaderStyle();}
+document.querySelectorAll('.menu-item[onclick]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    const m=el.getAttribute('onclick')||'';
+    const match=m.match(/showCategory\('([^']+)'/);
+    if(match)prefetch(BASE+match[1]);
+  },{once:false,passive:true});
+});
 document.getElementById('mobProductsToggle').addEventListener('click',function(){const sub=document.getElementById('mobProductsSub');const open=sub.classList.toggle('open');this.classList.toggle('expanded',open);});
 (function(){
 const link=document.querySelector('.dropdown>a');
@@ -1219,7 +1275,7 @@ if(heroConf.cinemaPro&&!heroConf.vid){
 fetchCinemaProHero().then(({vid,img})=>{if(vid||img)setHero(vid,img,heroConf.title||label,heroConf.eyebrow||'',heroConf.logo||'');}).catch(()=>{});
 }
 try{
-const html=await get(BASE+path);
+const html=await get(BASE+path,'high');
 const doc=new DOMParser().parseFromString(html,'text/html');
 if(!heroConf.cinemaPro)extractAndSetHero(doc,label,heroConf);
 renderCategoryContent(doc,path,subEl,label);
@@ -1230,7 +1286,7 @@ subEl.innerHTML='<div class="statewrap"><span>Could not load content.</span></di
 async function fetchCinemaProHero(){
 const fallback={vid:'',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg'};
 try{
-const html=await get('https://www.cinemapro.co.uk');
+const html=await get('https://www.cinemapro.co.uk','high');
 const doc=new DOMParser().parseFromString(html,'text/html');
 const videoEl=doc.querySelector('video[data-poster],video[poster],video[src]');
 if(videoEl){
@@ -1376,6 +1432,7 @@ section.querySelectorAll('.row.mb-3').forEach(row=>{
 const link=row.querySelector('a[href*="/Product/Details/"],a[href*="/Product/"]');
 if(!link)return;
 const href=link.getAttribute('href')||'';
+if(/Enclosure-Accessories/i.test(href))return;
 if(!isProductHref(href))return;
 const code=href.split('/').pop().toUpperCase();
 if(seen.has(code))return;seen.add(code);
@@ -1383,10 +1440,38 @@ const labelEl=row.querySelector('.EnclosureLinkText');
 const rawLabel=labelEl?labelEl.childNodes[0].textContent.trim():'';
 const descEl=row.querySelector('.EnclosureLinkText small');
 const sub=descEl?descEl.textContent.trim():'';
-rows.push({name:rawLabel||code,sub,image:sectionImgSrc,tags:[],code,url:BASE+href,screen:null});
+rows.push({name:rawLabel||code,sub,image:sectionImgSrc,tags:[],code,url:BASE+href,screen:null,_needsImg:true});
 });
 });
 return rows;
+}
+async function resolveEnclosureImages(products,container){
+const needsImg=products.filter(p=>p._needsImg);
+if(!needsImg.length)return;
+await Promise.all(needsImg.map(async p=>{
+try{
+const html=await get(p.url,'high');
+const doc=new DOMParser().parseFromString(html,'text/html');
+const candidates=[
+...doc.querySelectorAll('.owl-carousel img'),
+...doc.querySelectorAll('img')
+];
+const found=candidates.map(i=>i.getAttribute('src')||'').find(s=>
+s.startsWith('http')&&
+!s.toLowerCase().includes('logo')&&
+!isVid(s)&&
+/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(s)
+);
+if(found){
+p.image=found;
+p._needsImg=false;
+if(container){
+const match=container.querySelector(`.pcard[data-code="${p.code}"] img`);
+if(match)match.src=found;
+}
+}
+}catch(e){}
+}));
 }
 function scrapeBespokePage(doc){
 const seen=new Set();const rows=[];
@@ -1420,8 +1505,19 @@ gridHtml+=`<div class="cat-sub-card" onclick="catDrillDown('${href}','${safeLabe
 ${sub?`<div class="cat-sub-card-sub">${sub}</div>`:''}
 </div>`;
 });
+if(currentPath==='/Enclosure'){
+gridHtml+=`<div class="cat-sub-card" onclick="catDrillDown('/Enclosure/Enclosure-Accessories','Enclosure Accessories')">
+<div class="cat-sub-card-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg" alt="Enclosure Accessories" loading="lazy"></div>
+<div class="cat-sub-card-label">Enclosure Accessories</div>
+<div class="cat-sub-card-sub">Wiring, parts &amp; accessories for LCP enclosures</div>
+</div>`;
+}
 gridHtml+='</div>';
 container.innerHTML=crumbHtml+gridHtml;
+}else if(/Enclosure-Accessories/i.test(currentPath)){
+const accProds=scrapeEnclosurePartsTable(doc);
+if(accProds.length>0){showCatProducts(accProds,currentLabel,crumbHtml,container);}
+else{container.innerHTML=crumbHtml+'<div class="statewrap"><span>No accessories found.</span></div>';}
 }else if(candidateProducts.length>0){
 showCatProducts(candidateProducts,currentLabel,crumbHtml,container);
 }else if(productCards.length>0){
@@ -1441,7 +1537,10 @@ const enclosurePartsProds=scrapeEnclosurePartsTable(doc);
 if(enclosurePartsProds.length>0){showCatProducts(enclosurePartsProds,currentLabel,crumbHtml,container);}
 else{
 const enclosureProds=scrapeEnclosureSection(doc);
-if(enclosureProds.length>0){showCatProducts(enclosureProds,currentLabel,crumbHtml,container);}
+if(enclosureProds.length>0){
+showCatProducts(enclosureProds,currentLabel,crumbHtml,container);
+resolveEnclosureImages(enclosureProds,container);
+}
 else{
 const bespokeProds=scrapeBespokePage(doc);
 if(bespokeProds.length>0){showCatProducts(bespokeProds,currentLabel,crumbHtml,container);}
@@ -1464,6 +1563,7 @@ products.forEach((p,i)=>{
 const card=document.createElement('div');
 card.className='pcard';
 card.style.animationDelay=Math.min(i*10,200)+'ms';
+card.dataset.code=p.code;
 card.innerHTML=`<div class="pimg"><img loading="lazy" src="${p.image}" alt="${p.name}"></div><div class="pinfo"><div class="pname">${p.name}</div>${p.sub?`<div class="psub">${p.sub}</div>`:''}<div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div></div>`;
 card.onclick=()=>{openCatProductDetail(p);};
 grid.appendChild(card);
@@ -1492,6 +1592,7 @@ products.forEach((p,i)=>{
 const card=document.createElement('div');
 card.className='pcard';
 card.style.animationDelay=Math.min(i*10,200)+'ms';
+card.dataset.code=p.code;
 card.innerHTML=`<div class="pimg"><img loading="lazy" src="${p.image}" alt="${p.name}"></div><div class="pinfo"><div class="pname">${p.name}</div>${p.sub?`<div class="psub">${p.sub}</div>`:''}<div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div></div>`;
 card.onclick=()=>{openCatProductDetail(p);};
 grid.appendChild(card);
@@ -1643,7 +1744,7 @@ c.appendChild(grid);
 }
 async function initProducts(){
 try{
-const html=await get(BASE+'/Search');
+const html=await get(BASE+'/Search','high');
 const doc=new DOMParser().parseFromString(html,'text/html');
 all=[...doc.querySelectorAll('.SearchResult')].map(card=>{
 const link=card.querySelector('a');if(!link)return null;
@@ -1882,8 +1983,7 @@ function selectThumb(src,el){
   fadeToImg(src);
 }
 function loadSpecs(code){
-fetch(PROXY+encodeURIComponent(`${BASE}/API/ProductSpecTable/${code}`)).then(r=>r.text()).then(t=>{
-let html;try{html=JSON.parse(t).contents}catch{html=t}
+get(`${BASE}/API/ProductSpecTable/${code}`,'high').then(html=>{
 const el=document.getElementById('specTable');if(!el)return;
 if(!html||html.trim().length<10){el.innerHTML='<p style="font-size:12px;opacity:.5">No data available.</p>';return;}
 const tmp=document.createElement('div');tmp.innerHTML=html;
