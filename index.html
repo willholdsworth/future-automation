@@ -451,8 +451,6 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 .cat-breadcrumb-sep{color:rgba(0,0,0,.2);font-size:.5rem}
 .cat-sub-section-title{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2.5rem}
 @media(hover:none),(pointer:coarse){#cursor,#cursor-ring{display:none!important}body{cursor:default!important}a,button,.btn,.chip,.carousel-btn,.hero-dot,.hamburger,.menu-item,.pcard,.cat-card,.cat-sub-card,.case-card,.d-thumb,.vert-link,.ab-cta-btn,.cf-submit{cursor:auto!important}}
-
-/* ── 3D Model Viewer ── */
 .mv-btn-wrap{padding:.85rem 1rem;border-top:1px solid rgba(0,0,0,.08);display:flex;flex-shrink:0}
 .mv-btn{font-family:var(--font);font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--black);color:var(--white);border:none;padding:.75rem 2rem;border-radius:999px;cursor:none!important;transition:background .2s;display:inline-flex;align-items:center;gap:.6rem}
 .mv-btn:hover{background:#333}
@@ -981,6 +979,7 @@ inp.addEventListener('blur',()=>{if(!inp.value){el.style.display='';index=0;type
 inp.addEventListener('input',()=>{clearTimeout(interval);if(document.getElementById('productsPage').style.display!=='none'&&document.getElementById('gridView').style.display!=='none')render();});
 inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&inp.value.trim()&&document.getElementById('homePage').style.display!=='none')showProducts();});
 })();
+
 const PROXY='https://api.codetabs.com/v1/proxy?quest=';
 const BASE='https://www.futureautomation.co.uk';
 let all=[],filtered=[],typeFilter=new Set(),sizeFilter=null,savedScroll=0,minScreen=Infinity,maxScreen=0;
@@ -989,6 +988,41 @@ const productCache=new Map();
 let productsLoaded=false;
 let detailOpenedFrom='products';
 let selectedThumbSrc=null;
+
+const _queue=[];
+let _running=0;
+const MAX_RPS=4;
+const INTERVAL=1000/MAX_RPS;
+
+function get(url){
+  if(cache.has(url))return Promise.resolve(cache.get(url));
+  return new Promise((resolve,reject)=>{
+    _queue.push({url,resolve,reject});
+    _processQueue();
+  });
+}
+
+function _processQueue(){
+  if(!_queue.length||_running>=MAX_RPS)return;
+  const{url,resolve,reject}=_queue.shift();
+  _running++;
+  fetch(PROXY+encodeURIComponent(url))
+    .then(r=>r.text())
+    .then(t=>{
+      let html;
+      try{html=JSON.parse(t).contents;}catch{html=t;}
+      cache.set(url,html);
+      resolve(html);
+    })
+    .catch(reject)
+    .finally(()=>{
+      setTimeout(()=>{
+        _running--;
+        _processQueue();
+      },INTERVAL);
+    });
+}
+
 const hamburger=document.getElementById('hamburger');
 const mobileDrawer=document.getElementById('mobileDrawer');
 hamburger.addEventListener('click',()=>{const open=mobileDrawer.classList.toggle('open');hamburger.classList.toggle('open',open);document.body.style.overflow=open?'hidden':'';if(open){header.classList.add('scrolled');header.classList.remove('on-dark');}else{updateHeaderStyle();}});
@@ -1540,13 +1574,6 @@ window.scrollTo({top:savedScroll,behavior:'instant'});
 const obs=new IntersectionObserver((entries,obs)=>{entries.forEach((entry,i)=>{if(entry.isIntersecting){setTimeout(()=>{entry.target.classList.add('visible');obs.unobserve(entry.target);},i*200);}});},{threshold:.08});
 document.querySelectorAll('#homePage .fade-in').forEach(el=>obs.observe(el));
 })();
-async function get(url){
-if(cache.has(url))return cache.get(url);
-const r=await fetch(PROXY+encodeURIComponent(url));
-const t=await r.text();
-let html;try{html=JSON.parse(t).contents}catch{html=t}
-cache.set(url,html);return html;
-}
 function parseScreen(txt){const m=txt.replace(/\n/g,' ').match(/(\d+)\s*"\s*-\s*(\d+)/);return m?{min:+m[1],max:+m[2]}:null;}
 function isVid(src){return /\/[Vv]ideo\//i.test(src);}
 function buildSizeSlider(){
