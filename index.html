@@ -1669,7 +1669,13 @@ ${descHTML?`<div class="d-sec"><div class="d-seclbl">Overview</div><div class="d
 </div>
 </div>`;
 loadSpecs(p.code);
-  if(p.code.toUpperCase()==='CHR-C-M'){
+  var _glbMap={
+    'CHR-C-M':'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/MediaPack/2024+HOMEPAGE+BANNER+REDESIGN+TESTS/CHR-C-M+-+WEB+RES+ANIMATION+-+V2.glb',
+    'EAD100':'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/MediaPack/2024+HOMEPAGE+BANNER+REDESIGN+TESTS/EAD100+-+GLB+EXPORT+TEST+-+V1.glb',
+    'PS-MO':'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/MediaPack/2024+HOMEPAGE+BANNER+REDESIGN+TESTS/PS80-MO+-+PRODUCT+ANIMATION+-+V1.glb'
+  };
+  var _glbSrc=_glbMap[p.code.toUpperCase()];
+  if(_glbSrc){
     var galEl=document.querySelector('.d-gal');
     if(galEl){
       var bw=document.createElement('div');
@@ -1683,8 +1689,8 @@ loadSpecs(p.code);
       mvc.id='mv3dContainer';
       mvc.innerHTML='<div class="mv-loading" id="mvLoading">Loading 3D Model\u2026</div>'
         +'<model-viewer'
-        +' src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/MediaPack/2024+HOMEPAGE+BANNER+REDESIGN+TESTS/CHR-C-M+-+WEB+RES+ANIMATION+-+V2.glb"'
-        +' alt="CHR-C-M 3D Model"'
+        +' src="'+_glbSrc+'"'
+        +' alt="'+p.code+' 3D Model"'
         +' camera-controls'
         +' disable-pan'
         +' disable-zoom'
