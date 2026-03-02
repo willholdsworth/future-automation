@@ -110,7 +110,7 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .vert-reveal{padding:6rem 3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;border-bottom:1px solid rgba(0,0,0,.08)}
 @media(max-width:700px){.vert-reveal{grid-template-columns:1fr;padding:3rem 1.5rem}}
-.vert-title{font-size:clamp(4rem,8vw,8rem);font-weight:300;line-height:.9;letter-spacing:.04em;text-transform:uppercase;min-height:1.1em}
+.vert-title{font-weight:300;line-height:1;letter-spacing:.04em;text-transform:uppercase;display:block;overflow:hidden;white-space:nowrap;font-size:clamp(2.8rem,6vw,8rem);height:clamp(3.1rem,6.6vw,8.8rem)}
 .vert-title .char{display:inline-block;opacity:0;transform:translateY(60px);transition:opacity .6s ease,transform .6s ease}
 .vert-title .char.revealed{opacity:1;transform:translateY(0)}
 .vert-body{max-width:480px}
@@ -129,10 +129,11 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .carousel-nav{display:flex;gap:.75rem}
 .carousel-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--black);background:var(--black);color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1rem}
 .carousel-btn:hover{background:transparent;color:var(--black);border-color:var(--black)}
-.carousel-track-wrap{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}.carousel-track-wrap::-webkit-scrollbar{display:none}
+.carousel-track-wrap{overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;position:relative}.carousel-track-wrap::-webkit-scrollbar{display:none}
+.carousel-3d-badge{position:absolute;top:.8rem;right:.8rem;background:var(--black);color:var(--white);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:.22rem .6rem;border-radius:999px}
 .carousel-track{display:flex;gap:1.5rem;will-change:scroll-position;transform:translateZ(0)}
-.carousel-card{flex:0 0 300px;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--grey);transition:transform .3s ease;position:relative;scroll-snap-align:start}
-@media(max-width:700px){.carousel-card{flex:0 0 220px}}
+.carousel-card{flex:0 0 300px;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--grey);transition:transform .3s ease;position:relative}
+@media(max-width:700px){.carousel-card{flex:0 0 calc((100vw - 1.5rem - 2 * 24px) / 2.5)}}
 .carousel-card:hover{transform:translateY(-4px)}
 .carousel-card-img{width:100%;aspect-ratio:4/5;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#e8e8e6;padding:1.5rem}
 .carousel-card-img img{width:100%;height:100%;object-fit:contain;transition:transform .4s ease}
@@ -953,8 +954,9 @@ let _vertTitleInterval=null;
 function initVertTitle(){
 const el=document.getElementById('vertTitle');if(!el)return;
 if(_vertTitleInterval){clearInterval(_vertTitleInterval);_vertTitleInterval=null;}
-const words=['Precision.','Motion.','Luxury.'];let wi=0;
+const words=['MOTION.','IN-HOUSE.','ENGINEERING.','PRECISION.'];let wi=0;
 function setWord(word){
+el.style.fontSize='';
 el.innerHTML=word.split('').map((c,i)=>`<span class="char" style="transition-delay:${i*0.04}s">${c===' '?'&nbsp;':c}</span>`).join('');
 requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelectorAll('.char').forEach(c=>c.classList.add('revealed'))));
 }
@@ -1039,17 +1041,78 @@ if(firstFill){void firstFill.offsetWidth;firstFill.style.animation='';}
 resetHeroTimer();
 })();
 const CARD_W=316;
-let carouselOffset=0;
-function updateCarousel(){
-const wrap=document.querySelector('.carousel-track-wrap');
-const track=document.getElementById('carouselTrack');if(!track||!wrap)return;
-const maxOff=Math.max(0,(track.querySelectorAll('.carousel-card').length-4)*CARD_W);
-carouselOffset=Math.min(Math.max(0,carouselOffset),maxOff);
-wrap.scrollTo({left:carouselOffset,behavior:'smooth'});
+const CARD_GAP=24;
+const CARD_STEP=CARD_W+CARD_GAP;
+let _carouselPos=0;
+let _carouselSingleLen=0;
+let _carouselAnimating=false;
+
+function _animateTo(target,done){
+  if(_carouselAnimating)return;
+  _carouselAnimating=true;
+  const start=_carouselPos;
+  const dist=target-start;
+  const dur=420;
+  const t0=performance.now();
+  function step(now){
+    const t=Math.min((now-t0)/dur,1);
+    const ease=t<0.5?2*t*t:(4-2*t)*t-1;
+    _carouselPos=start+dist*ease;
+    const track=document.getElementById('carouselTrack');
+    if(track)track.style.transform=`translateX(${-_carouselPos}px)`;
+    if(t<1){requestAnimationFrame(step);}
+    else{
+      _carouselPos=target;
+      if(_carouselSingleLen>0){
+        if(_carouselPos<0)_carouselPos+=_carouselSingleLen;
+        if(_carouselPos>=_carouselSingleLen)_carouselPos-=_carouselSingleLen;
+        if(track)track.style.transform=`translateX(${-_carouselPos}px)`;
+      }
+      _carouselAnimating=false;
+      if(done)done();
+    }
+  }
+  requestAnimationFrame(step);
 }
-document.querySelector('.carousel-track-wrap').addEventListener('scroll',function(){carouselOffset=this.scrollLeft;},{passive:true});
-document.getElementById('carouselNext').addEventListener('click',()=>{carouselOffset+=CARD_W*2;updateCarousel();});
-document.getElementById('carouselPrev').addEventListener('click',()=>{carouselOffset-=CARD_W*2;updateCarousel();});
+
+function _jumpCarousel(dir){
+  const track=document.getElementById('carouselTrack');
+  const firstCard=track&&track.querySelector('.carousel-card');
+  const step=firstCard?(firstCard.offsetWidth+CARD_GAP):CARD_STEP;
+  let target=_carouselPos+dir*step;
+  target=Math.round(target/step)*step;
+  _animateTo(target);
+}
+
+document.getElementById('carouselNext').addEventListener('click',()=>_jumpCarousel(1));
+document.getElementById('carouselPrev').addEventListener('click',()=>_jumpCarousel(-1));
+
+(function initSwipe(){
+  const wrap=document.querySelector('.carousel-track-wrap');
+  let startX=0,startPos=0,dragging=false;
+  wrap.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;startPos=_carouselPos;dragging=true;},{passive:true});
+  wrap.addEventListener('touchmove',e=>{
+    if(!dragging)return;
+    const dx=startX-e.touches[0].clientX;
+    _carouselPos=startPos+dx;
+    if(_carouselSingleLen>0){
+      if(_carouselPos<0)_carouselPos+=_carouselSingleLen;
+      if(_carouselPos>=_carouselSingleLen)_carouselPos-=_carouselSingleLen;
+    }
+    const track=document.getElementById('carouselTrack');
+    if(track)track.style.transform=`translateX(${-_carouselPos}px)`;
+  },{passive:true});
+  wrap.addEventListener('touchend',()=>{
+    dragging=false;
+    const track=document.getElementById('carouselTrack');
+    const firstCard=track&&track.querySelector('.carousel-card');
+    const step=firstCard?(firstCard.offsetWidth+CARD_GAP):CARD_STEP;
+    const snap=Math.round(_carouselPos/step)*step;
+    _animateTo(snap);
+  },{passive:true});
+})();
+
+function updateCarousel(){}
 function resetFilters(clearSearch=true){
 typeFilter=new Set();
 sizeFilter=null;
@@ -1098,7 +1161,7 @@ const CAT_HEROES={
 '/Shades':{title:'Shading Solutions',eyebrow:'Bespoke Motorised Shading Solutions',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Shading.jpg'},
 '/Enclosure':{title:'Lighting & Data Enclosures',eyebrow:'DIN Rail Enclosures & Power Supplies',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Light-Data-Enclosures.jpg'},
 '/Furniture':{title:'Furniture & Moving Panels',eyebrow:'AV Furniture, Cabinets & Moving Doors',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Furniture-Cabinetry.jpg'},
-'/HomeCinema':{title:'Home Cinema Solutions',eyebrow:'Dedicated Private Theatre Solutions',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg',cinemaPro:true},
+'/HomeCinema':{title:'Home Cinema Solutions',eyebrow:'Dedicated Private Theatre Solutions',img:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Range/Cinema-Pro.jpg',vid:'https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/MediaPack/2024+HOMEPAGE+BANNER+REDESIGN+TESTS/CINEMAPRO+-+BANNER+VIDEO+-+2.mp4',logo:'https://d2oo5quzpsdib.cloudfront.net/Website/General/CinemaPro-Logo.png',cinemaPro:true},
 };
 let catStack=[];
 let _catProducts=[];
@@ -1115,11 +1178,11 @@ window.scrollTo(0,0);
 if(!fromStack){catStack.push({label,path});}
 const hKey=heroKeyFor(path);
 const heroConf=hKey?CAT_HEROES[hKey]:{};
-setHero(heroConf.vid||'',heroConf.img||'',heroConf.title||label,heroConf.eyebrow||'');
+setHero(heroConf.vid||'',heroConf.img||'',heroConf.title||label,heroConf.eyebrow||'',heroConf.logo||'');
 const subEl=document.getElementById('catSubGrid');
 subEl.innerHTML='<div class="statewrap"><div class="spinner"></div></div>';
-if(heroConf.cinemaPro){
-fetchCinemaProHero().then(({vid,img})=>{if(vid||img)setHero(vid,img,heroConf.title||label,heroConf.eyebrow||'');}).catch(()=>{});
+if(heroConf.cinemaPro&&!heroConf.vid){
+fetchCinemaProHero().then(({vid,img})=>{if(vid||img)setHero(vid,img,heroConf.title||label,heroConf.eyebrow||'',heroConf.logo||'');}).catch(()=>{});
 }
 try{
 const html=await get(BASE+path);
@@ -1183,7 +1246,7 @@ if(anyImg){setHero('',anyImg.getAttribute('src'),fallbackLabel,'');return;}
 setHero(fallbackConf.vid||'',fallbackConf.img||'',fallbackConf.title||fallbackLabel,fallbackConf.eyebrow||'');
 }
 function isVideoUrl(src){return/\.(mp4|webm|ogg|mov|m3u8)(\?.*)?$/i.test(src)||/video\.squarespace-cdn\.com/i.test(src);}
-function setHero(vidSrc,imgSrc,title,eyebrow){
+function setHero(vidSrc,imgSrc,title,eyebrow,logo){
 const heroBg=document.getElementById('catHeroBg');
 heroBg.innerHTML='';
 const realVid=vidSrc&&isVideoUrl(vidSrc)?vidSrc:'';
@@ -1208,7 +1271,12 @@ v.src=realVid;v.play().catch(()=>{});
 const i=document.createElement('img');i.src=realImg;i.alt=title;
 heroBg.appendChild(i);
 }
-document.getElementById('catHeroTitle').textContent=title;
+const titleEl=document.getElementById('catHeroTitle');
+if(logo){
+titleEl.innerHTML=`<img src="${logo}" alt="${title}" style="height:clamp(4rem,8vw,9rem);width:auto;display:block;filter:invert(1) brightness(2);">`;
+}else{
+titleEl.textContent=title;
+}
 document.getElementById('catHeroEyebrow').textContent=eyebrow;
 }
 function renderCategoryContent(doc,currentPath,container,currentLabel){
@@ -1565,24 +1633,59 @@ buildSizeSlider();render();renderTopPicks();
 document.getElementById('gridInner').innerHTML='<div class="statewrap"><span>Could not load products. Please check your connection.</span></div>';
 }
 }
-function renderTopPicks(){
+async function renderTopPicks(){
 const track=document.getElementById('carouselTrack');if(!track||!all.length)return;
 if(_topPicksRendered&&track.children.length>0)return;
 _topPicksRendered=true;
-const picks=[];
+const featured3D=['CHR-C-M','EAD100','PS-MO'];
+const featuredImgOverrides={'EAD100':'https://d2oo5quzpsdib.cloudfront.net/Website/Product/Main/EAD100.png'};
+const featuredCards=await Promise.all(featured3D.map(async code=>{
+  let p=all.find(x=>x.code===code);
+  if(!p){
+    try{
+      const html=await get(BASE+'/Product/Details/'+code);
+      const doc=new DOMParser().parseFromString(html,'text/html');
+      const imgs=[...doc.querySelectorAll('.owl-carousel img,img')].map(i=>i.getAttribute('src')||'').filter(s=>s.startsWith('http')&&!/logo/i.test(s));
+      const nameEl=doc.querySelector('h1,.ProductName');
+      p={code,name:nameEl?nameEl.textContent.trim():code,sub:'',image:imgs[0]||'',tags:[],screen:null,url:BASE+'/Product/Details/'+code};
+    }catch(e){return null;}
+  }
+  if(!p)return null;
+  const img=featuredImgOverrides[code]||p.image;
+  return{...p,image:img};
+}));
+const validFeatured=featuredCards.filter(Boolean);
+const rest=[];
 const step=Math.max(1,Math.floor(all.length/8));
-for(let i=0;i<8&&i*step<all.length;i++)picks.push(all[i*step]);
-track.innerHTML=picks.map((p,i)=>`
-<div class="carousel-card" onclick="openProductByCode('${p.code}')">
-${i===1||i===3?'<div class="carousel-card-new">New</div>':''}
+for(let i=0;i<8&&i*step<all.length;i++){
+  const p=all[i*step];
+  if(!featured3D.includes(p.code))rest.push(p);
+}
+const picks=[...validFeatured,...rest];
+function cardHTML(p,i){
+  const showNew=i<2;
+  return `<div class="carousel-card" onclick="openProductByCode('${p.code}')">
+${showNew?'<div class="carousel-card-new">New</div>':''}
 <div class="carousel-card-img"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
 <div class="carousel-card-info">
 <div class="carousel-card-code">${p.code}</div>
 <div class="carousel-card-name">${p.name}</div>
 ${p.sub?`<div class="carousel-card-sub">${p.sub}</div>`:''}
 </div>
-</div>`).join('');
-updateCarousel();
+</div>`;
+}
+const singleHTML=picks.map((p,i)=>cardHTML(p,i)).join('');
+track.innerHTML=singleHTML+singleHTML;
+track.style.display='flex';
+track.style.gap=CARD_GAP+'px';
+track.style.willChange='transform';
+track.style.transform='translateX(0)';
+_carouselPos=0;
+requestAnimationFrame(()=>{
+  const firstCard=track.querySelector('.carousel-card');
+  const step=firstCard?(firstCard.offsetWidth+CARD_GAP):CARD_STEP;
+  _carouselSingleLen=step*picks.length;
+});
 }
 async function openProductByCode(code){
 detailOpenedFrom='home';
@@ -1598,7 +1701,11 @@ document.getElementById('detailContent').innerHTML=`<div class="d-layout"><div c
 const wait=()=>new Promise(r=>setTimeout(r,300));
 let attempts=0;
 while(!all.length&&attempts<20){await wait();attempts++;}
-const p=all.find(x=>x.code===code.toUpperCase());
+let p=all.find(x=>x.code===code.toUpperCase());
+if(!p){
+  const imgOverrides={'EAD100':'https://d2oo5quzpsdib.cloudfront.net/Website/Product/Main/EAD100.png'};
+  p={code:code.toUpperCase(),name:code.toUpperCase(),sub:'',image:imgOverrides[code.toUpperCase()]||'',tags:[],screen:null,url:BASE+'/Product/Details/'+code.toUpperCase()};
+}
 if(p)openDetail(p,true);
 }
 async function openDetail(p,fromHome){
@@ -1802,7 +1909,7 @@ if(s.page==='products'){__showProducts();done();return;}
 if(s.page==='contact'){__showContact();done();return;}
 if(s.page==='about'){__showAbout();done();return;}
 if(s.page==='category'){catStack=s.stack||[];__showCategory(s.path,s.label,true).then(done).catch(done);return;}
-if(s.page==='detail'){detailOpenedFrom=s.from||'products';const p=all.find(x=>x.code===s.code);if(p){__openDetail(p,s.from==='home').then(done).catch(done);}else{openProductByCode(s.code);done();}return;}
+if(s.page==='detail'){detailOpenedFrom=s.from||'products';const p=all.find(x=>x.code===s.code);if(p){__openDetail(p,s.from==='home').then(done).catch(done);}else{openProductByCode(s.code).then(done).catch(done);}return;}
 __showHome();done();
 });
 showHome();
