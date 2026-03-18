@@ -14,7 +14,7 @@
 html,body{font-family:var(--font);background:var(--white);color:var(--black);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
 button,input,textarea,select{font-family:var(--font)}
-body{cursor:none}
+body{cursor:default}
 #cursor{position:fixed;width:8px;height:8px;border-radius:50%;pointer-events:none;z-index:10000;background:var(--white);will-change:transform;top:0;left:0;transform:translate3d(-50%,-50%,0);transition:width .15s,height .15s,opacity .15s;mix-blend-mode:difference}
 #cursor-ring{position:fixed;width:34px;height:34px;border:1.5px solid var(--white);border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;will-change:transform;transition:width .2s,height .2s,opacity .2s;mix-blend-mode:difference}
 body:has(a:hover) #cursor{width:14px;height:14px}
