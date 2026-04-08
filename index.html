@@ -183,14 +183,27 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .case-card-info{padding:1rem 0 .5rem}
 .case-card-title{font-size:.88rem;font-weight:700;margin-bottom:.25rem;letter-spacing:.04em;text-transform:uppercase}
 .case-card-sub{font-size:.68rem;color:var(--mid);letter-spacing:.1em;text-transform:uppercase;font-weight:300}
-#filterBar{position:fixed;top:var(--hh);left:0;right:0;z-index:700;background:rgba(250,250,250,.96);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08);display:none;align-items:center;gap:8px;padding:0 2.5rem;height:60px;overflow-x:auto}
-#filterBar::-webkit-scrollbar{display:none}
-.chip{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.4rem 1.1rem;border-radius:999px;border:1px solid rgba(0,0,0,.2);background:transparent;color:var(--black);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+#filterWrap{position:fixed;top:var(--hh);left:0;right:0;z-index:700;display:none;flex-direction:column}
+#filterRow1{background:rgba(250,250,250,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px;padding:0 2.5rem;height:52px;overflow-x:auto;flex-shrink:0}
+#filterRow1::-webkit-scrollbar{display:none}
+#filterRow2{background:rgba(250,250,250,.96);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;gap:8px;padding:0 2.5rem;height:48px;overflow-x:auto;flex-shrink:0}
+#filterRow2::-webkit-scrollbar{display:none}
+#subFilterBar{background:rgba(242,242,240,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,.07);display:none;align-items:center;gap:8px;padding:0 2.5rem;min-height:44px;overflow:visible;flex-shrink:0;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.chip{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.38rem 1rem;border-radius:999px;border:1px solid rgba(0,0,0,.2);background:transparent;color:var(--black);cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .chip.on{background:var(--black);color:var(--white);border-color:var(--black)}
-.chip-sep{width:1px;height:16px;background:rgba(0,0,0,.12);flex-shrink:0}
-#sizeWrap{display:flex;align-items:center;gap:8px;flex-shrink:0;padding-left:8px}
-#sizeTrack{position:relative;height:2px;background:rgba(0,0,0,.12);border-radius:2px;flex:none;width:260px}
-@media(min-width:1100px){#sizeTrack{width:380px}}
+.chip.cat{font-size:.56rem;padding:.3rem .85rem;border-color:rgba(0,0,0,.14)}
+.chip-sep{width:1px;height:14px;background:rgba(0,0,0,.12);flex-shrink:0}
+.dd-wrap{position:relative;flex-shrink:0}
+.dd-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:160px;background:var(--white);border:1px solid rgba(0,0,0,.12);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);z-index:1100;display:none;flex-direction:column;padding:4px 0}
+.dd-menu.open{display:flex}
+.dd-item{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1rem;cursor:pointer;white-space:nowrap;transition:background .1s}
+.dd-item:hover{background:rgba(0,0,0,.05)}
+.dd-item.on{background:var(--black);color:var(--white)}
+.dd-item.reset{opacity:.4;font-weight:400;letter-spacing:.08em;text-transform:none;border-top:1px solid rgba(0,0,0,.07);margin-top:2px}
+.dd-item.reset:hover{opacity:.65;background:transparent}
+#sizeWrap{display:none;align-items:center;gap:8px;flex-shrink:0}
+#sizeTrack{position:relative;height:2px;background:rgba(0,0,0,.12);border-radius:2px;flex:none;width:220px}
+@media(min-width:1100px){#sizeTrack{width:320px}}
 #sizeFill{position:absolute;left:0;top:0;height:100%;background:var(--black);border-radius:2px;pointer-events:none}
 #sizeSlider{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100%;height:24px;opacity:0;cursor:pointer;margin:0;-webkit-appearance:none;z-index:2}
 #sizeHandle{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--black);pointer-events:none;z-index:1}
@@ -199,8 +212,10 @@ nav.nav ul li a:hover::after{transform:scaleX(1);transform-origin:left}
 .size-tick-line{width:1px;height:4px;background:#000;opacity:.15}
 .size-tick-label{font-size:.52rem;font-weight:600;color:#000;opacity:.5;white-space:nowrap}
 #sizeMinLabel,#sizeMaxLabel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);opacity:.5}
-#productsPage{padding-top:calc(var(--hh) + 60px + 24px)}
-@media(max-width:760px){#productsPage{padding-top:calc(var(--hh) + 60px + 16px)}}
+#productsPage{padding-top:calc(var(--hh) + 100px + 24px)}
+#productsPage.sub-open{padding-top:calc(var(--hh) + 148px + 24px)}
+@media(max-width:760px){#productsPage{padding-top:calc(var(--hh) + 100px + 16px)}#productsPage.sub-open{padding-top:calc(var(--hh) + 148px + 16px)}}
+#productsPage.detail-mode{padding-top:var(--hh)}
 #productsPage.detail-mode{padding-top:var(--hh)}
 #gridView{padding:24px 2.5rem 80px}
 @media(max-width:700px){#gridView{padding:16px 1.5rem 60px}}
@@ -447,7 +462,7 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 .menu-text{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--black);line-height:1.45;display:flex;align-items:center;justify-content:space-between}
 .menu-text::after{content:'→';font-size:.8rem;font-weight:300;opacity:.35;transition:opacity .2s,transform .2s;flex-shrink:0;margin-left:.5rem}
 .menu-item:hover .menu-text::after{opacity:.8;transform:translateX(3px)}
-@media(max-width:900px){#filterBar{flex-wrap:wrap;height:auto!important;min-height:unset;padding:10px 1.5rem 16px;gap:6px;overflow-x:hidden}#sizeWrap{flex-basis:100%;width:100%;padding:0!important;margin-top:6px;padding-bottom:22px!important;box-sizing:border-box;display:flex!important}#sizeMinLabel,#sizeMaxLabel{flex-shrink:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:3.5rem}#sizeTrack{flex:1;min-width:0;margin:0 .5rem}}
+@media(max-width:900px){#filterRow1,#filterRow2{padding:0 1.2rem;gap:5px}#subFilterBar{padding:0 1.2rem 6px;gap:5px}.chip{font-size:.56rem;padding:.32rem .85rem}.chip.cat{font-size:.52rem;padding:.28rem .72rem}}
 #categoryPage{padding-top:var(--hh)}
 .cat-page-hero{position:relative;height:40vh;min-height:200px;overflow:hidden;background:var(--black)}
 @media(max-width:700px){.cat-page-hero{height:26vh;min-height:160px}}
@@ -646,16 +661,33 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 <div class="footer-bottom"><span class="footer-copy">© 2026 Future Automation. All rights reserved.</span><div class="footer-socials"><a href="#">LinkedIn</a><a href="#">Instagram</a><a href="#">YouTube</a></div></div>
 </footer>
 </div>
-<div id="filterBar">
+<div id="filterWrap">
+<div id="filterRow1">
 <button class="chip" data-type="INDOOR">Indoor</button>
 <button class="chip" data-type="OUTDOOR">Outdoor</button>
+<div class="chip-sep"></div>
 <button class="chip" data-type="MARINE">Marine</button>
 <button class="chip" data-type="NOT MARINE">Not Marine</button>
-<div class="chip-sep"></div>
-<div id="sizeWrap" style="display:none">
+</div>
+<div id="filterRow2">
+<button class="chip cat" data-cat="DISPLAY">Display</button>
+<button class="chip cat" data-cat="PROJECTOR">Projector</button>
+<button class="chip cat" data-cat="SPEAKER">Speaker</button>
+<button class="chip cat" data-cat="ARCHITECTURAL">Architectural</button>
+<button class="chip cat" data-cat="SHADING">Shading</button>
+<button class="chip cat" data-cat="ENCLOSURES">Enclosures</button>
+<button class="chip cat" data-cat="CINEMAPRO">CinemaPro</button>
+<button class="chip cat" data-cat="AVRACK">AV Rack</button>
+<button class="chip cat" data-cat="SECURITY">Security</button>
+<button class="chip cat" data-cat="CONNECTIVITY">Connectivity</button>
+</div>
+<div id="subFilterBar">
+<div id="subChipArea" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"></div>
+<div id="sizeWrap" style="display:none;align-items:center;gap:8px;flex-shrink:0">
 <span id="sizeMinLabel">ALL</span>
 <div id="sizeTrack"><div id="sizeFill"></div><div id="sizeHandle"></div><input type="range" id="sizeSlider" min="0" max="100" value="0" step="1"><div id="sizeTicks"></div></div>
 <span id="sizeMaxLabel">—</span>
+</div>
 </div>
 </div>
 <div id="productsPage">
@@ -837,6 +869,7 @@ function initVertTitle(){
 var PROXY='https://api.codetabs.com/v1/proxy?quest=';
 var BASE='https://www.futureautomation.co.uk';
 var all=[],filtered=[],typeFilter=new Set(),sizeFilter=null,savedScroll=0,minScreen=Infinity,maxScreen=0;
+var activeCat=null,activeSub=null;
 var cache=new Map();
 var productCache=new Map();
 var productsLoaded=false;
@@ -1022,16 +1055,21 @@ document.getElementById('carouselPrev').addEventListener('click',function(){_jum
 })();
 
 function resetFilters(clearSearch){
-  typeFilter=new Set();sizeFilter=null;
-  document.querySelectorAll('[data-type]').forEach(function(b){b.classList.remove('on');});
+  typeFilter=new Set();sizeFilter=null;activeCat=null;activeSub=null;
+  document.querySelectorAll('[data-type],[data-cat]').forEach(function(b){b.classList.remove('on');});
   var slider=document.getElementById('sizeSlider');if(slider)slider.value=0;
   var fill=document.getElementById('sizeFill');var handle=document.getElementById('sizeHandle');var minLbl=document.getElementById('sizeMinLabel');
   if(fill)fill.style.width='0%';if(handle)handle.style.left='0%';if(minLbl)minLbl.textContent='ALL';
+  var sub=document.getElementById('subFilterBar');if(sub)sub.style.display='none';
+  var pp=document.getElementById('productsPage');if(pp)pp.classList.remove('sub-open');
+  var sw=document.getElementById('sizeWrap');if(sw)sw.style.display='none';
   if(clearSearch){var srch=document.getElementById('siteSearch');if(srch)srch.value='';}
 }
 function hideAll(){
   ['homePage','productsPage','categoryPage','contactPage','aboutPage'].forEach(function(id){document.getElementById(id).style.display='none';});
-  document.getElementById('filterBar').style.display='none';
+  document.getElementById('filterWrap').style.display='none';
+  var sub=document.getElementById('subFilterBar');if(sub)sub.style.display='none';
+  var pp=document.getElementById('productsPage');if(pp)pp.classList.remove('sub-open');
 }
 var _topPicksRendered=false;
 function showHome(){
@@ -1047,7 +1085,7 @@ function showProducts(){
   document.getElementById('productsPage').classList.remove('detail-mode');
   document.getElementById('detailView').style.display='none';
   document.getElementById('gridView').style.display='block';
-  document.getElementById('filterBar').style.display='flex';
+  document.getElementById('filterWrap').style.display='flex';
   header.classList.remove('on-dark');header.classList.add('scrolled');
   window.scrollTo(0,0);
   if(!productsLoaded){productsLoaded=true;initProducts();}else render();
@@ -1294,7 +1332,7 @@ function showCatProducts(products,label,crumbHtml,container){
   document.getElementById('productsPage').classList.remove('detail-mode');
   document.getElementById('detailView').style.display='none';
   document.getElementById('gridView').style.display='block';
-  document.getElementById('filterBar').style.display='none';
+  document.getElementById('filterWrap').style.display='none';
   header.classList.remove('on-dark');header.classList.add('scrolled');
   window.scrollTo(0,0);
   var titleEl=document.querySelector('.products-page-title');if(titleEl)titleEl.innerHTML=label;
@@ -1318,7 +1356,7 @@ function openCatProductDetail(p){
   document.getElementById('productsPage').style.display='block';
   document.getElementById('productsPage').classList.add('detail-mode');
   document.getElementById('gridView').style.display='none';
-  document.getElementById('filterBar').style.display='none';
+  document.getElementById('filterWrap').style.display='none';
   document.getElementById('detailView').style.display='block';
   document.getElementById('backBtn').querySelector('span').textContent='Back';
   window.scrollTo(0,0);
@@ -1350,9 +1388,10 @@ function showGrid(){
   document.getElementById('productsPage').classList.remove('detail-mode');
   document.getElementById('detailView').style.display='none';
   document.getElementById('gridView').style.display='block';
-  document.getElementById('filterBar').style.display='flex';
+  document.getElementById('filterWrap').style.display='flex';
   header.classList.remove('on-dark');header.classList.add('scrolled');
   window.scrollTo(0,savedScroll);
+  renderSubFilters();
 }
 function backFromDetail(){
   if(detailOpenedFrom==='home'){hideAll();document.getElementById('homePage').style.display='block';updateHeaderStyle();window.scrollTo({top:savedScroll,behavior:'instant'});requestAnimationFrame(initScrollReveal);}
@@ -1376,14 +1415,107 @@ function buildSizeSlider(){
   document.getElementById('sizeWrap').style.display='flex';
 }
 
-document.querySelectorAll('[data-type]').forEach(function(btn){
-  btn.onclick=function(){
-    var type=btn.dataset.type,isOn=btn.classList.contains('on');
-    if(type==='MARINE'&&!isOn){var nm=document.querySelector('[data-type="NOT MARINE"]');if(nm)nm.classList.remove('on');typeFilter.delete('NOT MARINE');}
-    if(type==='NOT MARINE'&&!isOn){var m=document.querySelector('[data-type="MARINE"]');if(m)m.classList.remove('on');typeFilter.delete('MARINE');}
-    btn.classList.toggle('on');if(isOn)typeFilter.delete(type);else typeFilter.add(type);render();
-  };
-});
+var CAT_CFG={
+  DISPLAY:{
+    kw:['wall mount','ceiling mount','ceiling hinge','floor mount','floor to ceiling','tv lift','display lift','hinge up','under bed','in floor','portrait to landscape','table top','rolling art','picture lift','picture side','picture split','sliding panel','in wall','wall box','universal wall box','easel'],
+    subs:[
+      {key:'MANUAL', label:'Manual',
+       kw:['fixed','flat bracket','fixed wall mount','double arm','static','flat', 'vesa','pull & swivel', 'pull and swivel', 'manual', 'wall mount, in-wall box','aluminium articulated', 'manually', 'marine tv wall mount &']},
+      {key:'MOTORISED', label:'Motorised',
+       kw:['tv lift','display lift','motorised','motorized','electric advance','hinge up','under bed','in floor','servo','telescope','swivel','ttl','table top tv rotator'],showSize:true},
+      {key:'INWALL', label:'In-Wall Storage',
+       kw:['universal wall box','in wall portrait','wall box','ub-bcp','ub-jba','ub-vcp','ubm','mpo-','frame32','frame43']},
+      {key:'ACCESSORIES', label:'Accessories',
+       kw:['adapter','vesa adapter','horizontal offset','vertical offset','accessory mount','stud rail','clamping slide','ir-remote','ir-lead','rf-kit','ps-srk','ps80-srk','ps-csk','infrared','remote control']}
+    ]
+  },
+  PROJECTOR:{
+    kw:['projector','port glass','projector screen','drop down screen','fixed frame screen','masking','projector lift','projector mount','projector hinge','projector wall','projector ceiling','projector slide','projector concealment'],
+    subs:[
+      {key:'LIFT',    label:'Lift',        kw:['projector lift','marine projector lift','outdoor marine projector','projector wall lift']},
+      {key:'MOUNT',   label:'Mount',       kw:['projector ceiling mount','projector mount','motorised projector']},
+      {key:'SCREENS', label:'Screens',     kw:['projector screen','drop down','fixed frame','masking']},
+      {key:'PORTGLASS',label:'Port Glass', kw:['port glass']},
+      {key:'CONCEALMENT',label:'Concealment',kw:['projector concealment','projector hinge','projector slide']},
+      {key:'SERVICING',label:'Servicing',  kw:['projector slide tray','service','slide tray']}
+    ]
+  },
+  SPEAKER:{
+    kw:['speaker','soundbar','sonos','beosound','in-floor speaker'],
+    subs:[
+      {key:'LIFT',  label:'Lift',  kw:['speaker lift','in-floor speaker','speaker drop','soundbar drop','speaker hinge']},
+      {key:'MOUNT', label:'Mount', kw:['speaker mount','sonos','beosound','usm','sm-beam']}
+    ]
+  },
+  ARCHITECTURAL:{
+    kw:['moving door','moving panel','sliding panel system','floor to ceiling mount','floor to ceiling'],
+    subs:[
+      {key:'PANEL', label:'Panel', kw:['sliding panel system','floor to ceiling mount','floor to ceiling','sps-']},
+      {key:'DOOR',  label:'Door',  kw:['moving door','motorised moving door']}
+    ]
+  },
+  SHADING:{
+    kw:['unichannel','unichannel side','curtain track','shade power supply','shading enclosure','silent gliss','al675','al965'],
+    subs:[
+      {key:'CONCEALMENT',label:'Concealment',kw:['unichannel','unichannel side','curtain track skim','ctsk','uch']},
+      {key:'MOUNTS',     label:'Mounts',     kw:['tv lift with push flap','al675','al965','shade bracket','motor bracket']},
+      {key:'ACCESSORIES',label:'Accessories',kw:['shade power supply','spu10','spu40','silent gliss','sgse']}
+    ]
+  },
+  ENCLOSURES:{
+    kw:['enclosure for lutron','enclosure for loxone','enclosure for control4','enclosure for crestron','enclosure for rako','enclosure for vitrea','enclosure for knx','lighting enclosure','data enclosure','in wall rack','wiring enclosure','din rail blanking','terminal blocks','module trim','blanking plate','landing board','pre wiring kit','backbox','electrical enclosure'],
+    subs:[
+      {key:'LIGHTING',   label:'Lighting',    kw:['lighting enclosure','enclosure for lutron','enclosure for loxone','enclosure for control4','enclosure for knx','enclosure for rako','enclosure for vitrea','low voltage lighting','feed-through enclosure','lcp','c4e','lxn','knx','rcp','vit']},
+      {key:'SHADING',    label:'Shading',     kw:['shading enclosure','silent gliss shading','sgse','shade power','spdu']},
+      {key:'NETWORK',    label:'Network',     kw:['data enclosure','ccp','crestron','network enclosure','patch','deb']},
+      {key:'CONTROL',    label:'Control',     kw:['enclosure for loxone','enclosure for control4','enclosure for vitrea','enclosure for knx','enclosure for rako','lxn','c4e','vit','knx','rcp']},
+      {key:'TERMINATION',label:'Termination', kw:['in wall rack','rack enclosure','rte','iwre','electrical enclosure module']},
+      {key:'EXPANSION',  label:'Expansion',   kw:['expansion','expansion lighting enclosure','expansion enclosure','-re','-lps']},
+      {key:'ACCESSORIES',label:'Accessories', kw:['blanking plate','din rail blanks','terminal blocks','module trim','landing board','pre wiring kit','backbox','clamping','mounting kit','lutron connect bridge','swkit','lcp-bp','lcp-drb','lcp-mtp','lcp-tb','c4e-bp','lxn-bp','lxn-mtp','usjbs','ee-mmk','ap-din']}
+    ]
+  },
+  CINEMAPRO:{
+    kw:['cinemapro','cinema pro','home cinema','seating','acoustic'],
+    subs:[
+	
+	
+	]
+  },
+  AVRACK:{
+    kw:['smart airflow','rack termination','airflow control','sac-t','sac-u','rte'],
+    subs:[]
+  },
+  SECURITY:{
+    kw:['camera','dome camera','cctv','video conference camera'],
+    subs:[]
+  },
+  CONNECTIVITY:{
+    kw:['starlink'],
+    subs:[]
+  }
+};
+
+var _fetchedCatProducts={};
+
+function _hay(p){return (p.name+' '+(p.sub||'')+' '+p.code).toLowerCase();}
+
+function pMatchesCat(p,cat){
+  var cfg=CAT_CFG[cat];if(!cfg)return false;
+  if(_fetchedCatProducts[cat]&&_fetchedCatProducts[cat].indexOf(p.code)>-1)return true;
+  var h=_hay(p);
+  return cfg.kw.some(function(k){return h.includes(k);});
+}
+
+function pMatchesSub(p,cat,sub){
+  var cfg=CAT_CFG[cat];if(!cfg)return false;
+  var subCfg=cfg.subs.find(function(s){return s.key===sub;});
+  if(!subCfg)return false;
+  if(_fetchedCatProducts[cat+':'+sub]){
+    return _fetchedCatProducts[cat+':'+sub].indexOf(p.code)>-1;
+  }
+  var h=_hay(p);
+  return subCfg.kw.some(function(k){return h.includes(k);});
+}
 
 function tagMatch(tag,type){
   var tu=tag.toUpperCase().trim();
@@ -1394,11 +1526,18 @@ function tagMatch(tag,type){
   return false;
 }
 function matchAll(p){if(!typeFilter.size)return true;for(var type of typeFilter){if(!p.tags.some(function(tag){return tagMatch(tag,type);}))return false;}return true;}
+function matchCat(p){
+  if(!activeCat)return true;
+  if(!pMatchesCat(p,activeCat))return false;
+  if(activeSub)return pMatchesSub(p,activeCat,activeSub);
+  return true;
+}
 function getFiltered(){
   var q=document.getElementById('siteSearch').value.toLowerCase().trim();
   return all.filter(function(p){
     if(q&&!p.name.toLowerCase().includes(q)&&!p.code.toLowerCase().includes(q)&&!(p.sub||'').toLowerCase().includes(q))return false;
     if(!matchAll(p))return false;
+    if(!matchCat(p))return false;
     if(sizeFilter){if(!p.screen)return false;if(p.screen.min>sizeFilter.max||p.screen.max<sizeFilter.min)return false;}
     return true;
   });
@@ -1418,6 +1557,66 @@ function render(){
   c.appendChild(grid);
 }
 
+function renderSubFilters(){
+  var bar=document.getElementById('subFilterBar');
+  var chipArea=document.getElementById('subChipArea');
+  var sw=document.getElementById('sizeWrap');
+  var pp=document.getElementById('productsPage');
+  chipArea.innerHTML='';
+  if(!activeCat){
+    bar.style.display='none';
+    if(pp)pp.classList.remove('sub-open');
+    if(sw)sw.style.display='none';
+    return;
+  }
+  var cfg=CAT_CFG[activeCat];
+  var subs=cfg?cfg.subs:[];
+  if(!subs.length){
+    bar.style.display='none';
+    if(pp)pp.classList.remove('sub-open');
+    if(sw)sw.style.display='none';
+    return;
+  }
+  bar.style.display='flex';
+  if(pp)pp.classList.add('sub-open');
+  subs.forEach(function(s){
+    var b=document.createElement('button');
+    b.className='chip'+(activeSub===s.key?' on':'');
+    b.textContent=s.label;
+    b.onclick=function(){
+      activeSub=activeSub===s.key?null:s.key;
+      renderSubFilters();render();
+    };
+    chipArea.appendChild(b);
+  });
+  var activeSubCfg=activeSub&&subs.find(function(s){return s.key===activeSub;});
+  var showSize=!!(activeSubCfg&&activeSubCfg.showSize);
+  if(sw)sw.style.display=showSize?'flex':'none';
+  if(showSize&&sizeFilter===null){
+    var sliderEl=document.getElementById('sizeSlider');
+    if(sliderEl)sliderEl.value=0;
+  }
+}
+
+document.querySelectorAll('[data-type]').forEach(function(btn){
+  btn.onclick=function(){
+    var type=btn.dataset.type,isOn=btn.classList.contains('on');
+    if(type==='MARINE'&&!isOn){var nm=document.querySelector('[data-type="NOT MARINE"]');if(nm)nm.classList.remove('on');typeFilter.delete('NOT MARINE');}
+    if(type==='NOT MARINE'&&!isOn){var m=document.querySelector('[data-type="MARINE"]');if(m)m.classList.remove('on');typeFilter.delete('MARINE');}
+    btn.classList.toggle('on');if(isOn)typeFilter.delete(type);else typeFilter.add(type);render();
+  };
+});
+
+document.querySelectorAll('[data-cat]').forEach(function(btn){
+  btn.onclick=function(){
+    var cat=btn.dataset.cat,isOn=btn.classList.contains('on');
+    document.querySelectorAll('[data-cat]').forEach(function(b){b.classList.remove('on');});
+    if(isOn){activeCat=null;activeSub=null;}
+    else{activeCat=cat;activeSub=null;btn.classList.add('on');}
+    renderSubFilters();render();
+  };
+});
+
 async function initProducts(){
   try{
     var html=await get(BASE+'/Search','high');
@@ -1432,7 +1631,7 @@ async function initProducts(){
       var href=link.getAttribute('href')||'',code=href.split('/').pop().toUpperCase();
       return{url:BASE+href,code:code,name:name?name.textContent.trim():'',sub:sub?sub.textContent.trim():'',image:imgs[0]?imgs[0].src:'',tags:tags,screen:screen};
     }).filter(Boolean);
-    buildSizeSlider();render();renderTopPicks();
+    buildSizeSlider();render();renderTopPicks();renderSubFilters();
   }catch(e){
     document.getElementById('gridInner').innerHTML='<div class="statewrap"><span>Could not load products. Please check your connection.</span></div>';
   }
@@ -1513,7 +1712,7 @@ async function openDetail(p,fromHome){
   if(!fromHome){
     detailOpenedFrom='products';savedScroll=window.scrollY;
     document.getElementById('gridView').style.display='none';
-    document.getElementById('filterBar').style.display='none';
+    document.getElementById('filterWrap').style.display='none';
     document.getElementById('productsPage').classList.add('detail-mode');
     document.getElementById('detailView').style.display='block';
     document.getElementById('backBtn').querySelector('span').textContent='Back to Products';
