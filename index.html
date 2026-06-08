@@ -866,7 +866,14 @@ function initVertTitle(){
   inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&inp.value.trim())showProducts();});
 })();
 
-var PROXY='https://api.codetabs.com/v1/proxy?quest=';
+var PROXIES=[
+  function(u){return 'https://proxy.will-holdsworth-design.workers.dev/?url='+encodeURIComponent(u);},
+  function(u){return 'https://corsproxy.io/?url='+encodeURIComponent(u);},
+  function(u){return 'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u);},
+  function(u){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u);},
+  function(u){return 'https://api.allorigins.win/get?url='+encodeURIComponent(u);},
+  function(u){return 'https://thingproxy.freeboard.io/fetch/'+u;}
+];
 var BASE='https://www.futureautomation.co.uk';
 var all=[],filtered=[],typeFilter=new Set(),sizeFilter=null,savedScroll=0,minScreen=Infinity,maxScreen=0;
 var activeCat=null,activeSub=null;
@@ -909,16 +916,30 @@ function get(url,priority){
 
 function prefetch(url){if(cache.has(url))return;get(url,'low').catch(function(){});}
 
+function _fetchViaProxies(url){
+  return new Promise(function(resolve,reject){
+    var i=0;
+    function tryNext(){
+      if(i>=PROXIES.length){reject(new Error('All sources unavailable'));return;}
+      var build=PROXIES[i++];
+      fetch(build(url))
+        .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
+        .then(function(t){
+          var html;try{html=JSON.parse(t).contents;}catch(e){html=t;}
+          if(html){resolve(html);}else{tryNext();}
+        })
+        .catch(function(){tryNext();});
+    }
+    tryNext();
+  });
+}
+
 function _processQueue(){
   if(!_queue.length||_running>=MAX_RPS)return;
   var job=_queue.shift();
   _running++;
-  fetch(PROXY+encodeURIComponent(job.url))
-    .then(function(r){return r.text();})
-    .then(function(t){
-      var html;try{html=JSON.parse(t).contents;}catch(e){html=t;}
-      _cacheSet(job.url,html);job.resolve(html);
-    })
+  _fetchViaProxies(job.url)
+    .then(function(html){_cacheSet(job.url,html);job.resolve(html);})
     .catch(function(e){job.reject(e);})
     .finally(function(){setTimeout(function(){_running--;_processQueue();},INTERVAL);});
 }
