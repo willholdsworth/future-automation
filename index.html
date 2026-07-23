@@ -871,7 +871,6 @@ var PROXIES=[
   function(u){return 'https://corsproxy.io/?url='+encodeURIComponent(u);},
   function(u){return 'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u);},
   function(u){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u);},
-  function(u){return 'https://api.allorigins.win/get?url='+encodeURIComponent(u);},
   function(u){return 'https://thingproxy.freeboard.io/fetch/'+u;}
 ];
 var BASE='https://www.futureautomation.co.uk';
@@ -901,17 +900,27 @@ function _cacheSet(url,html){
 
 var _queue=[];
 var _running=0;
+var _inflight=new Map();
 var MAX_RPS=4;
 var INTERVAL=1000/MAX_RPS;
 
 function get(url,priority){
   if(cache.has(url))return Promise.resolve(cache.get(url));
-  return new Promise(function(resolve,reject){
+  if(_inflight.has(url)){
+    if(priority==='high'){
+      var idx=_queue.findIndex(function(j){return j.url===url;});
+      if(idx>0){var j=_queue.splice(idx,1)[0];_queue.unshift(j);}
+    }
+    return _inflight.get(url);
+  }
+  var p=new Promise(function(resolve,reject){
     var job={url:url,resolve:resolve,reject:reject};
     if(priority==='high')_queue.unshift(job);
     else _queue.push(job);
     _processQueue();
-  });
+  }).finally(function(){_inflight.delete(url);});
+  _inflight.set(url,p);
+  return p;
 }
 
 function prefetch(url){if(cache.has(url))return;get(url,'low').catch(function(){});}
@@ -943,14 +952,6 @@ function _processQueue(){
     .catch(function(e){job.reject(e);})
     .finally(function(){setTimeout(function(){_running--;_processQueue();},INTERVAL);});
 }
-
-var PREFETCH_URLS=[BASE+'/Search',BASE+'/Product/AudioVisual',BASE+'/Shades',BASE+'/Enclosure',BASE+'/Furniture',BASE+'/HomeCinema'];
-function _backgroundPrefetch(){
-  var i=0;
-  function next(){if(i>=PREFETCH_URLS.length)return;var url=PREFETCH_URLS[i++];if(!cache.has(url))get(url,'low').then(next).catch(next);else next();}
-  setTimeout(next,2000);
-}
-_backgroundPrefetch();
 
 var hamburger=document.getElementById('hamburger');
 var mobileDrawer=document.getElementById('mobileDrawer');
@@ -1310,9 +1311,11 @@ async function resolveEnclosureImages(products,container){
   await Promise.all(needsImg.map(async function(p){
     try{
       var html=await get(p.url,'high');var doc=new DOMParser().parseFromString(html,'text/html');
-      var candidates=Array.from(doc.querySelectorAll('.owl-carousel img,img'));
+      doc.querySelectorAll('nav,header,footer,.navbar,.MegaMenu,[class*="menu"],[class*="footer"],[class*="nav-"],[id*="nav"],[id*="header"],[id*="footer"]').forEach(function(el){el.remove();});
+      var carouselImgs=Array.from(doc.querySelectorAll('.owl-carousel img'));
+      var candidates=carouselImgs.length?carouselImgs:Array.from(doc.querySelectorAll('img'));
       var found=candidates.map(function(i){return i.getAttribute('src')||'';}).find(function(s){
-        return s.startsWith('http')&&!s.toLowerCase().includes('logo')&&!isVid(s)&&/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(s);
+        return s.startsWith('http')&&!s.toLowerCase().includes('logo')&&!/\/Product\/Range\//i.test(s)&&!isVid(s)&&/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(s);
       });
       if(found){p.image=found;p._needsImg=false;if(container){var match=container.querySelector('.pcard[data-code="'+p.code+'"] img');if(match)match.src=found;}}
     }catch(e){}
@@ -1484,15 +1487,19 @@ var CAT_CFG={
     ]
   },
   ENCLOSURES:{
-    kw:['enclosure for lutron','enclosure for loxone','enclosure for control4','enclosure for crestron','enclosure for rako','enclosure for vitrea','enclosure for knx','lighting enclosure','data enclosure','in wall rack','wiring enclosure','din rail blanking','terminal blocks','module trim','blanking plate','landing board','pre wiring kit','backbox','electrical enclosure'],
+    kw:['enclosure','lutron','lcp','control4','c4e','loxone','lxn','knx','crestron','ccp','rako','rcp','vitrea','vit','artistic licence','artistic license','silent gliss','sgse','shading enclosure','shade power','spu10','spu40','din rail','terminal blocks','module trim','blanking plate','landing board','pre wiring kit','backbox'],
     subs:[
-      {key:'LIGHTING',   label:'Lighting',    kw:['lighting enclosure','enclosure for lutron','enclosure for loxone','enclosure for control4','enclosure for knx','enclosure for rako','enclosure for vitrea','low voltage lighting','feed-through enclosure','lcp','c4e','lxn','knx','rcp','vit']},
-      {key:'SHADING',    label:'Shading',     kw:['shading enclosure','silent gliss shading','sgse','shade power','spdu']},
-      {key:'NETWORK',    label:'Network',     kw:['data enclosure','ccp','crestron','network enclosure','patch','deb']},
-      {key:'CONTROL',    label:'Control',     kw:['enclosure for loxone','enclosure for control4','enclosure for vitrea','enclosure for knx','enclosure for rako','lxn','c4e','vit','knx','rcp']},
-      {key:'TERMINATION',label:'Termination', kw:['in wall rack','rack enclosure','rte','iwre','electrical enclosure module']},
-      {key:'EXPANSION',  label:'Expansion',   kw:['expansion','expansion lighting enclosure','expansion enclosure','-re','-lps']},
-      {key:'ACCESSORIES',label:'Accessories', kw:['blanking plate','din rail blanks','terminal blocks','module trim','landing board','pre wiring kit','backbox','clamping','mounting kit','lutron connect bridge','swkit','lcp-bp','lcp-drb','lcp-mtp','lcp-tb','c4e-bp','lxn-bp','lxn-mtp','usjbs','ee-mmk','ap-din']}
+      {key:'LUTRON',    label:'Lutron',           kw:['lutron','lcp']},
+      {key:'CONTROL4',  label:'Control4',         kw:['control4','c4e']},
+      {key:'KNX',       label:'KNX',              kw:['knx']},
+      {key:'LOXONE',    label:'Loxone',           kw:['loxone','lxn']},
+      {key:'CRESTRON',  label:'Crestron',         kw:['crestron','ccp']},
+      {key:'RAKO',      label:'Rako',             kw:['rako','rcp']},
+      {key:'ARTISTIC',  label:'Artistic License', kw:['artistic licence','artistic license']},
+      {key:'SILENTGLISS',label:'Silent Gliss',    kw:['silent gliss','sgse']},
+      {key:'EXPANSION', label:'Expansion',        kw:['expansion','-re','-lps']},
+      {key:'SHADING',   label:'Shading',          kw:['shading enclosure','shade power','spu10','spu40','sgse']},
+      {key:'ACCESSORIES',label:'Accessories',     kw:['blanking plate','din rail blanks','terminal blocks','module trim','landing board','pre wiring kit','backbox','clamping','mounting kit','lutron connect bridge','swkit','lcp-bp','lcp-drb','lcp-mtp','lcp-tb','c4e-bp','lxn-bp','lxn-mtp','usjbs','ee-mmk','ap-din']}
     ]
   },
   CINEMAPRO:{
@@ -1504,6 +1511,7 @@ var CAT_CFG={
   },
   AVRACK:{
     kw:['smart airflow','rack termination','airflow control','sac-t','sac-u','rte'],
+    exclude:['tv'],
     subs:[]
   },
   SECURITY:{
@@ -1524,6 +1532,7 @@ function pMatchesCat(p,cat){
   var cfg=CAT_CFG[cat];if(!cfg)return false;
   if(_fetchedCatProducts[cat]&&_fetchedCatProducts[cat].indexOf(p.code)>-1)return true;
   var h=_hay(p);
+  if(cfg.exclude&&cfg.exclude.some(function(k){return h.includes(k);}))return false;
   return cfg.kw.some(function(k){return h.includes(k);});
 }
 
@@ -1535,15 +1544,16 @@ function pMatchesSub(p,cat,sub){
     return _fetchedCatProducts[cat+':'+sub].indexOf(p.code)>-1;
   }
   var h=_hay(p);
+  if(subCfg.exclude&&subCfg.exclude.some(function(k){return h.includes(k);}))return false;
   return subCfg.kw.some(function(k){return h.includes(k);});
 }
 
 function tagMatch(tag,type){
   var tu=tag.toUpperCase().trim();
-  if(type==='MARINE')return tu==='MARINE'||tu==='MARINE SUITABLE';
-  if(type==='NOT MARINE')return tu==='NOT MARINE'||tu==='NOT MARINE SUITABLE';
-  if(type==='INDOOR')return tu==='INDOOR'||tu==='INDOOR SUITABLE'||tu==='INDOOR/OUTDOOR SUITABLE'||tu==='INDOOR / OUTDOOR SUITABLE';
-  if(type==='OUTDOOR')return tu==='OUTDOOR'||tu==='OUTDOOR SUITABLE'||tu==='INDOOR/OUTDOOR SUITABLE'||tu==='INDOOR / OUTDOOR SUITABLE';
+  if(type==='MARINE')return tu.indexOf('MARINE')>-1&&tu.indexOf('NOT')===-1;
+  if(type==='NOT MARINE')return tu.indexOf('NOT')>-1&&tu.indexOf('MARINE')>-1;
+  if(type==='INDOOR')return tu.indexOf('INDOOR')>-1;
+  if(type==='OUTDOOR')return tu.indexOf('OUTDOOR')>-1;
   return false;
 }
 function matchAll(p){if(!typeFilter.size)return true;for(var type of typeFilter){if(!p.tags.some(function(tag){return tagMatch(tag,type);}))return false;}return true;}
@@ -1588,6 +1598,7 @@ function renderSubFilters(){
     bar.style.display='none';
     if(pp)pp.classList.remove('sub-open');
     if(sw)sw.style.display='none';
+    if(sizeFilter!==null){sizeFilter=null;var s1=document.getElementById('sizeSlider');if(s1)s1.value=0;var f1=document.getElementById('sizeFill');var h1=document.getElementById('sizeHandle');var m1=document.getElementById('sizeMinLabel');if(f1)f1.style.width='0%';if(h1)h1.style.left='0%';if(m1)m1.textContent='ALL';}
     return;
   }
   var cfg=CAT_CFG[activeCat];
@@ -1596,6 +1607,7 @@ function renderSubFilters(){
     bar.style.display='none';
     if(pp)pp.classList.remove('sub-open');
     if(sw)sw.style.display='none';
+    if(sizeFilter!==null){sizeFilter=null;var s2=document.getElementById('sizeSlider');if(s2)s2.value=0;var f2=document.getElementById('sizeFill');var h2=document.getElementById('sizeHandle');var m2=document.getElementById('sizeMinLabel');if(f2)f2.style.width='0%';if(h2)h2.style.left='0%';if(m2)m2.textContent='ALL';}
     return;
   }
   bar.style.display='flex';
@@ -1613,6 +1625,12 @@ function renderSubFilters(){
   var activeSubCfg=activeSub&&subs.find(function(s){return s.key===activeSub;});
   var showSize=!!(activeSubCfg&&activeSubCfg.showSize);
   if(sw)sw.style.display=showSize?'flex':'none';
+  if(!showSize&&sizeFilter!==null){
+    sizeFilter=null;
+    var sliderEl2=document.getElementById('sizeSlider');if(sliderEl2)sliderEl2.value=0;
+    var fill2=document.getElementById('sizeFill');var handle2=document.getElementById('sizeHandle');var minLbl2=document.getElementById('sizeMinLabel');
+    if(fill2)fill2.style.width='0%';if(handle2)handle2.style.left='0%';if(minLbl2)minLbl2.textContent='ALL';
+  }
   if(showSize&&sizeFilter===null){
     var sliderEl=document.getElementById('sizeSlider');
     if(sliderEl)sliderEl.value=0;
@@ -1638,6 +1656,41 @@ document.querySelectorAll('[data-cat]').forEach(function(btn){
   };
 });
 
+async function _populateCinemaProCodes(){
+  try{
+    var html=await get(BASE+'/HomeCinema','low');
+    var doc=new DOMParser().parseFromString(html,'text/html');
+    var codes=Array.from(doc.querySelectorAll('a[href]')).map(function(a){return a.getAttribute('href')||'';}).filter(isProductHref).map(function(h){return h.split('/').pop().toUpperCase();});
+    _fetchedCatProducts['CINEMAPRO']=Array.from(new Set(codes));
+  }catch(e){}
+}
+
+async function _codesFromPage(url){
+  try{
+    var html=await get(url,'low');
+    var doc=new DOMParser().parseFromString(html,'text/html');
+    return Array.from(doc.querySelectorAll('a[href]')).map(function(a){return a.getAttribute('href')||'';}).filter(isProductHref).map(function(h){return h.split('/').pop().toUpperCase();});
+  }catch(e){return[];}
+}
+
+async function _populateShadingEnclosureCodes(){
+  var lists=await Promise.all([
+    _codesFromPage(BASE+'/Enclosure/Shading-Enclosure'),
+    _codesFromPage(BASE+'/Enclosure/Shading-PowerSupply')
+  ]);
+  var codes=lists[0].concat(lists[1]).filter(function(c){return /^SGSE|^SPU/i.test(c);});
+  if(codes.length)_fetchedCatProducts['ENCLOSURES:SHADING']=Array.from(new Set(codes));
+}
+
+async function _populateAvRackCodes(){
+  var lists=await Promise.all([
+    _codesFromPage(BASE+'/Airflow/Rack-Airflow-Control'),
+    _codesFromPage(BASE+'/Airflow/Cabinet-Airflow-Control')
+  ]);
+  var codes=lists[0].concat(lists[1]);
+  if(codes.length)_fetchedCatProducts['AVRACK']=Array.from(new Set(codes));
+}
+
 async function initProducts(){
   try{
     var html=await get(BASE+'/Search','high');
@@ -1652,7 +1705,12 @@ async function initProducts(){
       var href=link.getAttribute('href')||'',code=href.split('/').pop().toUpperCase();
       return{url:BASE+href,code:code,name:name?name.textContent.trim():'',sub:sub?sub.textContent.trim():'',image:imgs[0]?imgs[0].src:'',tags:tags,screen:screen};
     }).filter(Boolean);
+    if(!all.some(function(p){return p.code==='ARTISTICLICENCE';})){
+      all.push({url:BASE+'/Product/ArtisticLicence',code:'ARTISTICLICENCE',name:'LCP (Artistic Licence)',sub:'Enclosure for Artistic Licence Lighting Systems',image:'https://d2oo5quzpsdib.cloudfront.net/Website/Product/Gallery/ArtisticLicence-1.jpg',tags:[],screen:null});
+    }
     buildSizeSlider();render();renderTopPicks();renderSubFilters();
+    await Promise.all([_populateCinemaProCodes(),_populateShadingEnclosureCodes(),_populateAvRackCodes()]);
+    if(activeCat==='CINEMAPRO'||activeCat==='AVRACK'||(activeCat==='ENCLOSURES'&&activeSub==='SHADING'))render();
   }catch(e){
     document.getElementById('gridInner').innerHTML='<div class="statewrap"><span>Could not load products. Please check your connection.</span></div>';
   }
@@ -1747,14 +1805,17 @@ async function openDetail(p,fromHome){
 
   var productVideoSrc=_extractProductVideoSrc(doc);
 
+  var navClone=doc.cloneNode(true);
+  navClone.querySelectorAll('nav,header,footer,.navbar,.MegaMenu,[class*="menu"],[class*="footer"],[class*="nav-"],[id*="nav"],[id*="header"],[id*="footer"]').forEach(function(el){el.remove();});
+
   var imgSet=new Set();
-  doc.querySelectorAll('.owl-carousel img').forEach(function(img){
+  navClone.querySelectorAll('.owl-carousel img').forEach(function(img){
     var src=img.getAttribute('src')||img.getAttribute('data-src')||'';
-    if(src.startsWith('http')&&!src.toLowerCase().includes('logo')&&!isVid(src)&&/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(src))imgSet.add(src);
+    if(src.startsWith('http')&&!src.toLowerCase().includes('logo')&&!/\/Product\/Range\//i.test(src)&&!isVid(src)&&/\.(jpg|jpeg|png|webp|gif|svg)(\?.*)?$/i.test(src))imgSet.add(src);
   });
-  doc.querySelectorAll('img').forEach(function(img){
+  navClone.querySelectorAll('img').forEach(function(img){
     var src=img.getAttribute('src')||'';
-    if(src.startsWith('http')&&src.toLowerCase().includes(p.code.toLowerCase())&&!src.toLowerCase().includes('logo')&&!isVid(src))imgSet.add(src);
+    if(src.startsWith('http')&&src.toLowerCase().includes(p.code.toLowerCase())&&!src.toLowerCase().includes('logo')&&!/\/Product\/Range\//i.test(src)&&!isVid(src))imgSet.add(src);
   });
   if(!imgSet.size&&p.image&&!isVid(p.image))imgSet.add(p.image);
   var imgs=Array.from(imgSet);
