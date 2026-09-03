@@ -466,6 +466,51 @@ footer{background:var(--black);color:var(--white);padding:4rem 3.5rem 3rem;borde
 #categoryPage{padding-top:var(--hh)}
 .cat-page-hero{position:relative;height:40vh;min-height:200px;overflow:hidden;background:var(--black)}
 @media(max-width:700px){.cat-page-hero{height:26vh;min-height:160px}}
+.cp-band{background:var(--black);color:var(--white);text-align:center;padding:1.1rem 1.5rem;font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+.cp-section{padding:3.5rem 1.5rem;max-width:1100px;margin:0 auto}
+.cp-section.narrow{max-width:760px}
+.cp-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-align:center;margin-bottom:1.2rem;color:var(--black)}
+.cp-lead{font-size:.8rem;line-height:1.9;color:rgba(0,0,0,.6)}
+.cp-lead p{margin-bottom:1rem}
+.cp-lead p:last-child{margin-bottom:0}
+.cp-lead.center{text-align:center}
+.cp-two-col{display:grid;grid-template-columns:1fr;gap:2rem;align-items:center}
+@media(min-width:800px){.cp-two-col{grid-template-columns:1fr 1fr}}
+.cp-two-col img{width:100%;border-radius:6px;display:block}
+.cp-features{display:grid;grid-template-columns:1fr;gap:1.5rem;padding:0 1.5rem 3.5rem;max-width:1100px;margin:0 auto}
+@media(min-width:750px){.cp-features{grid-template-columns:repeat(3,1fr)}}
+.cp-feature-img{aspect-ratio:4/3;border-radius:6px;overflow:hidden;background:var(--grey);display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase}
+.cp-feature-label{font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;background:var(--black);color:var(--white);padding:.7rem 1rem;text-align:center;margin-top:.9rem}
+.cp-feature p{font-size:.72rem;line-height:1.7;color:rgba(0,0,0,.6);text-align:center;margin-top:.9rem}
+.cp-config{display:grid;grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem;max-width:1100px;margin:1.5rem auto;background:var(--grey);border-radius:8px}
+@media(min-width:800px){.cp-config{grid-template-columns:1fr 1.2fr;align-items:start}}
+.cp-config-preview{aspect-ratio:1/1;background:var(--white);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);text-align:center;padding:1rem}
+.cp-config-group{margin-bottom:1.5rem}
+.cp-config-group:last-child{margin-bottom:0}
+.cp-config-group-label{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-align:center;margin-bottom:.8rem;color:var(--mid)}
+.cp-config-row{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.cp-swatch{display:flex;align-items:center;gap:.5rem}
+.cp-swatch-color{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+.cp-swatch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;padding:0 1.5rem 3.5rem;max-width:900px;margin:0 auto}
+@media(min-width:750px){.cp-swatch-grid{grid-template-columns:repeat(4,1fr)}}
+.cp-swatch-card{text-align:center;background:none;border:none;padding:0;cursor:pointer;font-family:var(--font)}
+.cp-swatch-card-color{aspect-ratio:4/3;border-radius:6px;margin-bottom:.6rem;outline:2px solid transparent;outline-offset:3px;transition:outline-color .2s}
+.cp-swatch-card.on .cp-swatch-card-color{outline-color:var(--black)}
+.cp-swatch-card-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.cp-config-preview{flex-direction:column}
+.cp-config-preview .cp-preview-visual{width:100%;flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+.cp-config-preview .cp-preview-swatch{width:2.6rem;height:2.6rem;border-radius:50%;margin:0 auto}
+.cp-config-preview .cp-preview-line{font-size:.62rem;letter-spacing:.12em}
+.cp-config-preview .cp-preview-line.model{font-weight:700;font-size:.72rem;margin:.6rem 0 .3rem}
+.cp-install{display:grid;grid-template-columns:1fr;gap:1.5rem;padding:3rem 1.5rem;max-width:900px;margin:0 auto}
+@media(min-width:700px){.cp-install{grid-template-columns:1fr 1fr}}
+.cp-install-card{text-align:center}
+.cp-install-img{aspect-ratio:4/3;border-radius:6px;background:var(--grey);margin-bottom:1rem;display:flex;align-items:center;justify-content:center;color:var(--mid);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase}
+.cp-install-label{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem}
+.cp-btn-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;padding:2.5rem 1.5rem;max-width:1100px;margin:0 auto}
+.cp-partner{text-align:center;padding:0 1.5rem}
+.cp-partner-name{font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem}
+.cp-partner-sub{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);margin-bottom:1.2rem}
 .cat-page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.85) 0%,rgba(10,10,10,.3) 60%)}
 #catHeroBg{position:absolute;inset:0;width:100%;height:100%}
 #catHeroBg img,#catHeroBg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -1919,6 +1964,8 @@ function selectThumb(src,el){
   fadeToImg(src);
 }
 
+function buildDesktopTable(d,cls){cls=cls||'';if(!d.length)return'';var h='<table class="desktop-table '+cls+'">';d.forEach(function(r){h+='<tr>';r.forEach(function(cl){h+='<'+(cl.isHeader?'th':'td')+' colspan="'+cl.colspan+'">'+cl.content+'</'+(cl.isHeader?'th':'td')+'>';});h+='</tr>';});return h+'</table>';}
+
 function loadSpecs(code){
   get(BASE+'/API/ProductSpecTable/'+code,'high').then(function(html){
     var el=document.getElementById('specTable');if(!el)return;
@@ -1949,9 +1996,396 @@ document.getElementById('productsNavLink').addEventListener('click',function(e){
 updateHeaderStyle();initScrollReveal();initVertTitle();
 
 var _historyBusy=false;
-function _pushState(s){try{history.pushState(s,'',location.href);}catch(e){}}
-function _replaceState(s){try{history.replaceState(s,'',location.href);}catch(e){}}
-_replaceState({page:'home'});
+
+var CAT_LABELS={'HomeCinema':'Home Cinema Solutions','Shades':'Shading Solutions','Enclosure':'Lighting & Data Enclosures','Furniture':'Furniture & Moving Panels','ArchitecturalMovement':'Architectural Movement','AudioVisual':'Audio Visual Solutions'};
+function humanizeLabel(path){
+  var seg=(path||'').split('/').filter(Boolean).pop()||'';
+  if(CAT_LABELS[seg])return CAT_LABELS[seg];
+  return seg.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[-_]/g,' ');
+}
+function productPathFromUrl(url){return url&&url.indexOf(BASE)===0?url.slice(BASE.length):(url||'');}
+
+var CUSTOM_PAGES=['/furniture/cineair','/product/details/ra'];
+function customPathFor(rawPath){
+  if(!rawPath)return null;
+  var norm=rawPath.toLowerCase().replace(/\/+$/,'');
+  return CUSTOM_PAGES.indexOf(norm)>-1?rawPath:null;
+}
+
+var cineairConfig={model:'CA1',option:'No Plinth',finish:'Textured Concrete',finishSwatch:'#8a8a86',finishImg:null};
+var cineairFinishData={byModel:{},list:[]};
+var raConfig={frame:null,frameSwatch:null};
+
+function cpSelect(el){
+  var group=el.parentElement;group.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});el.classList.add('on');
+  var g=el.dataset.group,v=el.dataset.value,s=el.dataset.swatch||'',im=el.dataset.img||'';
+  if(g==='model'){cineairConfig.model=v;updateCineairFinishOptions(v);}
+  if(g==='option')cineairConfig.option=v;
+  if(g==='finish'){cineairConfig.finish=v;cineairConfig.finishSwatch=s;cineairConfig.finishImg=im||null;}
+  renderCineairPreview();
+}
+
+function cpChip(text,on,swatch,group,img){
+  var dot=swatch?'<span class="cp-swatch-color" style="background:'+swatch+'"></span>':'';
+  var thumb=img?'<img src="'+img+'" style="width:14px;height:14px;border-radius:3px;object-fit:cover;margin-right:4px;vertical-align:-2px">':'';
+  return '<button type="button" class="chip'+(on?' on':'')+'" data-group="'+group+'" data-value="'+text+'" data-swatch="'+(swatch||'')+'" data-img="'+(img||'')+'" onclick="cpSelect(this)">'+thumb+dot+text+'</button>';
+}
+
+function updateCineairFinishOptions(model){
+  var entries=cineairFinishData.byModel[model];
+  if(!entries||!entries.length)return;
+  var group=document.getElementById('cpCineairFinishGroup');
+  if(!group)return;
+  var row=group.querySelector('.cp-config-row');
+  if(!row)return;
+  row.innerHTML=entries.map(function(e,i){return cpChip(e.label,i===0,'',  'finish',e.sample||e.up||'');}).join('');
+  cineairConfig.finish=entries[0].label;
+  cineairConfig.finishSwatch='';
+  cineairConfig.finishImg=entries[0].up||entries[0].sample||null;
+}
+
+function renderCineairPreview(){
+  var el=document.querySelector('.cp-config-preview');
+  if(!el)return;
+  var visual=cineairConfig.finishImg
+    ?'<img src="'+cineairConfig.finishImg+'" alt="'+cineairConfig.finish+'" style="width:100%;height:100%;object-fit:contain">'
+    :'<div class="cp-preview-swatch" style="background:'+(cineairConfig.finishSwatch||'var(--grey)')+'"></div>';
+  el.innerHTML='<div class="cp-preview-visual">'+visual+'</div>'+
+  '<div class="cp-preview-line model">'+cineairConfig.model+'</div>'+
+  '<div class="cp-preview-line">'+cineairConfig.option+'</div>'+
+  '<div class="cp-preview-line">'+cineairConfig.finish+'</div>';
+}
+
+function raSelectFrame(el){
+  document.querySelectorAll('.cp-swatch-card').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on');
+  raConfig.frame=el.dataset.code;
+  raConfig.frameSwatch=el.dataset.swatch;
+  renderRAFramePreview();
+}
+
+function renderRAFramePreview(){
+  var el=document.getElementById('raFramePreview');
+  if(!el)return;
+  if(!raConfig.frame){el.innerHTML='<div class="cp-preview-line">Select a frame above to see your choice</div>';return;}
+  el.innerHTML='<div class="cp-preview-swatch" style="background:'+raConfig.frameSwatch+'"></div>'+
+  '<div class="cp-preview-line model">'+raConfig.frame+'</div>';
+}
+
+function renderCineairContent(){
+  return ''+
+  '<div class="cp-section narrow"><div class="cp-eyebrow">Outdoor Cinematic Experience</div>'+
+  '<div class="cp-lead center" id="cpCineairLead">'+
+  '<p>At the press of a button, Cineair automatically reveals the weather-resistant 55" or 65" Samsung Terrace display (available separately) from within an exquisitely handcrafted cabinet.</p>'+
+  '<p>The all-in-one design also integrates Samsung\'s Terrace Soundbar (available separately) into the front of each cabinet, so you can listen to music when the display is hidden.</p>'+
+  '<p>Whether you\'re watching the game or hosting a movie night, Cineair is ready to help bring the theatre to your terrace or veranda.</p>'+
+  '<p>Cineair ships fully assembled, including a weatherproof cover. An optional clip-on plinth can be specified to dress the casters when in place, if desired.</p>'+
+  '</div></div>'+
+  '<div class="cp-config">'+
+  '<div class="cp-config-preview">Configuration preview<br>updates as options are<br>selected</div>'+
+  '<div>'+
+  '<div class="cp-config-group"><div class="cp-config-group-label">Models</div><div class="cp-config-row">'+cpChip('CA1',true,null,'model')+cpChip('CA2',false,null,'model')+cpChip('CA2-Luxe',false,null,'model')+'</div></div>'+
+  '<div class="cp-config-group"><div class="cp-config-group-label">Options</div><div class="cp-config-row">'+cpChip('No Plinth',true,null,'option')+cpChip('Plinth',false,null,'option')+'</div></div>'+
+  '<div class="cp-config-group" id="cpCineairFinishGroup"><div class="cp-config-group-label">Finishes</div><div class="cp-config-row">'+cpChip('Textured Concrete',true,'#8a8a86','finish')+cpChip('White Mountain Oak',false,'#cbb593','finish')+cpChip('Pearl Chromix',false,'#d8d5cd','finish')+cpChip('Scivaro Slate',false,'#3a3d3f','finish')+'</div></div>'+
+  '</div></div>'+
+  '<div class="cp-features" id="cpCineairFeatures">'+
+  '<div><div class="cp-feature-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Furniture/CineAir-Handles.png" alt="Integrated Handles" style="width:100%;height:100%;object-fit:cover"></div><div class="cp-feature-label">Integrated Handles</div><p>Carefully considered integrated handles let you easily reposition the cabinet to avoid glare and reflections while watching outdoors.</p></div>'+
+  '<div><div class="cp-feature-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Furniture/CineAir-Wheels.png" alt="Effortless Movement" style="width:100%;height:100%;object-fit:cover"></div><div class="cp-feature-label">Effortless Movement</div><p>Caster wheels let you reposition the cabinet to suit your space, with an optional fixed plinth available.</p></div>'+
+  '<div><div class="cp-feature-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Furniture/CineAir-Speaker.png" alt="Concealed Soundbar" style="width:100%;height:100%;object-fit:cover"></div><div class="cp-feature-label">Concealed Soundbar</div><p>The flush-mount Samsung Terrace soundbar plays music even while the display stays hidden.</p></div>'+
+  '</div>'+
+  '<div class="cp-band">Finish</div>'+
+  '<div class="cp-section" id="cpCineairFinishSection"><div class="cp-two-col">'+
+  '<div><div class="cp-eyebrow" style="text-align:left">Natural Oxidisation of Iroko Hardwood</div>'+
+  '<div class="cp-lead"><p>The Cineair Luxe cabinet is crafted from sustainably sourced Iroko, a West African hardwood chosen for its durability, density and tight grain structure.</p>'+
+  '<p>The wood used on any given unit may vary slightly from samples or product photography, since wood is a natural material with variation in colour, knots, shakes, texture and grain.</p>'+
+  '<p style="font-weight:600">We cannot accept returns or exchanges due to these natural occurrences.</p></div></div>'+
+  '<div><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/Furniture/IrokoImage.png" alt="Oiled Iroko" style="width:100%;border-radius:6px;display:block">'+
+  '<div style="text-align:center;margin-top:.8rem;font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase">Oiled Iroko</div>'+
+  '<div style="text-align:center;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)">Naturally matures with exposure to sunlight</div></div>'+
+  '</div></div>'+
+  '<div class="cp-band">Pricing</div>'+
+  '<div class="cp-btn-row"><span class="btn btn-black" onclick="window.open(\''+BASE+'/Product/HowToPurchase?previous=CINEAIR\',\'_blank\')">How To Purchase</span><span class="btn btn-outline-black" onclick="window.open(\''+BASE+'/Account/Login?ReturnUrl=%2FProduct%2FDetails%2FCINEAIR\',\'_blank\')">Dealer Login</span></div>'+
+  '<div class="cp-band">Downloads</div>'+
+  '<div class="cp-section" id="cpCineairDownloads">'+
+  '<table class="desktop-table"><tr><th>Product Code</th><th>CA1</th><th>CA2</th><th>CA2-Luxe</th></tr>'+
+  '<tr><td>Tech Sheets</td><td>CA1-55 Tech<br>CA1-65 Tech<br>CA1-75 Tech</td><td>CA2-55 Tech<br>CA2-65 Tech</td><td>CA2-Luxe-55 Tech<br>CA2-Luxe-65 Tech</td></tr>'+
+  '<tr><td>Downloads</td><td>CA Safety<br>CA Instructions</td><td>&nbsp;</td><td>&nbsp;</td></tr></table>'+
+  '<table class="mobile-table"><tr class="mobile-main-header"><th colspan="2">Downloads</th></tr>'+
+  '<tr class="mobile-spec-header"><th colspan="2">CA1</th></tr><tr><td>Tech Sheets</td><td>CA1-55 / CA1-65 / CA1-75</td></tr><tr><td>Downloads</td><td>CA Safety, CA Instructions</td></tr>'+
+  '<tr class="mobile-spec-header"><th colspan="2">CA2</th></tr><tr><td>Tech Sheets</td><td>CA2-55 / CA2-65</td></tr>'+
+  '<tr class="mobile-spec-header"><th colspan="2">CA2-Luxe</th></tr><tr><td>Tech Sheets</td><td>CA2-Luxe-55 / CA2-Luxe-65</td></tr></table>'+
+  '</div>';
+}
+
+function renderRAContent(){
+  return ''+
+  '<div class="cp-section"><div class="cp-two-col">'+
+  '<div><img src="https://d2oo5quzpsdib.cloudfront.net/Website/Product/Gallery/RA-Gallery-6.jpg" alt="Rolling Art Install" style="width:100%;border-radius:6px;display:block"></div>'+
+  '<div><div class="cp-eyebrow" style="text-align:left">Rolling Art Mechanism</div>'+
+  '<div class="cp-lead" id="raLead">'+
+  '<p>Our Rolling Artwork mechanism is an elegant solution to discreetly integrate technology into your home by concealing your display behind a customisable, scrolling piece of artwork when the TV is not in use.</p>'+
+  '<p>The RA can be customised with a curated selection of high-quality frames, and we can create bespoke frames on request to perfectly suit your space.</p>'+
+  '<p>The screen mounts using our PS40 bracket for easy access to maintenance, with a safety switch preventing movement while the screen is in the out position.</p></div></div>'+
+  '</div></div>'+
+  '<div class="cp-features" id="raFeatures">'+
+  '<div><div class="cp-feature-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/RollingArt/Feature-Artwork.jpg" alt="Artwork" style="width:100%;height:100%;object-fit:cover"></div><div class="cp-feature-label">Artwork</div><p>Choose museum-quality images from our gallery, faithfully reproduced by our in-house large-format canvas printer, or submit your own high-quality artwork.</p></div>'+
+  '<div><div class="cp-feature-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/RollingArt/Feature-Frame.jpg" alt="Frame" style="width:100%;height:100%;object-fit:cover"></div><div class="cp-feature-label">Frame</div><p>A curated selection of high-quality frames is available, and bespoke frames can be created on request to perfectly suit your space.</p></div>'+
+  '<div><div class="cp-feature-img"><img src="https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/RollingArt/Feature-Movement.jpg" alt="Elegant Movement" style="width:100%;height:100%;object-fit:cover"></div><div class="cp-feature-label">Elegant Movement</div><p>The whisper-quiet mechanism gracefully rolls the artwork upwards, creating a parallax effect as it reveals the display.</p></div>'+
+  '</div>'+
+  '<div class="cp-band">Versatile Installation</div>'+
+  '<div class="cp-section narrow"><div class="cp-lead center"><p>The Rolling Art mechanism can be installed in-wall to create a flush finish, or on-wall with an outer decorative surround.</p></div></div>'+
+  '<div class="cp-install" id="raInstall">'+
+  '<div class="cp-install-card"><div class="cp-install-label">In-Wall</div><div class="cp-install-img"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/Product/RollingArt/Feature-Artwork-In-Wall.jpg" alt="In-Wall Install" style="width:100%;height:100%;object-fit:cover;border-radius:6px"></div></div>'+
+  '<div class="cp-install-card"><div class="cp-install-label">On-Wall</div><div class="cp-install-img"><img src="https://d2oo5quzpsdib.cloudfront.net/Website/Product/RollingArt/Feature-Artwork-On-Wall.jpg" alt="On-Wall Install" style="width:100%;height:100%;object-fit:cover;border-radius:6px"></div></div>'+
+  '</div>'+
+  '<div class="cp-band">Frame Design Options</div>'+
+  '<div class="cp-section narrow"><div class="cp-lead center"><p>Hand-selected standard frame designs are available to complement the Rolling Art mechanism, and bespoke frames can be created on request.</p></div></div>'+
+  '<div class="cp-swatch-grid" id="raFrameGrid">'+
+  ['FR1','FR2','FR3','FR4','FR5','FR6','FR7','FR8'].map(function(code){var img='https://s3.eu-west-1.amazonaws.com/cdn.futureautomation.co.uk/Website/Product/RollingArt/Frame/'+code+'.jpg';return '<button type="button" class="cp-swatch-card" data-code="'+code+'" data-img="'+img+'" onclick="raSelectFrame(this)"><div class="cp-swatch-card-color" style="background:var(--grey) url(\''+img+'\') center/cover"></div><div class="cp-swatch-card-label">'+code+'</div></button>';}).join('')+
+  '</div>'+
+  '<div id="raFramePreview" class="cp-config-preview" style="max-width:220px;margin:0 auto 2rem;aspect-ratio:1/1"><div class="cp-preview-line">Select a frame above to see your choice</div></div>'+
+  '<div class="cp-band">Artwork Gallery</div>'+
+  '<div class="cp-section narrow cp-partner">'+
+  '<div class="cp-partner-name">Rosenstiels</div><div class="cp-partner-sub">London — 1880</div>'+
+  '<div class="cp-lead center"><p>Rosenstiels is one of the world\'s leading publishers of fine art prints and posters, supplying customers in over 100 countries. We\'ve partnered with Rosenstiels to offer a curated selection of high-quality artwork for the Rolling Art mechanism.</p></div>'+
+  '<div style="margin-top:1.2rem"><span class="btn btn-outline-black" onclick="window.open(\'https://www.rosenstiels.com/\',\'_blank\')">View Available Artwork From Rosenstiels</span></div>'+
+  '</div>'+
+  '<div class="cp-band">Specification &amp; Pricing</div>'+
+  '<div class="cp-btn-row"><span class="btn btn-black" onclick="window.open(\''+BASE+'/Product/HowToPurchase?previous=RollingArt\',\'_blank\')">How To Purchase</span><span class="btn btn-outline-black" onclick="window.open(\''+BASE+'/Account/Login?ReturnUrl=%2FProduct%2FDetails%2FRA\',\'_blank\')">Dealer Login</span></div>'+
+  '<div class="cp-band">Tech Spec / Downloads</div>'+
+  '<div class="cp-section" id="raSpecTable"><div class="spinner" style="margin:16px 0"></div></div>';
+}
+
+function raSelectFrame(el){
+  document.querySelectorAll('.cp-swatch-card').forEach(function(c){c.classList.remove('on');});
+  el.classList.add('on');
+  raConfig.frame=el.dataset.code;
+  raConfig.frameImg=el.dataset.img;
+  renderRAFramePreview();
+}
+
+function renderRAFramePreview(){
+  var el=document.getElementById('raFramePreview');
+  if(!el)return;
+  if(!raConfig.frame){el.innerHTML='<div class="cp-preview-line">Select a frame above to see your choice</div>';return;}
+  el.innerHTML='<div class="cp-preview-visual"><img src="'+raConfig.frameImg+'" alt="'+raConfig.frame+'" style="width:100%;height:100%;object-fit:cover;border-radius:6px"></div>'+
+  '<div class="cp-preview-line model">'+raConfig.frame+'</div>';
+}
+
+async function hydrateRAFromLive(){
+  var url=BASE+'/Product/Details/RA';
+  try{
+    var html=productCache.has(url)?productCache.get(url):await get(url,'high');
+    productCache.set(url,html);
+    var doc=new DOMParser().parseFromString(html,'text/html');
+    var clone=doc.body.cloneNode(true);
+    clone.querySelectorAll('script,style,noscript,iframe,form,select,nav,header,footer,.navbar,.MegaMenu,[class*="menu"],[class*="footer"],[class*="nav-"],[id*="nav"],[id*="header"],[id*="footer"]').forEach(function(el){el.remove();});
+    if(!document.getElementById('raLead'))return;
+
+    var heads=Array.from(clone.querySelectorAll('h1,h2'));
+    var introHead=heads.find(function(h){return /ROLLING ART/i.test(h.textContent);});
+    if(introHead){
+      var ps=[],n=introHead.nextElementSibling;
+      while(n&&!/^H[1-4]$/.test(n.tagName)){if(n.tagName==='P'&&n.textContent.trim())ps.push('<p>'+n.innerHTML.trim()+'</p>');n=n.nextElementSibling;}
+      if(ps.length){var leadEl=document.getElementById('raLead');if(leadEl)leadEl.innerHTML=ps.join('');}
+    }
+
+    var h3s=Array.from(clone.querySelectorAll('h3'));
+    var feats=h3s.map(function(h){
+      var img=null,p=null,n=h.nextElementSibling;
+      while(n&&!/^H[1-3]$/.test(n.tagName)){if(!img)img=_cpFirstImg(n);if(!p&&n.tagName==='P'&&n.textContent.trim())p=n.textContent.trim();n=n.nextElementSibling;}
+      return{title:h.textContent.trim(),img:img,text:p};
+    }).filter(function(f){return f.img||f.text;});
+    var featEls=document.querySelectorAll('#raFeatures > div');
+    feats.slice(0,3).forEach(function(f,i){
+      var el=featEls[i];if(!el)return;
+      if(f.img){var hold=el.querySelector('.cp-feature-img');if(hold)hold.innerHTML='<img src="'+f.img+'" alt="'+f.title+'" style="width:100%;height:100%;object-fit:cover">';}
+      var lbl=el.querySelector('.cp-feature-label');if(lbl&&f.title)lbl.textContent=f.title;
+      var txt=el.querySelector('p');if(txt&&f.text)txt.textContent=f.text;
+    });
+
+    var installHead=Array.from(clone.querySelectorAll('h2')).find(function(h){return /INSTALLATION/i.test(h.textContent);});
+    if(installHead){
+      var h4s=[],n2=installHead.nextElementSibling;
+      while(n2&&n2.tagName!=='H2'){if(n2.tagName==='H4'||n2.tagName==='H3')h4s.push(n2);n2=n2.nextElementSibling;}
+      var installCards=document.querySelectorAll('#raInstall .cp-install-card');
+      h4s.slice(0,2).forEach(function(h,i){
+        var el=installCards[i];if(!el)return;
+        var img=null,n3=h.nextElementSibling;
+        while(n3&&!/^H[2-4]$/.test(n3.tagName)){if(!img)img=_cpFirstImg(n3);n3=n3.nextElementSibling;}
+        if(img){var hold=el.querySelector('.cp-install-img');if(hold)hold.innerHTML='<img src="'+img+'" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:6px">';}
+      });
+    }
+
+    var frameHead=Array.from(clone.querySelectorAll('h2')).find(function(h){return /FRAME DESIGN/i.test(h.textContent);});
+    if(frameHead){
+      var frameImgs=[],n4=frameHead.nextElementSibling;
+      while(n4&&n4.tagName!=='H2'){var a=n4.tagName==='A'?n4:(n4.querySelector&&n4.querySelector('a[href*="Frame/"]'));if(a)frameImgs.push({code:a.textContent.trim(),img:a.getAttribute('href')});n4=n4.nextElementSibling;}
+      if(frameImgs.length){
+        var grid=document.getElementById('raFrameGrid');
+        if(grid)grid.innerHTML=frameImgs.map(function(f){return '<button type="button" class="cp-swatch-card" data-code="'+f.code+'" data-img="'+f.img+'" onclick="raSelectFrame(this)"><div class="cp-swatch-card-color" style="background:var(--grey) url(\''+f.img+'\') center/cover"></div><div class="cp-swatch-card-label">'+f.code+'</div></button>';}).join('');
+      }
+    }
+
+    loadSpecs('RA','raSpecTable');
+  }catch(e){}
+}
+
+function showCustomPage(path,label,fromStack){
+  hideAll();
+  header.classList.remove('on-dark');header.classList.add('scrolled');
+  var page=document.getElementById('categoryPage');page.style.display='block';
+  window.scrollTo(0,0);
+  if(!fromStack)catStack.push({label:label,path:path});
+  var heroConf=CAT_HEROES['/HomeCinema']||{};
+  setHero(heroConf.vid||'',heroConf.img||'',label,'');
+  var subEl=document.getElementById('catSubGrid');
+  var crumbHtml='<div class="cat-breadcrumb"><span class="cat-breadcrumb-item" onclick="showHome()">Home</span><span class="cat-breadcrumb-sep">›</span>';
+  if(catStack.length>1){for(var i=0;i<catStack.length-1;i++){var s=catStack[i];crumbHtml+='<span class="cat-breadcrumb-item" onclick="navToBreadcrumb('+i+')">'+s.label+'</span><span class="cat-breadcrumb-sep">›</span>';}}
+  crumbHtml+='<span class="cat-breadcrumb-item active">'+label+'</span></div>';
+  subEl.innerHTML=crumbHtml+renderCineairContent();
+  cineairConfig={model:'CA1',option:'No Plinth',finish:'Textured Concrete',finishSwatch:'#8a8a86'};
+  renderCineairPreview();
+  hydrateCineairFromLive();
+  return Promise.resolve();
+}
+
+function _cpFirstImg(node){
+  if(!node)return null;
+  if(node.tagName==='IMG')return node.getAttribute('src');
+  var img=node.querySelector&&node.querySelector('img');
+  return img?img.getAttribute('src'):null;
+}
+
+async function hydrateCineairFromLive(){
+  var url=BASE+'/Furniture/CineAir';
+  try{
+    var html=productCache.has(url)?productCache.get(url):await get(url,'high');
+    productCache.set(url,html);
+    var doc=new DOMParser().parseFromString(html,'text/html');
+    var clone=doc.body.cloneNode(true);
+    clone.querySelectorAll('script,style,noscript,iframe,form,select,nav,header,footer,.navbar,.MegaMenu,[class*="menu"],[class*="footer"],[class*="nav-"],[id*="nav"],[id*="header"],[id*="footer"]').forEach(function(el){el.remove();});
+    if(!document.getElementById('cpCineairLead'))return;
+
+    var heads=Array.from(clone.querySelectorAll('h1,h2'));
+    var introHead=heads.find(function(h){return /CINEMATIC|CINEAIR/i.test(h.textContent);});
+    if(introHead){
+      var ps=[],n=introHead.nextElementSibling;
+      while(n&&!/^H[1-4]$/.test(n.tagName)){if(n.tagName==='P'&&n.textContent.trim())ps.push('<p>'+n.innerHTML.trim()+'</p>');n=n.nextElementSibling;}
+      if(ps.length){var leadEl=document.getElementById('cpCineairLead');if(leadEl)leadEl.innerHTML=ps.join('');}
+    }
+
+    var h3s=Array.from(clone.querySelectorAll('h3'));
+    var feats=h3s.map(function(h){
+      var img=null,p=null,n=h.nextElementSibling;
+      while(n&&!/^H[1-3]$/.test(n.tagName)){if(!img)img=_cpFirstImg(n);if(!p&&n.tagName==='P'&&n.textContent.trim())p=n.textContent.trim();n=n.nextElementSibling;}
+      return{title:h.textContent.trim(),img:img,text:p};
+    }).filter(function(f){return f.img||f.text;});
+    var featEls=document.querySelectorAll('#cpCineairFeatures > div');
+    feats.slice(0,3).forEach(function(f,i){
+      var el=featEls[i];if(!el)return;
+      if(f.img){var hold=el.querySelector('.cp-feature-img');if(hold)hold.innerHTML='<img src="'+f.img+'" alt="'+f.title+'" style="width:100%;height:100%;object-fit:cover">';}
+      var lbl=el.querySelector('.cp-feature-label');if(lbl&&f.title)lbl.textContent=f.title;
+      var txt=el.querySelector('p');if(txt&&f.text)txt.textContent=f.text;
+    });
+
+    var finishHead=heads.find(function(h){return /OXIDISATION|IROKO/i.test(h.textContent);})||Array.from(clone.querySelectorAll('h2')).find(function(h){return /FINISH/i.test(h.textContent);});
+    if(finishHead){
+      var fps=[],fimg=null,fn=finishHead.nextElementSibling;
+      while(fn&&!/^H[1-2]$/.test(fn.tagName)){if(fn.tagName==='P'&&fn.textContent.trim())fps.push('<p>'+fn.innerHTML.trim()+'</p>');if(!fimg)fimg=_cpFirstImg(fn);fn=fn.nextElementSibling;}
+      var finSection=document.getElementById('cpCineairFinishSection');
+      if(finSection){
+        if(fps.length){var finLead=finSection.querySelector('.cp-lead');if(finLead)finLead.innerHTML=fps.join('');}
+        if(fimg){var finImg=finSection.querySelector('img');if(finImg)finImg.src=fimg;}
+      }
+    }
+
+    var dlHead=Array.from(clone.querySelectorAll('h2')).find(function(h){return /DOWNLOAD/i.test(h.textContent);});
+    if(dlHead){
+      var tn=dlHead.nextElementSibling,table=null;
+      while(tn&&!/^H[1-2]$/.test(tn.tagName)){if(tn.tagName==='TABLE'){table=tn;break;}var t=tn.querySelector&&tn.querySelector('table');if(t){table=t;break;}tn=tn.nextElementSibling;}
+      if(table){
+        var rows=Array.from(table.querySelectorAll('tr')).map(function(r){return Array.from(r.querySelectorAll('th,td')).map(function(c){return{content:c.innerHTML.trim(),isHeader:c.tagName==='TH',colspan:c.getAttribute('colspan')||1};});});
+        if(rows.length){
+          var desktop=buildDesktopTable(rows);
+          var header=rows[0]||[];
+          var mobile='<table class="mobile-table"><tr class="mobile-main-header"><th colspan="2">Downloads</th></tr>'+
+            rows.slice(1).map(function(r){var rowHtml='<tr class="mobile-spec-header"><th colspan="2">'+(r[0]?r[0].content:'')+'</th></tr>';r.slice(1).forEach(function(c,i){if(c.content&&c.content!=='&nbsp;')rowHtml+='<tr><td>'+(header[i+1]?header[i+1].content:'')+'</td><td>'+c.content+'</td></tr>';});return rowHtml;}).join('')+
+            '</table>';
+          var dlSection=document.getElementById('cpCineairDownloads');
+          if(dlSection)dlSection.innerHTML=desktop+mobile;
+        }
+      }
+    }
+
+    var allImgs=Array.from(clone.querySelectorAll('img'));
+    var finishMap={};
+    allImgs.forEach(function(img){
+      var src=img.getAttribute('src')||'';
+      var m=src.match(/\/CineAir\/([A-Z0-9]+)-([A-Z0-9\-]+)-(SAMPLE|UP)\.png/i);
+      if(!m)return;
+      var modelRaw=m[1].toUpperCase(),slug=m[2].toUpperCase(),kind=m[3].toUpperCase();
+      var model=/IROKO|OILED/.test(slug)?'CA2-LUXE':modelRaw;
+      var key=model+'|'+slug;
+      if(!finishMap[key]){
+        var label=slug.replace(/-/g,' ').toLowerCase().replace(/\b\w/g,function(c){return c.toUpperCase();});
+        finishMap[key]={model:model,slug:slug,label:label};
+      }
+      if(kind==='SAMPLE')finishMap[key].sample=src;else finishMap[key].up=src;
+    });
+    var allEntries=Object.keys(finishMap).map(function(k){return finishMap[k];});
+    if(allEntries.length){
+      var byModel={};
+      allEntries.forEach(function(e){(byModel[e.model]=byModel[e.model]||[]).push(e);});
+      cineairFinishData={byModel:byModel,list:allEntries};
+      var finishGroup=document.getElementById('cpCineairFinishGroup');
+      var startModel=byModel[cineairConfig.model]?cineairConfig.model:Object.keys(byModel)[0];
+      if(finishGroup){
+        var row=finishGroup.querySelector('.cp-config-row');
+        var entries=byModel[startModel];
+        if(row&&entries&&entries.length){
+          row.innerHTML=entries.map(function(e,i){return cpChip(e.label,i===0,'','finish',e.sample||e.up||'');}).join('');
+          cineairConfig.model=startModel;
+          cineairConfig.finish=entries[0].label;
+          cineairConfig.finishSwatch='';
+          cineairConfig.finishImg=entries[0].up||entries[0].sample||null;
+          var modelRow=document.querySelector('#cpCineairFinishGroup')?document.querySelectorAll('.cp-config-group .cp-config-row')[0]:null;
+          if(modelRow){var activeModelChip=Array.from(modelRow.querySelectorAll('.chip')).find(function(c){return c.dataset.value===startModel;});if(activeModelChip){modelRow.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});activeModelChip.classList.add('on');}}
+          renderCineairPreview();
+        }
+      }
+    }
+  }catch(e){}
+}
+
+function pathForState(s){
+  if(!s||s.page==='home')return '/';
+  if(s.page==='products')return '/Products';
+  if(s.page==='contact')return '/Contact';
+  if(s.page==='about')return '/About';
+  if(s.page==='category')return s.path||'/';
+  if(s.page==='custom')return s.path||'/';
+  if(s.page==='detail')return productPathFromUrl(s.url)||('/Product/'+s.code);
+  return '/';
+}
+function _urlFor(path){
+  var stem=location.pathname+location.search;
+  return(!path||path==='/')?stem:stem+'#'+path;
+}
+function _pushState(s){try{history.pushState(s,'',_urlFor(pathForState(s)));}catch(e){}}
+function _replaceState(s){try{history.replaceState(s,'',_urlFor(pathForState(s)));}catch(e){}}
+
+function _routeFromHash(){
+  var h=decodeURIComponent(location.hash.replace(/^#/,''));
+  if(!h||h==='/')return{page:'home'};
+  if(h==='/Products')return{page:'products'};
+  if(h==='/Contact')return{page:'contact'};
+  if(h==='/About')return{page:'about'};
+  if(customPathFor(h))return{page:'custom',path:h,label:humanizeLabel(h),stack:[{label:humanizeLabel(h),path:h}]};
+  var m=h.match(/^\/Product\/(?:Details\/)?([A-Za-z0-9\-]+)$/);
+  if(m)return{page:'detail',code:m[1],url:BASE+h,from:'home'};
+  return{page:'category',path:h,label:humanizeLabel(h),stack:[{label:humanizeLabel(h),path:h}]};
+}
 
 var __showHome=showHome;
 showHome=function(){__showHome();_replaceState({page:'home'});};
@@ -1962,33 +2396,46 @@ showContact=function(){__showContact();_pushState({page:'contact'});};
 var __showAbout=showAbout;
 showAbout=function(){__showAbout();_pushState({page:'about'});};
 var __showCategory=showCategory;
-showCategory=async function(path,label,fromStack){await __showCategory(path,label,fromStack);if(!fromStack)_pushState({page:'category',path:path,label:label,stack:JSON.parse(JSON.stringify(catStack))});};
+showCategory=async function(path,label,fromStack){
+  var custom=customPathFor(path);
+  if(custom){await showCustomPage(custom,label,fromStack);_pushState({page:'custom',path:custom,label:label,stack:JSON.parse(JSON.stringify(catStack))});return;}
+  await __showCategory(path,label,fromStack);_pushState({page:'category',path:path,label:label,stack:JSON.parse(JSON.stringify(catStack))});
+};
 var __openDetail=openDetail;
-openDetail=async function(p,fromHome){await __openDetail(p,fromHome);_pushState({page:'detail',code:p.code,from:detailOpenedFrom});};
+openDetail=async function(p,fromHome){
+  var custom=customPathFor(productPathFromUrl(p.url));
+  if(custom){await showCustomPage(custom,p.name||p.code);_pushState({page:'custom',path:custom,label:p.name||p.code,stack:JSON.parse(JSON.stringify(catStack))});return;}
+  await __openDetail(p,fromHome);_pushState({page:'detail',code:p.code,url:p.url,from:detailOpenedFrom});
+};
+
+function _applyRoute(s){
+  if(!s||s.page==='home'){__showHome();return;}
+  if(s.page==='products'){__showProducts();return;}
+  if(s.page==='contact'){__showContact();return;}
+  if(s.page==='about'){__showAbout();return;}
+  if(s.page==='category'){catStack=s.stack||[{label:s.label,path:s.path}];return __showCategory(s.path,s.label,true);}
+  if(s.page==='custom'){catStack=s.stack||[{label:s.label,path:s.path}];return showCustomPage(s.path,s.label,true);}
+  if(s.page==='detail'){
+    detailOpenedFrom=s.from||'products';
+    var p2=all.find(function(x){return x.code===s.code;});
+    if(p2)return __openDetail(p2,s.from==='home');
+    return openProductByCode(s.code);
+  }
+  __showHome();return Promise.resolve();
+}
 
 window.addEventListener('popstate',function(e){
   if(_historyBusy)return;
   _historyBusy=true;
   var done=function(){_historyBusy=false;};
-  var s=e.state;
-  if(!s||s.page==='home'){__showHome();done();return;}
-  if(s.page==='products'){__showProducts();done();return;}
-  if(s.page==='contact'){__showContact();done();return;}
-  if(s.page==='about'){__showAbout();done();return;}
-  if(s.page==='category'){catStack=s.stack||[];__showCategory(s.path,s.label,true).then(done).catch(done);return;}
-  if(s.page==='detail'){
-    detailOpenedFrom=s.from||'products';
-    var p2=all.find(function(x){return x.code===s.code;});
-    if(p2)__openDetail(p2,s.from==='home').then(done).catch(done);
-    else openProductByCode(s.code).then(done).catch(done);
-    return;
-  }
-  __showHome();done();
+  try{Promise.resolve(_applyRoute(e.state)).then(done).catch(done);}catch(err){done();}
 });
 
-showHome();
-productsLoaded=false;
+var _initialRoute=_routeFromHash();
+_replaceState(_initialRoute);
+productsLoaded=true;
 initProducts();
+_applyRoute(_initialRoute);
 </script>
 </body>
 </html>
